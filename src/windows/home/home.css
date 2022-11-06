@@ -1,0 +1,472 @@
+body,
+html {
+  font-family: 'titillium web', sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: #1b0000;
+  color: #9f9f9f;
+  width: 100%;
+  overflow: hidden;
+}
+
+div {
+  user-select: none;
+}
+
+a:not([draggable='true']),
+img:not([draggable='true']) {
+  -webkit-user-drag: none;
+}
+a[href^="http://"],
+a[href^="https://"],
+a[href^="ftp://"]
+{
+  -webkit-user-drag: auto;
+}
+
+h2 {
+  margin: 0;
+}
+
+input#token {
+  font-size: 1.5em;
+  color: #fff;
+  text-align: center;
+  height: 23px;
+  vertical-align: top;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: solid 1px rgb(132, 52, 38);
+}
+
+#AppVersion {
+  font-size: 0.8em;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#header {
+  vertical-align: middle;
+  width: 680px;
+  padding: 10px;
+  height: 50px;
+  -webkit-app-region: drag;
+}
+
+.button {
+  text-align: center;
+  background-color: transparent;
+  font-family: titillium web, sans-serif;
+  display: inline-block;
+  margin-right: 2px;
+  padding: 1px 5px;
+  cursor: pointer;
+  transition: all 0.3s linear;
+  border: none;
+  vertical-align: top;
+  -webkit-app-region: none;
+  opacity: 0.8;
+}
+
+.button:hover {
+  background-color: rgba(183, 171, 169, 0.1);
+  border-bottom: solid 1px rgba(183, 171, 169, 0.3);
+  opacity: 1;
+}
+
+.active {
+  opacity: 1;
+  font-weight: 700;
+  border-bottom: solid 1px #fff;
+}
+
+.active:hover {
+  background-color: rgba(183, 171, 169, 0.1);
+}
+
+.buttonClose {
+  position: absolute;
+  right: 3px;
+  top: 0px;
+  cursor: pointer;
+  font-size: 1.5em;
+  line-height: 1em;
+  vertical-align: top;
+  -webkit-app-region: none;
+  opacity: 0.8;
+}
+
+.buttonClose:hover {
+  color: #fff;
+  opacity: 1;
+}
+
+.tab {
+  padding: 10px;
+  display: none;
+  width: 680px;
+}
+
+.activetab {
+  display: block !important;
+}
+
+.table {
+  display: table;
+  width: 100%;
+}
+
+.row {
+  display: table-row;
+}
+
+.cell {
+  display: table-cell;
+  padding: 5px;
+}
+
+.header {
+  border-bottom: solid 1px #fff;
+}
+
+.mtgaproHeader {
+  background-color: rgba(132, 52, 38, 0.9);
+}
+
+.runeterraHeader {
+  background-color: rgba(59, 43, 87, 0.9);
+}
+
+.white {
+  color: #fff;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.linktext {
+  color: #60a1d6;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.interfaceButton {
+  background-color: rgba(183, 171, 169, 0.1);
+  border: solid 1px rgba(183, 171, 169, 0.15);
+  display: inline-block;
+  width: 140px;
+  text-align: left;
+  padding-left: 10px;
+  cursor: pointer;
+  transition: all 0.3s linear;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.interfaceButton:hover {
+  border: solid 1px rgba(183, 171, 169, 0.3);
+  background-color: rgba(132, 52, 38, 0.9);
+  color: #fff;
+}
+
+.pretty {
+  width: 47%;
+  margin-bottom: 7px;
+}
+
+.fab {
+  font-size: 1.5em;
+  filter: opacity(0.8);
+}
+
+.fab:hover {
+  filter: opacity(1);
+}
+
+.fa-twitter {
+  color: rgb(120, 189, 241) !important;
+}
+.fa-github {
+  color: #fff !important;
+}
+.fa-reddit {
+  color: rgb(221, 51, 51) !important;
+}
+.fa-patreon {
+  color: rgb(255, 66, 77) !important;
+}
+.fa-discord {
+  color: rgb(114, 137, 218) !important;
+}
+
+.footerRight {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.footer > i {
+  font-family: 'Font Awesome 5 Brands Regular';
+}
+
+div#UserLinks {
+  width: 154px;
+  display: inline-block;
+  position: absolute;
+  top: 85px;
+  right: 10px;
+}
+
+.imgico {
+  vertical-align: sub;
+}
+
+#brightButton {
+  color: #fff !important;
+  background-color: rgba(132, 52, 38, 1) !important;
+  border-color: rgb(173, 64, 45) !important;
+}
+
+#brightButton:hover {
+  filter: brightness(1.4) !important;
+}
+
+.select-holder {
+  width: 200px;
+}
+
+.settingRow {
+  margin-top: 10px;
+}
+
+.small {
+  line-height: 15px !important;
+  display: inline-block;
+}
+
+.settingRowHalf {
+  margin-top: 10px;
+  display: inline-block;
+  width: 49%;
+  vertical-align: top;
+}
+
+.logpath {
+  font-size: 0.8em;
+}
+
+/*Prompt*/
+
+.prompt-wnd {
+  /*display: block;*/
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+
+  display: none;
+
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.prompt-wnd .prompt-wnd-inner {
+  display: inline-block;
+  overflow-y: auto;
+
+  max-height: 90% !important;
+  margin-top: 150px;
+
+  vertical-align: middle;
+}
+
+.prompt-wnd .prompt-wnd-obj {
+  max-width: 400px;
+  padding: 20px;
+
+  text-align: left;
+
+  background-color: #36221e !important;
+}
+
+.prompt-wnd .prompt-wnd-header {
+  font-family: titillium web, sans-serif !important;
+  font-weight: bold;
+
+  margin-top: -20px;
+  margin-right: -20px;
+  margin-bottom: 20px;
+  margin-left: -20px;
+  padding: 2px 20px;
+
+  color: white;
+  background-color: rgba(132, 52, 38, 1);
+  text-shadow: 1px 1px 2px #000;
+}
+
+.prompt-wnd .prompt-wnd-text {
+  margin-bottom: 20px;
+}
+
+.prompt-wnd .prompt-wnd-btns {
+  text-align: right;
+}
+
+.prompt-wnd .prompt-wnd-btns button {
+  line-height: 22px;
+
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 5px 15px;
+}
+
+.prompt-wnd .prompt-wnd-btns button img {
+  max-height: 20px;
+
+  vertical-align: middle;
+}
+
+.prompt-wnd .prompt-wnd-btns button.red {
+  color: white;
+  background-color: #ac3925;
+}
+
+.prompt-wnd .prompt-wnd-btns button.blue {
+  color: white;
+  background-color: #2573ac;
+}
+.prompt-wnd .prompt-wnd-btns button.black {
+  color: white;
+  background-color: #000;
+}
+.prompt-wnd .prompt-wnd-btns button.green {
+  color: white;
+  background-color: #25ac3d;
+}
+
+.brown {
+  color: brown;
+}
+
+.autowidth {
+  width: auto !important;
+}
+
+.disabled {
+  opacity: 0.7;
+}
+
+#network-status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #2573ac;
+  border-radius: 50%;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  vertical-align: bottom;
+}
+
+#network-status.network-status-active {
+  background-color: #25ac3d;
+}
+
+#network-status.network-status-inactive {
+  background-color: #ac3925;
+}
+
+#network-status.network-status-sending {
+  background-color: #25ac3d;
+  animation: blink-animation 1s infinite;
+}
+
+@keyframes blink-animation {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.directSyncLink {
+  clear: both;
+  display: block;
+  padding: 2px;
+  border: dotted 1px;
+  user-select: all !important;
+}
+
+.stringTitle {
+  display: inline-block;
+  width: 100px;
+}
+
+/*HOTKEYS*/
+
+div#hotkeyMap {
+  margin-top: 15px;
+}
+
+.hotkey {
+  display: inline-block;
+  width: 37%;
+  margin-bottom: 6px;
+}
+
+.hkButton {
+  display: inline-block;
+  width: 25px;
+  text-align: center;
+  background-color: rgba(183, 171, 169, 0.1);
+  border: solid 1px rgba(183, 171, 169, 0.15);
+}
+
+.disabledHk {
+  opacity: 0.5;
+}
+
+.setHk {
+  cursor: pointer;
+}
+
+.hkDescription {
+  display: inline-block;
+}
+
+.gameSwitch {
+  width: 50px;
+  overflow: hidden;
+  position: absolute;
+  left: -25px;
+  top: 10px;
+  cursor: pointer;
+  transition-property: left, filter, box-shadow;
+  transition-duration: 200ms;
+}
+
+.gameSwitch:hover {
+  left: -20px;
+  filter: brightness(1.2) drop-shadow(0px 0px 9px rgba(255, 255, 255, 0.7));
+}
+
+.overlay-permission-message {
+  margin-bottom: 10px;
+}

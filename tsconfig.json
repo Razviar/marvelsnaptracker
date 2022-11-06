@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "lib": ["es6", "dom"],
+    "target": "es5",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "root/*": ["src/*"],
+      "*": ["node_modules/*"]
+    },
+    "skipLibCheck": true,
+    "noEmit": false,
+    "traceResolution": false,
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./types", "./node_modules/@types/"]
+  },
+  "include": ["src/**/*.ts", "src/our-active-win/index.js", "src/electron-squirrel-startup/index.js"],
+  "exclude": ["node_modules", "types"]
+}
