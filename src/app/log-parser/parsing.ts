@@ -10,13 +10,6 @@ export function logEventToStatefulEvent(event: LogEvent, state: LogFileParsingSt
   };
 }
 
-export function handleUserChangeEvent(event: LogEvent, state: LogFileParsingState): void {
-  const userId = asString(extractValue(event.data, ['params', 'payloadObject', 'playerId']));
-  const screenName = asString(extractValue(event.data, ['params', 'payloadObject', 'screenName']));
-  state.userId = userId;
-  state.screenName = screenName;
-}
-
 // tslint:disable-next-line:no-any
 export function parseAsJSONIfNeeded(data: any): any {
   // The heuristic here is that we will parse the data as a JSON if it's a

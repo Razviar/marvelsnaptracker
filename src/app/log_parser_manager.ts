@@ -1,7 +1,7 @@
 import electronIsDev from 'electron-is-dev';
 import {sendEventsToServer} from 'root/api/logsender';
 import {LogParser} from 'root/app/log-parser/log_parser';
-import {sendMessageToHomeWindow, sendMessageToOverlayWindow} from 'root/app/messages';
+import {sendMessageToHomeWindow} from 'root/app/messages';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {error} from 'root/lib/logger';
 

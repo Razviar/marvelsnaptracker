@@ -5,16 +5,12 @@ import {error} from 'root/lib/logger';
 export function createContextMenuForMainWindow(mainWindow: BrowserWindow): Menu {
   const MenuLinks: MenuItemConstructorOptions[] = [];
   const MenuLabels: {[index: string]: string} = {
-    'My Profile': 'https://marvelsnap.pro//u/',
-    Deckbuilder: 'https://marvelsnap.pro//deckbuilder/',
-    'Deck Converter': 'https://marvelsnap.pro//converter/',
-    Decks: 'https://marvelsnap.pro//decks/?my',
-    Collection: 'https://marvelsnap.pro//collection/',
-    Progress: 'https://marvelsnap.pro//progress/',
-    Events: 'https://marvelsnap.pro//events/',
-    Matches: 'https://marvelsnap.pro//matches/',
-    Rewards: 'https://marvelsnap.pro//rewards/',
-    Boosters: 'https://marvelsnap.pro//boosters/',
+    'My Profile': 'https://marvelsnap.pro/u/',
+    Deckbuilder: 'https://marvelsnap.pro/deckbuilder/',
+    Decks: 'https://marvelsnap.pro/decks/?my',
+    Collection: 'https://marvelsnap.pro/collection/',
+    Progress: 'https://marvelsnap.pro/progress/',
+    Matches: 'https://marvelsnap.pro/matches/',
   };
 
   Object.keys(MenuLabels).forEach((label) => {

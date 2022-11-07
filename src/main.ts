@@ -3,8 +3,6 @@ import electronIsDev from 'electron-is-dev';
 
 import {sendSettingsToRenderer, setCreds} from 'root/app/auth';
 import {enableAutoLauncher} from 'root/app/auto_launcher';
-import {setupAutoUpdater} from 'root/app/auto_updater';
-import {doSnapPathOps} from 'root/app/do-path-ops';
 import {setupIpcMain} from 'root/app/ipc_main';
 import {createGlobalLogParser} from 'root/app/log_parser_manager';
 import {createMainWindow, withHomeWindow} from 'root/app/main_window';

@@ -6,11 +6,9 @@ import {loadAppIcon} from 'root/app/app_icon';
 import {sendSettingsToRenderer} from 'root/app/auth';
 import {disableAutoLauncher, enableAutoLauncher} from 'root/app/auto_launcher';
 import {checkForUpdates, quitAndInstall} from 'root/app/auto_updater';
-import {unRegisterHotkeys} from 'root/app/hotkeys';
 import {withLogParser} from 'root/app/log_parser_manager';
 import {withHomeWindow} from 'root/app/main_window';
 import {onMessageFromBrowserWindow, sendMessageToHomeWindow} from 'root/app/messages';
-import {locateMtgaDir} from 'root/app/mtga_dir_ops';
 import {oldStore} from 'root/app/old_store';
 import {permissionManager} from 'root/app/permission_manager';
 import {settingsStore} from 'root/app/settings-store/settings_store';
@@ -139,7 +137,6 @@ export function setupIpcMain(app: App): void {
     const settings = settingsStore.get();
     settings.nohotkeys = newHotkeys;
     settingsStore.save();
-    unRegisterHotkeys();
   });
 
   onMessageFromBrowserWindow('set-setting-icon', (newIcon) => {
@@ -237,42 +234,6 @@ export function setupIpcMain(app: App): void {
     settingsStore.save();
     sendMessageToHomeWindow('show-prompt', {message: 'Log path have been set to default!', autoclose: 1000});
     sendSettingsToRenderer();
-  });
-
-  onMessageFromBrowserWindow('set-mtga-path', () => {
-    dialog
-      .showOpenDialog({properties: ['openDirectory']})
-      .then((log) => {
-        if (!log.canceled && log.filePaths[0]) {
-          settingsStore.get().mtgaPath = log.filePaths[0];
-          settingsStore.save();
-          if (locateMtgaDir(log.filePaths[0])) {
-            sendMessageToHomeWindow('show-prompt', {message: 'MTGA_Data path have been updated!', autoclose: 1000});
-          } else {
-            sendMessageToHomeWindow('show-prompt', {
-              message: 'Bad MTGA/MTGA_Data path, please set it correctly',
-              autoclose: 1000,
-            });
-          }
-          sendSettingsToRenderer();
-        }
-      })
-      .catch((err) => error('Error while showing open file dialog during set-mtga-path event', err));
-  });
-
-  onMessageFromBrowserWindow('default-mtga-path', () => {
-    settingsStore.get().mtgaPath = undefined;
-    settingsStore.save();
-    if (locateMtgaDir(undefined)) {
-      sendMessageToHomeWindow('show-prompt', {message: 'MTGA path have been set to default!', autoclose: 1000});
-    } else {
-      sendMessageToHomeWindow('show-prompt', {message: 'Bad MTGA path, please set it correctly', autoclose: 3000});
-    }
-    sendSettingsToRenderer();
-  });
-
-  onMessageFromBrowserWindow('error-in-renderer', (err) => {
-    error('Error in renderer process', err.error, {line: err.line, url: err.url});
   });
 
   onMessageFromBrowserWindow('restart-me', () => {
