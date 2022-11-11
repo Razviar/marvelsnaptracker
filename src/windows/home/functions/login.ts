@@ -6,9 +6,7 @@ export function login(token: string, uid: string, nick: string, source?: string)
   HomePageElements.TokenResponse.innerHTML = `<div class="stringTitle">Current user:</div><strong>${nick}</strong>`;
   HomePageElements.StatusMessage.innerHTML = 'Logged in...';
   HomePageElements.StatusMessage.style.color = '#22a83a';
-  HomePageElements.OverlaySwitch.classList.remove('hidden');
   HomePageElements.UserControls.classList.remove('hidden');
-  HomePageElements.hotkeyMap.classList.remove('hidden');
   sendMessageToIpcMain('token-input', {
     token,
     uid,

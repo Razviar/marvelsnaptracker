@@ -15,18 +15,6 @@ module.exports = {
   module: {
     rules: require('./webpack.rules'),
   },
-  plugins:
-    process.platform === 'darwin'
-      ? [
-          new WebpackHookPlugin({
-            onBuildEnd: ['chmod +x .webpack/main/native_modules/main'],
-          }),
-        ]
-      : [
-          new CopyPlugin({
-            patterns: [{context: 'src/our-active-win', from: '*.dll*', to: 'native_modules'}],
-          }),
-        ],
   resolve: {
     alias: {
       root: SRC,

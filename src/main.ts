@@ -7,7 +7,6 @@ import {setupIpcMain} from 'root/app/ipc_main';
 import {createGlobalLogParser} from 'root/app/log_parser_manager';
 import {createMainWindow, withHomeWindow} from 'root/app/main_window';
 import {sendMessageToHomeWindow} from 'root/app/messages';
-import {permissionManager} from 'root/app/permission_manager';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {error} from 'root/lib/logger';
 import {isMac} from 'root/lib/utils';
@@ -24,8 +23,6 @@ if (require('root/electron-squirrel-startup')) {
 
 let mainWindowCreated = false;
 let trackerAndUiInited = false;
-
-permissionManager.init();
 
 function initTrackerAndUi(): void {
   if (trackerAndUiInited) {

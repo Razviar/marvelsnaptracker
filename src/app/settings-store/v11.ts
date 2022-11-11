@@ -4,8 +4,7 @@ import {OverlaySettingsV7} from 'root/app/settings-store/v10';
 export interface SettingsV11 extends SettingsBase {
   version: Version.v11;
   accounts: AccountV10[];
-  userToken?: {mtga?: string; lor?: string};
-  lastGame: 'mtga' | 'lor';
+  userToken?: string;
   icon?: string;
   autorun: boolean;
   minimized: boolean;

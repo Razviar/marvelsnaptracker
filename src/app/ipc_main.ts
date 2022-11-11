@@ -10,20 +10,19 @@ import {withLogParser} from 'root/app/log_parser_manager';
 import {withHomeWindow} from 'root/app/main_window';
 import {onMessageFromBrowserWindow, sendMessageToHomeWindow} from 'root/app/messages';
 import {oldStore} from 'root/app/old_store';
-import {permissionManager} from 'root/app/permission_manager';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {stateStore} from 'root/app/state_store';
 import {error} from 'root/lib/logger';
 
 export function setupIpcMain(app: App): void {
   onMessageFromBrowserWindow('token-input', (newAccount) => {
+    console.log('token-input');
     const settings = settingsStore.get();
-    const game: 'lor' | 'mtga' = newAccount.game;
-    if (!settings.userToken || settings.userToken[game] !== newAccount.token) {
+    console.log(settings);
+    if (!settings.userToken) {
       if (settings.userToken === undefined) {
-        settings.userToken = {};
+        settings.userToken = newAccount.token;
       }
-      settings.userToken[game] = newAccount.token;
 
       settingsStore.removeAccount(newAccount.token);
       settings.accounts.push(newAccount);
@@ -152,43 +151,6 @@ export function setupIpcMain(app: App): void {
     });
   });
 
-  /*HOTKEY SETTINGS BEGIN*/
-
-  const hkSettings = [
-    'hk-my-deck',
-    'hk-opp-deck',
-    'hk-overlay',
-    'hk-inc-size',
-    'hk-dec-size',
-    'hk-inc-opac',
-    'hk-dec-opac',
-  ];
-
-  hkSettings.forEach((settings) => {
-    const set = settings as
-      | 'hk-my-deck'
-      | 'hk-opp-deck'
-      | 'hk-overlay'
-      | 'hk-inc-size'
-      | 'hk-dec-size'
-      | 'hk-inc-opac'
-      | 'hk-dec-opac';
-    onMessageFromBrowserWindow(set, (newHotkeyBinding) => {
-      const session = settingsStore.getAccount();
-      if (session === undefined) {
-        return;
-      }
-      if (session.hotkeysSettings === undefined) {
-        return;
-      }
-      session.hotkeysSettings[set] = newHotkeyBinding;
-      settingsStore.save();
-      sendMessageToHomeWindow('set-hotkey-map', session.hotkeysSettings);
-    });
-  });
-
-  /*HOTKEY SETTINGS END*/
-
   onMessageFromBrowserWindow('kill-current-token', () => {
     const settings = settingsStore.get();
     const session = settingsStore.getAccount();
@@ -267,9 +229,5 @@ export function setupIpcMain(app: App): void {
 
   onMessageFromBrowserWindow('apply-update', () => {
     quitAndInstall();
-  });
-
-  onMessageFromBrowserWindow('enable-screen-recording', () => {
-    permissionManager.requireScreenRecording();
   });
 }

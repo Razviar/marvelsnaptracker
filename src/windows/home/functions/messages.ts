@@ -150,11 +150,6 @@ export function installHomeMessages(): void {
     if (newSettings.nohotkeys !== undefined) {
       const sw = document.querySelector('[data-setting="disable-hotkeys"]') as HTMLInputElement;
       sw.checked = newSettings.nohotkeys;
-      if (!newSettings.nohotkeys) {
-        HomePageElements.hotkeyMap.classList.remove('hidden');
-      } else {
-        HomePageElements.hotkeyMap.classList.add('hidden');
-      }
     }
 
     if (newSettings.minimized) {
@@ -206,9 +201,7 @@ export function installHomeMessages(): void {
     HomePageElements.StatusMessage.innerHTML = 'Awaiting account sync...';
     HomePageElements.TokenResponse.innerHTML = '';
     HomePageElements.TokenInput.classList.remove('hidden');
-    HomePageElements.OverlaySwitch.classList.add('hidden');
     HomePageElements.UserControls.classList.add('hidden');
-    HomePageElements.hotkeyMap.classList.add('hidden');
   });
 
   onMessageFromIpcMain('show-update-button', () => {
@@ -227,21 +220,10 @@ export function installHomeMessages(): void {
     }
   });
 
-  /*onMessageFromIpcMain('token-waiter-responce', (response) => {
-    if (response.res && response.res.token) {
-      login(response.res.token, response.res.uid, response.res.nick);
-      sendMessageToIpcMain('do-shadow-sync', undefined);
-    } else {
-      setTimeout(() => {
-        tokenWaiter(response.request);
-      }, 1000);
-    }
-  });*/
-
   onMessageFromIpcMain('token-waiter-responce', (response) => {
+    console.log('token-waiter-responce', response);
     if (response.res && response.res.token && response.res.token !== '') {
       login(response.res.token, response.res.uid, response.res.nick);
-      sendMessageToIpcMain('do-shadow-sync', undefined);
     } else {
       const MaxWaitTime = 120;
       if (currentCreds.numberOfSyncAttempts <= MaxWaitTime) {
@@ -280,15 +262,5 @@ export function installHomeMessages(): void {
 
   onMessageFromIpcMain('startup-title', (title) => {
     HomePageElements.StartupTitle.innerHTML = title;
-  });
-
-  onMessageFromIpcMain('screen-recording-authorized', (authorized) => {
-    if (authorized) {
-      HomePageElements.OverlayDenied.classList.add('hidden');
-      HomePageElements.OverlayAuthorized.classList.remove('hidden');
-    } else {
-      HomePageElements.OverlayDenied.classList.remove('hidden');
-      HomePageElements.OverlayAuthorized.classList.add('hidden');
-    }
   });
 }

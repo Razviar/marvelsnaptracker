@@ -202,7 +202,7 @@ export class LogParser {
     });
 
     //console.log('MatchData', parsedResults['MatchData']);
-    console.log('CardsInLocations', parsedResults['CardsInLocations']);
+    //console.log('CardsInLocations', parsedResults['CardsInLocations']);
 
     const eventsToSend: ParseResults[] = [];
     //console.log(parsingMetadata.sendToServer);
@@ -281,9 +281,9 @@ export class LogParser {
     const newAccount = getAccountFromScreenName(screenName);
     if (newAccount !== undefined && newAccount.player) {
       if (settings.userToken !== undefined) {
-        settings.userToken.mtga = newAccount.token;
+        settings.userToken = newAccount.token;
       } else {
-        settings.userToken = {mtga: newAccount.token};
+        settings.userToken = newAccount.token;
       }
       const userData: UserData = {
         snapId: newPlayerId,

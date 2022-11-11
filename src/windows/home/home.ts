@@ -9,7 +9,6 @@ import 'root/windows/fa-solid-900.woff2';
 import 'root/windows/fontawesome.css';
 import {controlClick} from 'root/windows/home/functions/controlclick';
 import {installHomeMessages} from 'root/windows/home/functions/messages';
-import {hkSetter, setHkClick} from 'root/windows/home/functions/setHkClick';
 import {settingsChecker} from 'root/windows/home/functions/settingsChecker';
 import {tabclick} from 'root/windows/home/functions/tabclick';
 import 'root/windows/home/home.css';
@@ -29,27 +28,19 @@ export const HomePageElements = {
   AppVersion: document.getElementById('AppVersion') as HTMLElement,
   minimizeButton: document.getElementById('minimize') as HTMLElement,
   AccountsTab: document.getElementById('accounts') as HTMLElement,
-  OverlaySwitch: document.getElementById('OverlaySwitch') as HTMLElement,
   UserControls: document.getElementById('UserControls') as HTMLElement,
   BrightButton: document.getElementById('brightButton') as HTMLElement,
   PromptWnd: document.getElementById('PromptWnd') as HTMLElement,
   PromptText: document.getElementById('PromptText') as HTMLElement,
   NetworkStatus: document.getElementById('network-status') as HTMLElement,
-  hotkeyMap: document.getElementById('hotkeyMap') as HTMLElement,
   directSyncLink: document.getElementById('directSyncLink') as HTMLElement,
   LordirectSyncLink: document.getElementById('LordirectSyncLink') as HTMLElement,
   buttons: document.getElementsByClassName('button'),
-  hkSetters: document.getElementsByClassName('setHk'),
   tabs: document.getElementsByClassName('tab'),
   controls: document.getElementsByClassName('controlButton'),
   settings: document.getElementsByClassName('settings'),
-  gameSw: document.getElementsByClassName('gameSw'),
   MtgaTab: document.getElementsByClassName('MtgaTab'),
-  LorTab: document.getElementsByClassName('LorTab'),
   StartupTitle: document.getElementById('startup-title') as HTMLElement,
-  OverlayDenied: document.getElementById('overlay-denied') as HTMLElement,
-  OverlayAuthorized: document.getElementById('overlay-authorized') as HTMLElement,
-  EnableScreenRecording: document.querySelector('[data-button="enable-screen-recording"]') as HTMLElement,
 };
 
 export const currentCreds: {
@@ -88,18 +79,8 @@ Array.from(HomePageElements.controls).forEach((el) => {
   el.addEventListener('click', controlClick);
 });
 
-Array.from(HomePageElements.hkSetters).forEach((el) => {
-  el.addEventListener('click', setHkClick);
-});
-
 Array.from(HomePageElements.settings).forEach((el) => {
   el.addEventListener('change', settingsChecker);
-});
-
-window.addEventListener('keyup', hkSetter, true);
-
-HomePageElements.EnableScreenRecording.addEventListener('click', () => {
-  sendMessageToIpcMain('enable-screen-recording', undefined);
 });
 
 onMessageFromIpcMain('network-status', (status) => {

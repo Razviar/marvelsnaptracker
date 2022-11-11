@@ -12,7 +12,6 @@ export function controlClick(event: Event): void {
       unhide.classList.remove('hidden');
       HomePageElements.StatusMessage.innerHTML = 'Skipping this account...';
       HomePageElements.UserControls.classList.remove('hidden');
-      HomePageElements.hotkeyMap.classList.remove('hidden');
       sendMessageToIpcMain('token-input', {
         token: `SKIPPING${Math.floor(1000 * Math.random())}`,
         uid: '',
@@ -37,12 +36,6 @@ export function controlClick(event: Event): void {
       break;
     case 'unskip-acc':
       sendMessageToIpcMain('kill-current-token', undefined);
-      break;
-    case 'do-shadow-sync':
-      cl.classList.add('hidden');
-      const sssi = document.querySelector('[data-button="stop-shadow-sync"]') as HTMLElement;
-      sssi.classList.remove('hidden');
-      sendMessageToIpcMain(button, undefined);
       break;
     case 'dev-log':
       sendMessageToIpcMain('dev-log', false);

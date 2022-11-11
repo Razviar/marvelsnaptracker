@@ -12,12 +12,7 @@ export interface Messages {
   'lor-sync-process': TokenRequestRes;
   'token-waiter': string;
   'need-reset-sync': undefined;
-  'lor-token-waiter': string;
   'token-waiter-responce': {
-    res: TokenCheckRes | undefined;
-    request: string;
-  };
-  'lor-token-waiter-responce': {
     res: TokenCheckRes | undefined;
     request: string;
   };

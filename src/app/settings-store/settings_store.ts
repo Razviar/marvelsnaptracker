@@ -64,12 +64,11 @@ class SettingsStore {
   }
 
   public getAccount(): Account | undefined {
-    const game = this.data.lastGame;
     const token = this.data.userToken;
     if (token === undefined) {
       return undefined;
     }
-    const gameToken = token[game];
+    const gameToken = token;
     return this.data.accounts.find((_) => _.token === gameToken);
   }
 
@@ -795,8 +794,7 @@ function migrateV10toV11(v10: SettingsV10): SettingsV11 {
   return {
     version: Version.v11,
     accounts: asAccountsV10(v10.accounts),
-    userToken: {mtga: v10.userToken?.mtga, lor: v10.userToken?.lor},
-    lastGame: 'mtga',
+    userToken: undefined,
     icon: v10.icon,
     autorun: v10.autorun,
     minimized: v10.minimized,

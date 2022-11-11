@@ -60,7 +60,7 @@ module.exports = {
         'base-uri': "'self'",
         'object-src': "'none'",
         'script-src': ["'self'"],
-        'img-src': ["'self'", 'https://marvelsnap.pro//', 'data:'],
+        'img-src': ["'self'", 'https://marvelsnap.pro/', 'data:'],
         'style-src': ["'self'", "'unsafe-inline'"],
       },
       {
@@ -77,10 +77,7 @@ module.exports = {
       }
     ),
     new CopyPlugin({
-      patterns: [
-        {context: 'src/windows', from: '*.woff*', to: 'home_window'},
-        {context: 'src/windows', from: '*.woff*', to: 'overlay_window'},
-      ],
+      patterns: [{context: 'src/windows', from: '*.woff*', to: 'home_window'}],
     }),
   ],
 };
