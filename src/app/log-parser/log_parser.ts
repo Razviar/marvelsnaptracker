@@ -6,6 +6,7 @@ import {join} from 'path';
 import {getParsingMetadata} from 'root/api/getindicators';
 import {setuserdata, UserData} from 'root/api/userbytokenid';
 import {setCreds} from 'root/app/auth';
+import {gameState} from 'root/app/game_state';
 import {getJSONData} from 'root/app/log-parser/events';
 import {FileParsingState, ParsingMetadata} from 'root/app/log-parser/model';
 import {extractValue, parseAsJSONIfNeeded} from 'root/app/log-parser/parsing';
@@ -19,7 +20,7 @@ import {error} from 'root/lib/logger';
 
 import {ParseResults} from 'root/models/indicators';
 
-const TWO_SECONDS = 2000;
+const FIVE_SECONDS = 5000;
 
 export class LogParser {
   private shouldStop: boolean = false;
@@ -80,7 +81,7 @@ export class LogParser {
       this.shouldStop = false;
       this.parsingMetadata = await getParsingMetadata();
       //console.log(this.parsingMetadata);
-      this.internalLoopTimeout = TWO_SECONDS;
+      this.internalLoopTimeout = FIVE_SECONDS;
       this.internalLoop(this.parsingMetadata);
     } catch (e) {
       error('start.getParsingMetadata', e);
@@ -98,6 +99,7 @@ export class LogParser {
     if (this.shouldStop) {
       return;
     }
+    //console.log('loop!');
     let parsedResults: {[index: string]: any} = {};
     let nextFilesState: {[index: string]: FileParsingState} = {};
     let latestUpdateDate: Date | undefined = undefined;
@@ -229,6 +231,7 @@ export class LogParser {
 
     // Forwarding new data for server sending
     if (eventsToSend.length > 0) {
+      gameState.checkProcessId();
       this.emitter.emit('newdata', {
         events: eventsToSend,
         parsingMetadata,

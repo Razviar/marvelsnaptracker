@@ -5,11 +5,10 @@ import {error} from 'root/lib/logger';
 export function createContextMenuForMainWindow(mainWindow: BrowserWindow): Menu {
   const MenuLinks: MenuItemConstructorOptions[] = [];
   const MenuLabels: {[index: string]: string} = {
-    'My Profile': 'https://marvelsnap.pro/u/',
+    'My Profile': 'https://marvelsnap.pro/',
     Deckbuilder: 'https://marvelsnap.pro/deckbuilder/',
-    Decks: 'https://marvelsnap.pro/decks/?my',
+    Decks: 'https://marvelsnap.pro/decks/?my=1',
     Collection: 'https://marvelsnap.pro/collection/',
-    Progress: 'https://marvelsnap.pro/progress/',
     Matches: 'https://marvelsnap.pro/matches/',
   };
 

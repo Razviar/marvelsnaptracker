@@ -124,7 +124,7 @@ export const selectStyles = {
 
 export const titles: {[index: string]: string} = {
   my: 'My Deck Lists',
-  'my-mtga': 'My MTGA Linked Deck Lists',
+  'my-mtga': 'My SNAP Linked Deck Lists',
   'my-historic': 'My Historic Deck Lists',
   'my-singleton': 'My Singleton Deck Lists',
   'my-pauper': 'My Pauper Deck Lists',
@@ -142,7 +142,7 @@ export const titles: {[index: string]: string} = {
   'meta-bo3': 'MTG Arena Meta BO3 Deck Lists',
   'historic-meta': 'MTG Arena Historic Metagame',
   budget: 'MTG Arena Budget Deck Lists',
-  forevent: 'Best Performing MTGA Decks in Event',
+  forevent: 'Best Performing SNAP Decks in Event',
   brawl: 'MTG Arena Brawl Deck Lists',
   artisan: 'MTG Arena Artisan Deck Lists (Common + Uncommon)',
 };

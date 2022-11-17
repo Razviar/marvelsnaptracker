@@ -21,7 +21,7 @@ export function withHomeWindow(fn: (mainWindow: BrowserWindow) => void): void {
 }
 
 export function createMainWindow(): void {
-  console.log('Main Window Creating!');
+  //console.log('Main Window Creating!');
   const appIcoImg = nativeImage.createFromPath(join(__dirname, getAppIcon()));
   const appIcon = new Tray(appIcoImg);
   mainWindow = new BrowserWindow({
@@ -46,7 +46,7 @@ export function createMainWindow(): void {
     },
     show: false,
     frame: false,
-    title: 'MTGA Pro Tracker',
+    title: 'Marvel Snap Tracker',
     icon: appIcoImg,
     resizable: true,
   });

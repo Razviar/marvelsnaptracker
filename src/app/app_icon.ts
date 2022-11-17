@@ -1,6 +1,5 @@
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {asMap, asString} from 'root/lib/type_utils';
-import {isMac} from 'root/lib/utils';
 
 // tslint:disable-next-line:no-any
 function loadAppIconInternal(type: string | undefined): any {
@@ -8,14 +7,8 @@ function loadAppIconInternal(type: string | undefined): any {
   if (type === undefined) {
     type = '';
   }
-  if (isMac()) {
-    require(`root/statics/mac/mac-icon${type}@2x.png`);
-    require(`root/statics/mac/mac-icon${type}@3x.png`);
-    require(`root/statics/mac/mac-icon${type}@4x.png`);
-    require(`root/statics/mac/mac-icon${type}@5x.png`);
-    return require(`root/statics/mac/mac-icon${type}.png`);
-  }
-  return require(`root/statics/icon${type}.ico`);
+
+  return require(`root/statics/icon.ico`);
   // tslint:enable:no-require-imports
 }
 

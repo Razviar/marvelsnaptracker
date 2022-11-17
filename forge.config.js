@@ -38,7 +38,7 @@ module.exports = {
         name: 'snapprotracker',
         certificateFile: './cert/liubov.p12',
         certificatePassword: '1111',
-        iconUrl: 'https://marvelsnap.pro//mtg/icon.ico',
+        iconUrl: 'https://marvelsnap.pro/snap/icon.ico',
       },
     },
     {

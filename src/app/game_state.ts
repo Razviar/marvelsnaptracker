@@ -1,29 +1,21 @@
 import electronIsDev from 'electron-is-dev';
-
 import psList from 'ps-list';
-
 import {withLogParser} from 'root/app/log_parser_manager';
 import {sendMessageToHomeWindow} from 'root/app/messages';
-
 import {error} from 'root/lib/logger';
 import {hasOwnProperty} from 'root/lib/type_utils';
-import {isMac} from 'root/lib/utils';
 
-const HALF_SECOND = 500;
-const TWO_SECONDS = 2000;
+const FIVE_SECONDS = 5000;
 
 class GameState {
   private readonly startTimeMillis: number;
   private running: boolean;
   private AVBlocked: boolean;
-  private overlayInterval: NodeJS.Timeout | undefined;
   private psListInterval: NodeJS.Timeout | undefined;
   private processId: number | undefined;
   private badErrorHappening: boolean = false;
-  private refreshMillis = 500;
-  private readonly processName = isMac() ? 'MTGA.app/Contents/MacOS/MTGA' : 'MTGA.exe';
-  private readonly movementSensitivity = 1;
-  private overlayIsPositioned = false;
+  private refreshMillis = 1000;
+  private readonly processName = 'SNAP.exe';
   public isFullscreen: boolean = false;
 
   constructor() {
@@ -31,14 +23,6 @@ class GameState {
     this.running = false;
     this.AVBlocked = false;
     this.checkProcessId();
-  }
-
-  public setRefreshRate(refreshRate: number): void {
-    this.refreshMillis = refreshRate;
-    if (this.overlayInterval !== undefined) {
-      clearInterval(this.overlayInterval);
-      this.overlayInterval = undefined;
-    }
   }
 
   public getStartTime(): number {
@@ -70,7 +54,7 @@ class GameState {
         this.psListInterval = undefined;
       }
       withLogParser((logParser) => {
-        logParser.changeParserFreq(TWO_SECONDS).catch((err) => {
+        logParser.changeParserFreq(FIVE_SECONDS).catch((err) => {
           error('Failure to start log parser', err);
         });
       });
@@ -105,17 +89,15 @@ class GameState {
       }
     } else {
       if (electronIsDev) {
-        //console.log('pinging psList');
+        console.log('pinging psList');
       }
       psList()
         .then((processes) => {
-          const res = processes.find((proc) =>
-            isMac() ? proc.cmd?.includes(this.processName) : proc.name === this.processName
-          );
+          const res = processes.find((proc) => proc.name === this.processName);
           if (res !== undefined) {
-            //console.log('found MTGA');
+            console.log('found SNAP');
             if (!this.badErrorHappening) {
-              //console.log('setting PID');
+              console.log('setting PID');
               this.processId = res.pid;
             }
             this.setRunning(true);

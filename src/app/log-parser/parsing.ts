@@ -34,10 +34,10 @@ export function parseAsJSONIfNeeded(data: any): any {
 export function extractValue(data: any, attributesPath: (number | string)[]): any {
   let value = parseAsJSONIfNeeded(data);
   for (const attribute of attributesPath) {
-    value = asMap(value, {})[attribute];
     if (value && value['$ref']) {
       value = getObject(data, '$id', value['$ref']);
     }
+    value = asMap(value, {})[attribute];
   }
   return value;
 }

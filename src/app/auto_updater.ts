@@ -90,7 +90,7 @@ export function setupAutoUpdater(): void {
         withHomeWindow((w) => {
           if (!w.isVisible()) {
             showNotification(
-              'MTGA Pro Tracker Update',
+              'SNAP Pro Tracker Update',
               'Updated is downloaded and ready to be applied. Since you have manual updates switched on, you need to click Apply Update button.'
             );
           }

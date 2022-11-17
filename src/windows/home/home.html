@@ -3,12 +3,18 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta 
+        http-equiv="Content-Security-Policy" 
+        content="default-src 'self'; 
+          script-src 'self'; 
+          font-src 'self' https://fonts.gstatic.com;
+          style-src 'self' https://fonts.googleapis.com">
   <title>SNAP Pro Tracker</title>
 </head>
 
 <body>
   <div id="header" class="mtgaproHeader">
-    <div id="titleimg"><svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461 112"><g><path class="c" d="M148.92,7.82l-12.36,46.2h-8.4l6-22.38h-.36l-13.56,22.38h-.78l-1.68-22.38h-.48l-6,22.38h-8.7L114.96,7.82h9.42l1.32,23.94h.42l13.92-23.94h8.88Z"></path><path class="c" d="M171.36,25.53l-7.62,28.5h-7.5l.72-2.76c-2.17,3.66-8.34,2.67-11.82,2.76-2.23-.06-2.88-.91-2.22-3.36,0,0,3.6-13.38,3.6-13.38,1.12-5.04,11.64-2.58,15.06-3.12l2.1-7.98h-10.5l1.5-5.58h13.68c2.88,0,3.88,1.64,3,4.92Zm-11.28,14.1h-6.72l-2.34,8.82h6.72l2.34-8.82Z"></path><path class="c" d="M194.88,20.61l-1.5,5.64c-4.36-.64-9.5,1-10.86,5.64,0,0-6,22.14-6,22.14h-7.5l8.94-33.42h7.5l-.66,3.06c2.46-2.93,6.54-3.4,10.08-3.06Z"></path><path class="c" d="M221.52,20.61l-15.96,33.42h-10.26l2.04-33.42h7.68l-2.28,23.28h.84l10.26-23.28h7.68Z"></path><path class="c" d="M246.78,24.15l-4.14,15.54h-14.22l-2.34,8.76h12.24l-1.5,5.58c-27.57,.19-18.86,3.32-11.76-29.64,.5-1.88,2.08-3.75,3.96-3.78,0,0,16.2,0,16.2,0,1.62,.17,2.1,1.74,1.56,3.54Zm-7.98,2.1h-6.78l-2.1,7.86h6.78l2.1-7.86Z"></path><path class="c" d="M264.24,7.82l-12.36,46.2h-7.56l12.36-46.2h7.56Z"></path><path class="c" d="M288.42,7.82l-1.92,7.14h-9.96l-3.06,11.52c2.19,.37,9.63-.97,11.13,1.14,.75,6.84-3.89,15.83-5.07,22.8-.76,6.2-17.89,2.77-22.14,3.6l1.98-7.32h12.6l3.42-12.9c-1.93-.39-10.4,.96-11.46-1.05-.27-6.97,3.66-15.61,5.37-22.47,2.05-4.49,15.37-1.74,19.11-2.46Z"></path><path class="c" d="M312.9,25.88l-7.56,28.14h-7.44l7.44-27.84h-6.78l-7.44,27.84h-7.44l8.94-33.42h7.44l-.78,3.06c2.67-2.8,6.72-3.44,10.38-3.06,3.46-.3,4.24,2.5,3.24,5.28Z"></path><path class="c" d="M339.96,25.53l-7.62,28.5h-7.5l.72-2.76c-2.17,3.66-8.34,2.67-11.82,2.76-2.23-.06-2.88-.91-2.22-3.36,0,0,3.6-13.38,3.6-13.38,1.12-5.04,11.64-2.58,15.06-3.12l2.1-7.98h-10.5l1.5-5.58h13.68c2.88,0,3.88,1.64,3,4.92Zm-11.28,14.1h-6.72l-2.34,8.82h6.72l2.34-8.82Z"></path><path class="c" d="M367.32,24.38l-6.9,25.92c-.57,2.39-2.2,3.67-4.38,3.72-2.89-.26-9.18,1.21-10.14-2.76l-3.84,14.34h-7.2l12.06-45h7.2l-.78,2.94c2.49-3.14,7.19-3.15,10.8-2.94,2.25-.24,4.1,1.28,3.18,3.78Zm-8.04,1.8h-6.66l-5.94,22.26h6.66l5.94-22.26Z"></path><path class="c" d="M375.84,45.8l-2.22,8.22h-8.82l2.22-8.22h8.82Z"></path><path class="c" d="M415.62,12.09c-1.27,2.88-4.79,22.56-7.71,24-2.35,1.86-12.98,.72-15.93,1.02l-4.56,16.92h-8.7l12.36-46.2h21.42c2.58-.03,3.86,1.78,3.12,4.26Zm-9.36,2.88h-8.4l-3.9,14.76h8.4l3.9-14.76Z"></path><path class="c" d="M435.48,20.61l-1.5,5.64c-4.35-.64-9.5,1-10.86,5.64,0,0-6,22.14-6,22.14h-7.5l8.94-33.42h7.5l-.66,3.06c2.46-2.93,6.54-3.4,10.08-3.06Z"></path><path class="c" d="M460.38,23.97l-7.26,27.24c-.52,1.49-2.55,2.95-4.44,2.82-1.91-.42-16.05,1.05-17.07-.99-1.4,.33,7.17-28.27,7.05-28.89,.43-2.03,2.31-3.62,4.5-3.54,0,0,14.88,0,14.88,0,1.93-.12,2.84,1.75,2.34,3.36Zm-8.04,2.22h-6.72l-5.94,22.26h6.72l5.94-22.26Z"></path></g><g><path class="f" d="M47.61,110c-1.52-.13-10.89,.56-11.86-.88-.21-.11-19.95-10.93-26.56-27.71-6.59-4.87-7.01-16.19-2.61-21.65-1.84-20.29,5.35-39.94,35.95-40.64,30.62,.7,37.65,20.29,36.06,40.56,4.4,5.88,3.76,16.66-3.76,21.83-6.97,16.25-21.58,25.56-27.22,28.49Zm-8.21-7.99h6.27c2.64-1.22,18.71-12.62,22.47-25.46,5.49-3.15,7.2-9.29,2.53-14.14-.14-16.75,1.94-33.56-28.14-35.29-30.07,1.73-28.15,18.61-27.96,35.39-3.76,3.47-4.45,10.62,1.39,14.15,3.75,12.56,19.8,23.58,23.43,25.36Z"></path><path class="f" d="M6.58,54.08c-12.98-9.75,1.15-18.35-5.99-30.96,4.99,0,8.99,3,9.99,6.99,0-7.99,7.99-15.98,2-23.97,7.99,1,10.99,6.99,11.98,12.98,1-7.99,7.99-16.98,15.98-18.97-1,4.99-2,13.98,0,15.98C44.53,6.14,58.51,8.14,58.51,.15c4.99,4.99,2,16.98,0,17.98,3.99,0,5.99-4.99,5.99-7.99,3,3,3,11.98,2,13.98,3.99-2,7.99-11.98,5.99-17.98,5.99,7.99,3,23.97,2,27.96,4.99-3,5.99-8.99,5.99-11.98,6.99,11.98,3.99,24.97-2,29.96-3-4.99-7.99-3.99-7.99-3.99-1-5.99-5.99-12.98-9.99-15.98,1,3.99-3.99,6.99-2,11.98-8.99-2-7.99-12.98-11.98-15.98-1,4.99-10.99,9.99-7.99,15.98-5.99-3-6.99-8.99-5.99-13.98-3,2-6.99,9.99-3.99,13.98-4.99,0-7.99-4.99-6.99-7.99-4.99,5.99-6.99,9.99-6.99,11.98-3.99,3.99-7.99,5.99-7.99,5.99Z"></path><path class="f" d="M20.57,60.07l15.98,3.99c-5.11,8.27-15.97,2.22-15.98-3.99Z"></path><path class="f" d="M64.51,60.07l-15.98,3.99c5.11,8.27,15.97,2.22,15.98-3.99Z"></path></g><line class="d" x1="246" y1="72" x2="370" y2="72"></line><g><path class="f" d="M124.89,83.21c-.86,1.79-5.19,23.09-7.28,23.53-1.5,1.63-12.6,.57-14.61,.86l7.36-27.5h12.11c2.37,0,2.99,.92,2.43,3.11Zm-5.46,1.14h-4.96l-5.07,18.93h4.96l5.07-18.93Z"></path><path class="f" d="M139.17,89.82l-2.46,9.25h-8.46l-1.39,5.21h7.29l-.89,3.32c-16.55,.2-11.1,1.68-7-17.64,.35-3.87,9.76-1.74,12-2.25,.96,.1,1.25,1.03,.93,2.11Zm-4.75,1.25h-4.04l-1.25,4.68h4.04l1.25-4.68Z"></path><path class="f" d="M152.39,87.71l-.89,3.36h-5.04l-3.54,13.21h5.04l-.89,3.32c-1.42-.48-9.9,1.37-9.03-1.68,.4-.93,4.21-17.39,5.14-17.45,1.03-1.47,7.67-.51,9.21-.77Z"></path><path class="f" d="M167.31,87.71l-5.46,8.14c1.55-.05,4.44-.3,3.64,2.18,0,0-2.57,9.57-2.57,9.57h-4.43l2.29-8.46h-4l-2.29,8.46h-4.29l7.36-27.46h4.29l-4.21,15.71,5.32-8.14h4.36Z"></path><path class="f" d="M180.71,87.71l-.89,3.36h-4.82l-1.25,4.68c1.4,.3,5.98-.88,6.36,1.2,.02,.2,.01,.39-.04,.55l-2.25,8.36c-1,3.06-9.46,1.32-11.68,1.75l.89-3.32h6.75l1.39-5.21c-10,.45-5.86-.61-4.21-9.5,.76-3.1,7.61-1.48,9.75-1.86Z"></path><path class="f" d="M186.53,102.67l-5.5,8.75h-2.96l3.39-8.75h5.07Z"></path><path class="f" d="M216.1,80.11l-1.14,4.25h-7.43l-5.04,18.89h4.93l2.04-7.68h-1.93l1.18-4.36h7.11l-4.39,16.39h-12.96c-1.22,.02-2.19-.9-1.82-2.14,.35-.55,6.18-24.93,7.02-24.34,1.25-1.94,10.56-.68,12.45-1.02Z"></path><path class="f" d="M232.81,87.71l-5.32,19.89h-4.5l.46-1.79c-1.6,2.11-6.22,2.32-8.21,1.27-1.13-.16,4.68-18.56,4.64-19.37h4.46l-4.43,16.57h3.96l4.43-16.57h4.5Z"></path><path class="f" d="M240.56,87.71l-5.32,19.89h-4.46l5.32-19.89h4.46Zm2.04-7.57l-.75,2.82h-4.46l.75-2.82h4.46Z"></path><path class="f" d="M258.77,80.11l-7.36,27.5h-4.43l.43-1.61c-1.44,1.92-4.52,1.63-6.64,1.61-1.36,.13-2.22-.74-1.68-2.18,1.36-2.35,2.91-18.33,7.11-17.71,1.77,.08,5.07-.57,5.64,1.79l2.5-9.39h4.43Zm-7.36,10.93h-4.04l-3.54,13.25h4.04l3.54-13.25Z"></path><path class="f" d="M272.23,89.82l-2.46,9.25h-8.46l-1.39,5.21h7.29l-.89,3.32c-16.55,.2-11.1,1.68-7-17.64,.35-3.87,9.76-1.74,12-2.25,.96,.1,1.25,1.03,.93,2.11Zm-4.75,1.25h-4.04l-1.25,4.68h4.04l1.25-4.68Z"></path><path class="f" d="M285.2,87.71l-.89,3.36h-4.82l-1.25,4.68c1.4,.3,5.98-.88,6.36,1.2,.02,.2,.01,.39-.04,.55l-2.25,8.36c-1,3.06-9.46,1.32-11.68,1.75l.89-3.32h6.75l1.39-5.21c-10,.46-5.86-.61-4.21-9.5,.76-3.1,7.61-1.48,9.75-1.86Z"></path><path class="f" d="M310.19,90.64l-4.54,16.96h-4.46l.43-1.64c-1.29,2.18-4.96,1.59-7.04,1.64-3.51,.62,.96-8.6,.82-9.96,.67-3,6.93-1.53,8.96-1.86l1.25-4.75h-6.25l.89-3.32c2.14,.6,11.81-1.97,9.93,2.93Zm-6.71,8.39h-4l-1.39,5.25h4l1.39-5.25Z"></path><path class="f" d="M326.23,90.85l-4.5,16.75h-4.43l4.43-16.57h-4.04l-4.43,16.57h-4.43l5.32-19.89h4.43l-.46,1.82c1.59-1.67,4-2.05,6.18-1.82,2.06-.18,2.52,1.49,1.93,3.14Z"></path><path class="f" d="M345.19,80.11l-7.36,27.5h-4.43l.43-1.61c-1.44,1.92-4.52,1.63-6.64,1.61-1.36,.13-2.23-.74-1.68-2.18,1.36-2.35,2.91-18.33,7.11-17.71,1.77,.08,5.07-.57,5.64,1.79l2.5-9.39h4.43Zm-7.36,10.93h-4.04l-3.54,13.25h4.04l3.54-13.25Z"></path><path class="f" d="M367.72,80.11l-1.14,4.25h-5.93l-1.82,6.86c1.31,.22,5.73-.58,6.62,.68,.45,4.07-2.32,9.43-3.02,13.57-.71,3.8-10.57,1.58-13.18,2.14l1.18-4.36h7.5l2.04-7.68c-1.15-.23-6.19,.57-6.82-.62-.16-4.15,2.18-9.29,3.2-13.37,1.22-2.67,9.15-1.04,11.37-1.46Z"></path><path class="f" d="M382.58,89.82l-2.46,9.25h-8.46l-1.39,5.21h7.29l-.89,3.32c-16.55,.2-11.1,1.68-7-17.64,.35-3.87,9.76-1.74,12-2.25,.96,.1,1.25,1.03,.93,2.11Zm-4.75,1.25h-4.04l-1.25,4.68h4.04l1.25-4.68Z"></path><path class="f" d="M396.33,87.71l-.89,3.36c-2.59-.38-5.65,.6-6.46,3.36,0,0-3.57,13.18-3.57,13.18h-4.46l5.32-19.89h4.46l-.39,1.82c1.46-1.74,3.89-2.02,6-1.82Z"></path><path class="f" d="M412.18,87.71l-9.5,19.89h-6.11l1.21-19.89h4.57l-1.36,13.86h.5l6.11-13.86h4.57Z"></path><path class="f" d="M419.47,87.71l-5.32,19.89h-4.46l5.32-19.89h4.46Zm2.04-7.57l-.75,2.82h-4.46l.75-2.82h4.46Z"></path><path class="f" d="M432.22,87.71l-.89,3.36h-5.04l-3.54,13.21h5.04l-.89,3.32c-1.42-.48-9.9,1.37-9.03-1.68,.4-.93,4.21-17.39,5.14-17.45,1.03-1.47,7.67-.51,9.21-.77Z"></path><path class="f" d="M447.57,89.82l-2.46,9.25h-8.46l-1.39,5.21h7.29l-.89,3.32c-16.55,.2-11.1,1.68-7-17.64,.35-3.87,9.76-1.74,12-2.25,.96,.1,1.25,1.03,.93,2.11Zm-4.75,1.25h-4.04l-1.25,4.68h4.04l1.25-4.68Z"></path><path class="f" d="M460.54,87.71l-.89,3.36h-4.82l-1.25,4.68c1.4,.3,5.98-.88,6.36,1.2,.02,.2,.01,.39-.04,.55l-2.25,8.36c-1,3.06-9.46,1.32-11.68,1.75l.89-3.32h6.75l1.39-5.21c-10,.45-5.86-.61-4.22-9.5,.77-3.1,7.61-1.48,9.75-1.86Z"></path></g><rect id="b" class="e" width="461" height="112"></rect></svg></div>
+    <div id="titleimg"></div>
     <div class="button white active" data-activate="general">
       <img class="imgico" id="Generalico" width="20" data-activate="general" /> General
     </div>
@@ -49,49 +55,43 @@
     <div id="UserControls" class="hidden">
       <div id="UserButtons" class="settingRow">
         <div class="interfaceButton hidden controlButton" data-button="unskip-acc"
-          title="Set MTGArena.pro Token and start tracking data from this account!">
-          <img class="imgico" id="uploadIco" width="20" /> Resume Tracking
+          title="Set MarvelSNAP.pro Token and start tracking data from this account!">
+          Resume Tracking
         </div>
         <div class="interfaceButton controlButton" data-button="stop-tracker">
-          <img class="imgico" id="stopIco" width="20" /> Stop Tracker
+          Stop Tracker
         </div>
         <div class="interfaceButton controlButton" data-button="restart-me">
-          <img class="imgico" id="restartIco" width="20" />Restart tracker
+          Restart tracker
         </div>
         <br />
         <div class="interfaceButton controlButton hidden devButton" data-button="dev-log-force">
-          <img class="imgico" id="refreshIco" width="20" /> Dev force upload
+          Dev force upload
         </div>
         <div class="interfaceButton controlButton hidden devButton" data-button="dev-log">
-          <img class="imgico" id="refreshIco" width="20" /> Dev log parse
+           Dev log parse
         </div>
         <br class="hidden devButton" />
         <div class="interfaceButton hidden controlButton" data-button="stop-shadow-sync">
-          <img class="imgico" id="shadowsyncIco" width="20" /> Stop Logs Read
+          Stop Logs Read
         </div>
         <div class="interfaceButton hidden controlButton" data-button="apply-update"
           title="Click to restart the app and apply update">
-          <img class="imgico" id="updateIco" width="20" /> Apply update!
+          Apply update!
         </div>
       </div>
       <div id="UserLinks">
-        <div class="interfaceButton link" data-link="https://marvelsnap.pro/u/">
+        <div class="interfaceButton link" data-link="https://marvelsnap.pro/">
           <img class="imgico Linkico" width="15" /> My Account
         </div>
         <div class="interfaceButton link" data-link="https://marvelsnap.pro/collection/">
           <img class="imgico Linkico" width="15" /> Collection
         </div>
-        <div class="interfaceButton link" data-link="https://marvelsnap.pro/decks/?my">
+        <div class="interfaceButton link" data-link="https://marvelsnap.pro/matches/">
+          <img class="imgico Linkico" width="15" /> Matches
+        </div>
+        <div class="interfaceButton link" data-link="https://marvelsnap.pro/decks/?my=1">
           <img class="imgico Linkico" width="15" /> Decks
-        </div>
-        <div class="interfaceButton link" data-link="https://marvelsnap.pro/progress/">
-          <img class="imgico Linkico" width="15" /> Progress
-        </div>
-        <div class="interfaceButton link" data-link="https://marvelsnap.pro/u/#settings/">
-          <img class="imgico Linkico" width="15" /> Profile Settings
-        </div>
-        <div class="interfaceButton link" data-link="https://www.patreon.com/Razviar">
-          <img class="imgico Linkico" width="15" /> Ad-Free Site
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@
     <div class="settingRowHalf">
       <div class="pretty p-smooth p-switch p-slim">
         <input class="settings" data-setting="autorun" type="checkbox" value="1" />
-        <div class="state p-success"><label id="startup-title"></label></div>
+        <div class="state p-success"><label id="startup-title">Start with Windows</label></div>
       </div>
     </div>
     <div class="settingRowHalf">
@@ -109,19 +109,6 @@
         <input class="settings" data-setting="minimized" type="checkbox" value="1" />
         <div class="state p-success"><label>Start Minimized</label></div>
       </div>
-    </div>
-    <div class="settingRowHalf">
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="do-uploads" type="checkbox" value="1" />
-        <div class="state p-success">
-          <label>Upload SNAP data</label>
-        </div>
-      </div>
-      <br /><small class="small">Help MTGArena.pro by auto-uploading new cards, events and other game data after MTGA
-        update. This will take
-        no more than 10-15 MB of traffic and uploads will happen only when new release of SNAP was issued and you are
-        the FIRST user among SNAPPro tracker users who is running the Tracker with new game version.</small
-        class="small">
     </div>
     <div class="settingRowHalf">
       <div class="pretty p-smooth p-switch p-slim">
@@ -134,16 +121,7 @@
         setting is configured. To check updates manually click on version number in bottom right corner.</small ckass=>
     </div>
     <div class="settingRowHalf">
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="disable-hotkeys" type="checkbox" value="1" />
-        <div class="state p-success">
-          <label>Disable Overlay Hotkeys</label>
-        </div>
-      </div>
-    </div>
-    <div class="settingRowHalf">
       <div class="interfaceButton controlButton" data-button="wipe-all">Wipe All Settings</div>
-      <div class="interfaceButton controlButton" data-button="wipe-position">Wipe Ovl Location</div>
     </div>
     <div class="settingRowHalf">
       Current Log Path:
@@ -151,134 +129,8 @@
       <div class="interfaceButton controlButton disabled" data-button="set-log-path">Locate Log</div>
       <div class="interfaceButton controlButton" data-button="default-log-path">Default Log Path</div>
     </div>
-    <div class="settingRowHalf">
-      Current MTGA_Data Path:
-      <div class="logpath" id="CurrentMTGAPath"></div>
-      <div class="interfaceButton controlButton" data-button="set-mtga-path">Locate MTGA_Data</div>
-      <div class="interfaceButton controlButton" data-button="default-mtga-path">Default Path</div>
-    </div>
-    <div class="settingRow">
-      <div class="select-holder">
-        Tracker Tray Icon:
-        <select class="settings" data-setting="icon">
-          <option value="">White</option>
-          <option value="2">Blue</option>
-          <option value="3">Black</option>
-          <option value="1">Red</option>
-          <option value="4">Green</option>
-        </select>
-      </div>
-    </div>
   </div>
-  <div class="tab" id="overlay">
-    <div id="overlay-denied" class="hidden">
-      <div class="overlay-permission-message">Overlay requires Screen Recording system permissions...</div>
-      <div class="interfaceButton controlButton" id="brightButton" data-button="enable-screen-recording">Enable
-        Permissions</div>
-    </div>
-    <div id="overlay-authorized" class="hidden">
-      <div id="OverlaySwitch" class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="overlay" type="checkbox" value="1" />
-        <div class="state p-success">
-          <label><strong>Enable Overlay</strong></label>
-        </div>
-      </div>
-      Font color:
-      <select class="settings" data-setting="o-fontcolor">
-        <option value="0">Dark Grey</option>
-        <option value="1">Light Grey</option>
-        <option value="2">White</option>
-      </select>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-detach" type="checkbox" value="1" />
-        <div class="state p-success"><label>Detach Overlay from SNAP</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-hidemain" type="checkbox" value="1" />
-        <div class="state p-success"><label>Hide overlay menu</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-interactive" type="checkbox" value="1" />
-        <div class="state p-success"><label>Make Overlay interactive <small>(Overlay interactivity is not well
-              supported
-              on
-              latest Mac OS X versions)</small></label></div>
-      </div>
-
-      <h2>Combat mode</h2>
-      Left digit:
-      <select class="settings" data-setting="o-leftdigit">
-        <option value="1">Cards Left In deck</option>
-        <option value="2">Cards Total In deck</option>
-        <option value="3">Draw Chance</option>
-        <option value="4">Disable</option>
-      </select>
-      Right Digit:
-      <select class="settings" data-setting="o-rightdigit">
-        <option value="1">Cards Left In deck</option>
-        <option value="2">Cards Total In deck</option>
-        <option value="3">Draw Chance</option>
-        <option value="4">Disable</option>
-      </select>
-      Bottom Digit:
-      <select class="settings" data-setting="o-bottomdigit">
-        <option value="1">Cards Left In deck</option>
-        <option value="2">Cards Total In deck</option>
-        <option value="3">Draw Chance</option>
-        <option value="4">Disable</option>
-      </select>
-      <h2>Draft Mode</h2>
-      Left Digit:
-      <select class="settings" data-setting="o-leftdraftdigit">
-        <option value="1">Draft Eval by Picks</option>
-        <option value="2">Draft Eval by W/L</option>
-        <option value="3">In Collection</option>
-        <option value="4">Disable</option>
-      </select>
-      Right Digit:
-      <select class="settings" data-setting="o-rightdraftdigit">
-        <option value="1">Draft Eval by Picks</option>
-        <option value="2">Draft Eval by W/L</option>
-        <option value="3">In Collection</option>
-        <option value="4">Disable</option>
-      </select>
-      <small>Cards are sorted by Left digit parameter</small>
-      <h2>Preferences</h2>
-
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-showcardicon" type="checkbox" value="1" />
-        <div class="state p-success"><label>Show card icon</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-neverhide" type="checkbox" value="1" />
-        <div class="state p-success"><label>Don't hide overlay</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim" title="Not implemented yet">
-        <input class="settings" data-setting="o-mydecks" type="checkbox" value="1" disabled />
-        <div class="state p-success"><label>Show My Decks between battles</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-cardhover" type="checkbox" value="1" />
-        <div class="state p-success"><label>Show card image on hover</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim" title="Not implemented yet">
-        <input class="settings" data-setting="o-timers" type="checkbox" value="1" />
-        <div class="state p-success"><label>Show timers</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-hidezero" type="checkbox" value="1" />
-        <div class="state p-success"><label>Hide 0 cards</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-hidemy" type="checkbox" value="1" />
-        <div class="state p-success"><label>Hide my deck</label></div>
-      </div>
-      <div class="pretty p-smooth p-switch p-slim">
-        <input class="settings" data-setting="o-hideopp" type="checkbox" value="1" />
-        <div class="state p-success"><label>Hide opponent deck</label></div>
-      </div>
-    </div>
-  </div>
+  
   <div class="tab" id="accounts"></div>
   <div class="footer">
     <i class="link fab fa-github" data-link="https://github.com/Razviar/snaptracker" title="Github"></i>

@@ -44,7 +44,7 @@ export function installHomeMessages(): void {
       if (creds.account.player !== undefined) {
         currentCreds.playerid = creds.account.player.screenName;
         currentCreds.plguid = creds.account.player.playerId;
-        HomePageElements.UserCredentials.innerHTML = `<div class="stringTitle">MTGA nick:</div><strong>${creds.account.player?.screenName}</strong>`;
+        HomePageElements.UserCredentials.innerHTML = `<div class="stringTitle">SNAP nick:</div><strong>${creds.account.player?.screenName}</strong>`;
         HomePageElements.TokenResponse.innerHTML = `<div class="stringTitle">Current user:</div><strong>Skipping this account...</strong>`;
         HomePageElements.StatusMessage.innerHTML = '';
         HomePageElements.UserControls.classList.remove('hidden');
@@ -90,11 +90,6 @@ export function installHomeMessages(): void {
     if (newSettings.manualUpdate) {
       const sw = document.querySelector('[data-setting="manualupdate"]') as HTMLInputElement;
       sw.checked = newSettings.manualUpdate;
-    }
-
-    if (newSettings.uploads !== undefined) {
-      const sw = document.querySelector('[data-setting="do-uploads"]') as HTMLInputElement;
-      sw.checked = newSettings.uploads;
     }
 
     if (newSettings.nohotkeys !== undefined) {
