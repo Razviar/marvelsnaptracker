@@ -29,6 +29,7 @@ export interface StatefulLogEvent extends LogEvent {
 export interface ParsingMetadata {
   logSender: LogSenderParsingMetadata;
   logParser: LogParserParsingMetadata;
+  Variables: {[index: string]: string[]};
   ExtractFromFiles: {[index: string]: string[]};
   ExtractFromFilesCombo: {[index: string]: string[]};
   GatherFromArray: {

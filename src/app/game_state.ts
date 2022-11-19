@@ -89,7 +89,7 @@ class GameState {
       }
     } else {
       if (electronIsDev) {
-        console.log('pinging psList');
+        //console.log('pinging psList');
       }
       psList()
         .then((processes) => {

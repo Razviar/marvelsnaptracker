@@ -13,14 +13,5 @@ export function settingsChecker(event: Event): void {
     case 'manualupdate':
       sendMessageToIpcMain('set-setting-manualupdate', cl.checked);
       break;
-    case 'overlay':
-      sendMessageToIpcMain('set-setting-overlay', cl.checked);
-      break;
-    case 'do-uploads':
-      sendMessageToIpcMain('set-setting-do-uploads', cl.checked);
-      break;
-    case 'icon':
-      sendMessageToIpcMain('set-setting-icon', cl.value);
-      break;
   }
 }

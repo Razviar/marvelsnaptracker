@@ -16,9 +16,9 @@ import {error} from 'root/lib/logger';
 
 export function setupIpcMain(app: App): void {
   onMessageFromBrowserWindow('token-input', (newAccount) => {
-    console.log('token-input');
+    // console.log('token-input');
     const settings = settingsStore.get();
-    console.log(settings);
+    //console.log(settings);
     if (!settings.userToken) {
       if (settings.userToken === undefined) {
         settings.userToken = newAccount.token;

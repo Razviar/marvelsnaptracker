@@ -103,6 +103,7 @@ export class LogParser {
     let parsedResults: {[index: string]: any} = {};
     let nextFilesState: {[index: string]: FileParsingState} = {};
     let latestUpdateDate: Date | undefined = undefined;
+    const variables: {[index: string]: any} = {};
 
     try {
       await asyncForEach(parsingMetadata.FilesToParse, async (fileToParse) => {
@@ -130,13 +131,37 @@ export class LogParser {
         const data = await getJSONData(path);
         const dataParsed = parseAsJSONIfNeeded(data);
 
+        //console.log(parsingMetadata.Variables);
+        Object.keys(parsingMetadata.Variables).forEach((Variable) => {
+          if (parsingMetadata.Variables[Variable][0] !== fileToParse) {
+            return;
+          }
+          const pathToVariableToExtract = parsingMetadata.Variables[Variable].slice(1);
+          const extractedElementToProcess = extractValue(dataParsed, pathToVariableToExtract) as Array<any>;
+          //console.log('extractedElementToProcess', extractedElementToProcess);
+          switch (Variable) {
+            case 'PLAYER_ID':
+              extractedElementToProcess.forEach((extractedElement, i) => {
+                if (extractedElement.AccountId && extractedElement.AccountId === this.currentState.state.userId) {
+                  variables[Variable] = i;
+                  variables['OPPONENT_ID'] = i == 0 ? 1 : 0;
+                }
+              });
+              break;
+          }
+          //variables[Variable] = extractedElementToProcess;
+        });
+
+        //console.log('variables', variables);
+
         Object.keys(parsingMetadata.ExtractFromFiles).forEach((DataObject) => {
           if (parsingMetadata.ExtractFromFiles[DataObject][0] !== fileToParse) {
             return;
           }
           const pathToInterestingThing = parsingMetadata.ExtractFromFiles[DataObject].slice(1);
-          const interestingThing = extractValue(dataParsed, pathToInterestingThing);
+          const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
           parsedResults[DataObject] = interestingThing;
+          //console.log(DataObject, interestingThing);
         });
 
         Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
@@ -196,6 +221,9 @@ export class LogParser {
         }
         if (parsedResults[DataToPutInCombo]) {
           parsedResult[DataToPutInCombo] = parsedResults[DataToPutInCombo];
+        }
+        if (variables[DataToPutInCombo] !== undefined) {
+          parsedResult[DataToPutInCombo] = variables[DataToPutInCombo];
         }
       });
       if (Object.keys(parsedResult).length > 0) {

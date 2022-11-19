@@ -31,13 +31,18 @@ export function parseAsJSONIfNeeded(data: any): any {
 }
 
 // tslint:disable-next-line:no-any
-export function extractValue(data: any, attributesPath: (number | string)[]): any {
+export function extractValue(data: any, attributesPath: (number | string)[], variables?: {[index: string]: any}): any {
   let value = parseAsJSONIfNeeded(data);
   for (const attribute of attributesPath) {
     if (value && value['$ref']) {
       value = getObject(data, '$id', value['$ref']);
     }
-    value = asMap(value, {})[attribute];
+    if (variables !== undefined && variables[attribute] !== undefined) {
+      //console.log('using variable!', attributesPath);
+      value = asMap(value, {})[variables[attribute]];
+    } else {
+      value = asMap(value, {})[attribute];
+    }
   }
   return value;
 }
