@@ -3,6 +3,7 @@ import electronIsDev from 'electron-is-dev';
 
 import {sendSettingsToRenderer, setCreds} from 'root/app/auth';
 import {enableAutoLauncher} from 'root/app/auto_launcher';
+import {setupAutoUpdater} from 'root/app/auto_updater';
 import {setupIpcMain} from 'root/app/ipc_main';
 import {createGlobalLogParser} from 'root/app/log_parser_manager';
 import {createMainWindow, withHomeWindow} from 'root/app/main_window';
@@ -26,10 +27,10 @@ let trackerAndUiInited = false;
 
 function initTrackerAndUi(): void {
   if (trackerAndUiInited) {
-    console.log('Anti-Pripadok Working!');
+    //console.log('Anti-Pripadok Working!');
     return;
   }
-  console.log('initTrackerAndUi!');
+  //console.log('initTrackerAndUi!');
   createGlobalLogParser(electronIsDev);
   //createGlobalLorParser();
   if (electronIsDev) {
@@ -41,7 +42,7 @@ function initTrackerAndUi(): void {
 }
 
 function recreateMainWindow(): void {
-  console.log('recreate main window!');
+  //console.log('recreate main window!');
   mainWindowCreated = true;
   //setupRequestIntercept(app);
   createMainWindow();
@@ -54,7 +55,7 @@ function recreateMainWindow(): void {
       w.once('ready-to-show', () => w.show());
     }
     w.webContents.once('did-finish-load', () => {
-      console.log('did-finish-load!');
+      //console.log('did-finish-load!');
       sendMessageToHomeWindow('set-version', app.getVersion());
       //sendMessageToHomeWindow('startup-title', isMac() ? 'Start tracker on system startup' : 'Start with Windows');
       /*if (isMac()) {
@@ -75,7 +76,7 @@ function recreateMainWindow(): void {
       initTrackerAndUi();
       //}
     });
-    //setupAutoUpdater();
+    setupAutoUpdater();
   });
 }
 

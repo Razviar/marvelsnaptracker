@@ -23,7 +23,7 @@ const updatesHunter = () => {
 
 export function setupAutoUpdater(): void {
   if (updatesEnabled) {
-    const url = `${server}/Razviar/snaptracker/${process.platform}-${process.arch}/${app.getVersion()}`;
+    const url = `${server}/Razviar/marvelsnaptracker/${process.platform}-${process.arch}/${app.getVersion()}`;
 
     autoUpdater.setFeedURL({url});
 

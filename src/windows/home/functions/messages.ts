@@ -37,7 +37,7 @@ export function installHomeMessages(): void {
 
     //activateGame('mtga');
     if (creds.account.nick !== 'Skipping') {
-      console.log('doing LOGIN!');
+      //console.log('doing LOGIN!');
       login(creds.account.token, creds.account.uid, creds.account.nick, 'set-creds');
       unhide.classList.add('hidden');
     } else {
@@ -72,11 +72,6 @@ export function installHomeMessages(): void {
     HomePageElements.AccountsTab.innerHTML = output;
     updatelinks();
 
-    if (newSettings.overlay) {
-      const sw = document.querySelector('[data-setting="overlay"]') as HTMLInputElement;
-      sw.checked = newSettings.overlay;
-    }
-
     if (newSettings.autorun) {
       const sw = document.querySelector('[data-setting="autorun"]') as HTMLInputElement;
       sw.checked = newSettings.autorun;
@@ -92,30 +87,12 @@ export function installHomeMessages(): void {
       sw.checked = newSettings.manualUpdate;
     }
 
-    if (newSettings.nohotkeys !== undefined) {
-      const sw = document.querySelector('[data-setting="disable-hotkeys"]') as HTMLInputElement;
-      sw.checked = newSettings.nohotkeys;
-    }
-
-    if (newSettings.minimized) {
-      const sw = document.querySelector('[data-setting="minimized"]') as HTMLInputElement;
-      sw.checked = newSettings.minimized;
-    }
-
     if (newSettings.logPath !== undefined) {
       const sw = document.getElementById('CurrentLogPath') as HTMLElement;
       sw.innerHTML = `<strong>${newSettings.logPath}</strong>`;
     } else {
       const sw = document.getElementById('CurrentLogPath') as HTMLElement;
       sw.innerHTML = '<strong>Default</strong>';
-    }
-
-    if (newSettings.mtgaPath !== undefined) {
-      const sw = document.getElementById('CurrentMTGAPath') as HTMLElement;
-      sw.innerHTML = `<strong>${newSettings.mtgaPath}</strong>`;
-    } else {
-      const sw = document.getElementById('CurrentMTGAPath') as HTMLElement;
-      sw.innerHTML = '<strong class="brown">Unknown!</strong>';
     }
 
     if (newSettings.icon !== undefined) {

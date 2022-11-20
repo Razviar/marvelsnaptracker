@@ -3,7 +3,7 @@ import AutoLaunch from 'auto-launch';
 import {error} from 'root/lib/logger';
 
 const AutoLauncher = new AutoLaunch({
-  name: 'snapprotracker',
+  name: 'marvelsnaptracker',
 });
 
 export function enableAutoLauncher(): void {

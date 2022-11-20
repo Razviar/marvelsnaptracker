@@ -1,7 +1,7 @@
 import {deleteLogFiles} from 'root/app/log-rotate/delete_log_files';
 import {transportFile} from 'root/app/log-rotate/transport_file';
 
-const logAppName = 'SNAPproTracker';
+const logAppName = 'marvelsnaptracker';
 const logMaxSize = 10 * 1024 * 1024;
 const howManyDaysAgo = 2;
 

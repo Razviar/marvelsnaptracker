@@ -1,7 +1,7 @@
 module.exports = {
   packagerConfig: {
     icon: require('path').resolve(__dirname, 'src/statics/icon'),
-    appBundleId: 'com.mtgarenapro.snapprotracker',
+    appBundleId: 'com.mtgarenapro.marvelsnaptracker',
     appCategoryType: 'public.app-category.entertainment',
     osxSign: {
       hardenedRuntime: true,
@@ -11,7 +11,7 @@ module.exports = {
       'signature-flags': 'library',
     },
     osxNotarize: {
-      appBundleId: 'com.mtgarenapro.snapprotracker',
+      appBundleId: 'com.mtgarenapro.marvelsnaptracker',
       appleId: process.env.APPLE_ID,
       appleIdPassword: process.env.APPLE_ID_PASSWORD,
     },
@@ -35,7 +35,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       platforms: ['win32'],
       config: {
-        name: 'snapprotracker',
+        name: 'marvelsnaptracker',
         certificateFile: './cert/liubov.p12',
         certificatePassword: '1111',
         iconUrl: 'https://marvelsnap.pro/snap/icon.ico',
@@ -45,7 +45,7 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       platforms: ['darwin'],
       config: {
-        name: 'snapprotracker',
+        name: 'marvelsnaptracker',
         overwrite: true,
         background: './dmg-background.tiff',
         icon: './src/statics/icon.icns',
