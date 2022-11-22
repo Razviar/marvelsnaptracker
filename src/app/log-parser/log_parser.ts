@@ -142,9 +142,12 @@ export class LogParser {
           switch (Variable) {
             case 'PLAYER_ID':
               extractedElementToProcess.forEach((extractedElement, i) => {
-                if (extractedElement.AccountId && extractedElement.AccountId === this.currentState.state.userId) {
+                const extractedAccountId = extractValue(dataParsed, [...pathToVariableToExtract, i, 'AccountId']);
+                if (extractedAccountId && extractedAccountId === this.currentState.state.userId) {
                   variables[Variable] = i;
                   variables['OPPONENT_ID'] = i == 0 ? 1 : 0;
+                  variables['PLAYER_NUM'] = i == 0 ? 1 : 2;
+                  variables['OPPONENT_NUM'] = i == 0 ? 2 : 1;
                 }
               });
               break;
@@ -181,6 +184,7 @@ export class LogParser {
                 gatheredResult[attrToGet] = extrectedArrayElement;
               }
             });
+            //console.log('gatheredResult', gatheredResult);
             if (Object.keys(gatheredResult).length > 0) {
               if (parsedResults[DataObjectArray] === undefined) {
                 parsedResults[DataObjectArray] = [];

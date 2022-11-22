@@ -37,11 +37,30 @@ export function extractValue(data: any, attributesPath: (number | string)[], var
     if (value && value['$ref']) {
       value = getObject(data, '$id', value['$ref']);
     }
-    if (variables !== undefined && variables[attribute] !== undefined) {
-      //console.log('using variable!', attributesPath);
-      value = asMap(value, {})[variables[attribute]];
-    } else {
-      value = asMap(value, {})[attribute];
+
+    let replacementDone = false;
+    if (variables !== undefined) {
+      Object.keys(variables).forEach((variable) => {
+        if (attribute.toString().includes(variable) && attribute.toString() !== variable) {
+          replacementDone = true;
+          const attributeWithReplacement = attribute.toString().replace(variable, variables[variable]);
+          //console.log('doing replacement!', attribute, attributeWithReplacement);
+          value = asMap(value, {})[attributeWithReplacement];
+        }
+      });
+    }
+
+    if (!replacementDone) {
+      if (variables !== undefined && variables[attribute] !== undefined) {
+        //console.log('using variable!', attributesPath);
+        value = asMap(value, {})[variables[attribute]];
+      } else {
+        value = asMap(value, {})[attribute];
+      }
+    }
+
+    if (value && value['$ref']) {
+      value = getObject(data, '$id', value['$ref']);
     }
   }
   return value;

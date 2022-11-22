@@ -1,5 +1,3 @@
-import {Message} from 'root/lib/messages';
-import {hasOwnProperty} from 'root/lib/type_utils';
 import {login} from 'root/windows/home/functions/login';
 import {showPrompt} from 'root/windows/home/functions/showPrompt';
 import {tokenWaiter} from 'root/windows/home/functions/tokenWaiter';
