@@ -1,6 +1,6 @@
 import format from 'date-fns/format';
 import {app} from 'electron';
-import {statSync} from 'fs';
+import {Stats, statSync} from 'fs';
 import {join} from 'path';
 
 import {getParsingMetadata} from 'root/api/getindicators';
@@ -29,6 +29,7 @@ export class LogParser {
   private internalLoopTimeout: number = 0;
   private parsingMetadata: ParsingMetadata | undefined;
   private justStarted = true;
+
   public emitter = new LogParserEventEmitter();
 
   constructor() {
@@ -54,10 +55,10 @@ export class LogParser {
   }
 
   private getPath(fileToWatch: string): string {
-    /*const specialpath = settingsStore.get().logPath;
+    const specialpath = settingsStore.get().logPath;
     if (specialpath !== undefined) {
-      return specialpath;
-    }*/
+      return join(specialpath, fileToWatch);
+    }
     return join(
       app.getPath('appData'),
       'LocalLow',
@@ -110,13 +111,28 @@ export class LogParser {
         const path = this.getPath(fileToParse);
         //console.log(path);
         //const LogFromMTGAFolder = locateMostRecentDate();
-        const stats = statSync(path);
+        let stats: Stats | undefined = undefined;
+        try {
+          stats = statSync(path);
+        } catch (e) {
+          this.emitter.emit('nologfile', undefined);
+          throw new Error(
+            "Parsing paused: we can't locate your SNAP/Standalone/States/nvprod dir. Please locate it manually in settings! "
+          );
+        }
+        //console.log(stats);
         //const hash = md5File.sync(path);
         if (
+          stats &&
           !this.justStarted &&
           this.currentState?.state?.filesStates[fileToParse] &&
           stats.mtime <= this.currentState.state.filesStates[fileToParse].lastEdit
         ) {
+          //console.log(`no changes in ${fileToParse}`);
+          return;
+        }
+
+        if (!stats) {
           return;
         }
 
@@ -173,13 +189,17 @@ export class LogParser {
           }
 
           const pathToInterestingArray = parsingMetadata.GatherFromArray[DataObjectArray].path.slice(1);
-          const interestingArray = extractValue(dataParsed, pathToInterestingArray) as Array<any>;
+          const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as Array<any>;
 
           interestingArray.map((_, interestingArrayIndex) => {
             const gatheredResult: any = {};
-            const ResolvedArray = extractValue(dataParsed, [...pathToInterestingArray, interestingArrayIndex]);
+            const ResolvedArray = extractValue(
+              dataParsed,
+              [...pathToInterestingArray, interestingArrayIndex],
+              variables
+            );
             parsingMetadata.GatherFromArray[DataObjectArray].attrsToGet.map((attrToGet) => {
-              const extrectedArrayElement = extractValue(ResolvedArray, [attrToGet]);
+              const extrectedArrayElement = extractValue(ResolvedArray, [attrToGet], variables);
               if (extrectedArrayElement) {
                 gatheredResult[attrToGet] = extrectedArrayElement;
               }
@@ -196,7 +216,7 @@ export class LogParser {
       });
     } catch (e) {
       this.emitter.emit('error', String(e));
-      setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
+      //setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
     }
 
     if (parsedResults['Id'] && parsedResults['SnapId']) {
@@ -223,6 +243,23 @@ export class LogParser {
           ).toFixed(0);
           return;
         }
+
+        if (
+          Object.keys(parsedResult).length > 0 &&
+          DataToPutInCombo === 'StartTimestamp' &&
+          this.currentState.state.filesStates[parsingMetadata?.ExtractFromFilesCombo[ComboDataPointName][0]]
+            ?.lastEdit &&
+          this.currentState.state.filesStates[parsingMetadata?.ExtractFromFilesCombo[ComboDataPointName][0]]
+            ?.lastEdit instanceof Date
+        ) {
+          parsedResult[DataToPutInCombo] = (
+            this.currentState.state.filesStates[
+              parsingMetadata?.ExtractFromFilesCombo[ComboDataPointName][0]
+            ]?.lastEdit.getTime() / 1000
+          ).toFixed(0);
+          return;
+        }
+
         if (parsedResults[DataToPutInCombo]) {
           parsedResult[DataToPutInCombo] = parsedResults[DataToPutInCombo];
         }
@@ -235,7 +272,8 @@ export class LogParser {
       }
     });
 
-    //console.log('MatchData', parsedResults['MatchData']);
+    console.log('currentStateFiles', this.currentState.state.filesStates['GameState.json']);
+    console.log('nextFilesState', nextFilesState['GameState.json']);
     //console.log('CardsInLocations', parsedResults['CardsInLocations']);
 
     const eventsToSend: ParseResults[] = [];

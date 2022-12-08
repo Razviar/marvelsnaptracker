@@ -46,7 +46,6 @@ function recreateMainWindow(): void {
   mainWindowCreated = true;
   //setupRequestIntercept(app);
   createMainWindow();
-  //doSnapPathOps();
 
   withHomeWindow((w) => {
     if (settingsStore.get().minimized) {

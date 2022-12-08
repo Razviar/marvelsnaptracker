@@ -299,7 +299,7 @@ div#UserLinks {
 
   text-align: left;
 
-  background-color: #36221e !important;
+  background-color: #2e363f !important;
 }
 
 .prompt-wnd .prompt-wnd-header {
@@ -467,4 +467,8 @@ div#hotkeyMap {
 
 .overlay-permission-message {
   margin-bottom: 10px;
+}
+
+#StatusMessage {
+  width: 500px;
 }

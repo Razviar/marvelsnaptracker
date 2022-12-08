@@ -3,6 +3,7 @@ import {Request} from 'root/app/request';
 
 export async function getParsingMetadata(): Promise<ParsingMetadata> {
   const res = await Request.get(`/snap/json/parsing_metadata.json`);
+  //console.log(res);
   if (typeof res === 'string') {
     throw new Error('Cannot parse remote metadata');
   }
