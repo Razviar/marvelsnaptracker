@@ -98,3 +98,6 @@ src/getFrontWindow/obj
 src/GetData2/.vs
 src/GetData2/bin
 src/GetData2/obj
+
+# Linux build directory
+out/Marvel Snap Tracker-linux-x64
