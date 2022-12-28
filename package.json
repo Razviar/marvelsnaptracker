@@ -1,7 +1,7 @@
 {
   "name": "marvelsnaptracker",
   "productName": "Marvel Snap Tracker",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Marvel Snap Tracker",
   "main": "./.webpack/main",
   "scripts": {
@@ -60,13 +60,13 @@
     "file-loader": "6.2.0",
     "fork-ts-checker-webpack-plugin": "7.2.13",
     "node-loader": "2.0.0",
-    "prettier": "2.8.0",
+    "prettier": "2.8.1",
     "style-loader": "3.3.1",
     "ts-loader": "9.4.2",
     "tslint": "6.1.3",
     "tslint-loader": "3.5.4",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "4.9.3",
+    "typescript": "4.9.4",
     "webpack-hook-plugin": "1.0.7"
   },
   "optionalDependencies": {
