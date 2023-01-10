@@ -1,6 +1,6 @@
 import {app} from 'electron';
 import electronIsDev from 'electron-is-dev';
-
+import { sync as globSync } from 'glob';
 import {sendSettingsToRenderer, setCreds} from 'root/app/auth';
 import {enableAutoLauncher} from 'root/app/auto_launcher';
 import {setupAutoUpdater} from 'root/app/auto_updater';
@@ -24,6 +24,16 @@ if (require('root/electron-squirrel-startup')) {
 
 let mainWindowCreated = false;
 let trackerAndUiInited = false;
+
+function getUsername(): string {
+  return (
+    process.env.SUDO_USER ||
+    process.env.LOGNAME ||
+    process.env.USER ||
+    process.env.LNAME ||
+    process.env.USERNAME || ''
+  );
+}
 
 function initTrackerAndUi(): void {
   if (trackerAndUiInited) {
@@ -101,6 +111,13 @@ if (!gotTheLock) {
   });
 
   if (isMac()) {
+    let results = globSync('/Users/' + getUsername() + '/Library/Containers/**/AccountState.json', {strict: false, silent: true})
+    if (results.length > 0 ) {
+      let nvprodMacFolder = results[0].replace('/AccountState.json', '');
+      settingsStore.set({
+        ...settingsStore.get(),
+        logPath: nvprodMacFolder})
+    }
     app.dock.hide();
     app.on('activate', () => {
       if (!mainWindowCreated) {
