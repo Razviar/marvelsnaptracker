@@ -183,6 +183,24 @@ export class LogParser {
           //console.log(DataObject, interestingThing);
         });
 
+        Object.keys(parsingMetadata.ResolveRefs).forEach((ResolvableElement) => {
+          if (parsingMetadata.ResolveRefs[ResolvableElement][0] !== fileToParse) {
+            return;
+          }
+          const pathToInterestingThing = parsingMetadata.ResolveRefs[ResolvableElement].slice(1);
+          const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
+          Object.keys(interestingThing).forEach((interestingThingIndex) => {
+            const resolvedInterestingThing = extractValue(
+              dataParsed,
+              [...pathToInterestingThing, interestingThingIndex],
+              variables
+            );
+            interestingThing[interestingThingIndex] = resolvedInterestingThing;
+          });
+          parsedResults[ResolvableElement] = interestingThing;
+          //console.log(ResolvableElement, interestingThing);
+        });
+
         Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
           if (parsingMetadata.GatherFromArray[DataObjectArray].path[0] !== fileToParse) {
             return;
@@ -272,8 +290,8 @@ export class LogParser {
       }
     });
 
-    console.log('currentStateFiles', this.currentState.state.filesStates['GameState.json']);
-    console.log('nextFilesState', nextFilesState['GameState.json']);
+    /*console.log('currentStateFiles', this.currentState.state.filesStates['GameState.json']);
+    console.log('nextFilesState', nextFilesState['GameState.json']);*/
     //console.log('CardsInLocations', parsedResults['CardsInLocations']);
 
     const eventsToSend: ParseResults[] = [];

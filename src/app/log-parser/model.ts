@@ -32,6 +32,7 @@ export interface ParsingMetadata {
   Variables: {[index: string]: string[]};
   ExtractFromFiles: {[index: string]: string[]};
   ExtractFromFilesCombo: {[index: string]: string[]};
+  ResolveRefs: {[index: string]: string[]};
   GatherFromArray: {
     [index: string]: {
       path: string[];
