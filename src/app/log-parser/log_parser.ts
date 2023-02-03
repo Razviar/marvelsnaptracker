@@ -183,23 +183,29 @@ export class LogParser {
           //console.log(DataObject, interestingThing);
         });
 
-        Object.keys(parsingMetadata.ResolveRefs).forEach((ResolvableElement) => {
-          if (parsingMetadata.ResolveRefs[ResolvableElement][0] !== fileToParse) {
-            return;
-          }
-          const pathToInterestingThing = parsingMetadata.ResolveRefs[ResolvableElement].slice(1);
-          const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
-          Object.keys(interestingThing).forEach((interestingThingIndex) => {
-            const resolvedInterestingThing = extractValue(
-              dataParsed,
-              [...pathToInterestingThing, interestingThingIndex],
-              variables
-            );
-            interestingThing[interestingThingIndex] = resolvedInterestingThing;
+        try {
+          Object.keys(parsingMetadata.ResolveRefs).forEach((ResolvableElement) => {
+            if (parsingMetadata.ResolveRefs[ResolvableElement][0] !== fileToParse) {
+              return;
+            }
+            const pathToInterestingThing = parsingMetadata.ResolveRefs[ResolvableElement].slice(1);
+            const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
+            if (interestingThing) {
+              Object.keys(interestingThing).forEach((interestingThingIndex) => {
+                const resolvedInterestingThing = extractValue(
+                  dataParsed,
+                  [...pathToInterestingThing, interestingThingIndex],
+                  variables
+                );
+                interestingThing[interestingThingIndex] = resolvedInterestingThing;
+              });
+              parsedResults[ResolvableElement] = interestingThing;
+            }
+            //console.log(ResolvableElement, interestingThing);
           });
-          parsedResults[ResolvableElement] = interestingThing;
-          //console.log(ResolvableElement, interestingThing);
-        });
+        } catch (e) {
+          console.log(e);
+        }
 
         Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
           if (parsingMetadata.GatherFromArray[DataObjectArray].path[0] !== fileToParse) {
