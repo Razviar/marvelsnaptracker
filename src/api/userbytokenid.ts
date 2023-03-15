@@ -105,7 +105,7 @@ export interface UserData {
 
 export async function setuserdata(userData: UserData): Promise<UserResult> {
   const usertime = ((-1 * new Date().getTimezoneOffset()) / 60).toString();
-  console.log('setting user data!', userData);
+  //console.log('setting user data!', userData);
   return parseUserResult(
     await Request.post<UserData & {usertime: string}>(
       `/snap/donew2.php?cmd=cm_setuserdata&version=${app.getVersion()}${isMac() ? 'm' : 'w'}`,

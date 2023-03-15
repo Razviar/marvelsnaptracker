@@ -23,48 +23,51 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });
 
   onMessageFromIpcMain('set-ovlsettings', (settings) => {
-    console.log('setting settings');
+    //console.log('setting settings');
     overlayConfig.ovlSettings = settings;
-    setInteractiveHandler(settings);
-
-    if (overlayConfig.ovlSettings && overlayConfig.justcreated) {
-      overlayConfig.currentScale = overlayConfig.ovlSettings.savescale !== 0 ? overlayConfig.ovlSettings.savescale : 1;
-
-      if (overlayConfig.ovlSettings.savepositionleft !== 0) {
-        overlayElements.MainDeckFrame.style.top = `${overlayConfig.ovlSettings.savepositiontop}%`;
-        overlayElements.MainDeckFrame.style.left = `${overlayConfig.ovlSettings.savepositionleft}%`;
-      }
-      if (overlayConfig.ovlSettings.savepositionleftopp !== 0) {
-        overlayElements.OpponentOutFrame.style.top = `${overlayConfig.ovlSettings.savepositiontopopp}%`;
-        overlayElements.OpponentOutFrame.style.left = `${overlayConfig.ovlSettings.savepositionleftopp}%`;
-      }
-
-      overlayConfig.currentOpacity = overlayConfig.ovlSettings.opacity !== 0 ? overlayConfig.ovlSettings.opacity : 1;
-    }
-
     scalesetter(false);
     dragger(overlayElements.MainDeckFrame, overlayElements.MoveHandle);
     dragger(overlayElements.OpponentOutFrame, overlayElements.OppMoveHandle);
     opacitySetter(false);
     updatelinks();
 
-    if (
-      overlayConfig.ovlSettings &&
-      overlayConfig.ovlSettings.savepositionleft === 0 &&
-      overlayConfig.ovlSettings.savepositiontop === 0
-    ) {
-      overlayElements.MainDeckFrame.style.top = '15%';
-      overlayElements.MainDeckFrame.style.left = '0px';
-    }
+    try {
+      setInteractiveHandler(settings);
 
-    if (
-      overlayConfig.ovlSettings &&
-      overlayConfig.ovlSettings.savepositionleftopp === 0 &&
-      overlayConfig.ovlSettings.savepositiontopopp === 0
-    ) {
-      overlayElements.OpponentOutFrame.style.top = '15%';
-      overlayElements.OpponentOutFrame.style.right = '0px';
-    }
+      if (overlayConfig.ovlSettings && overlayConfig.justcreated) {
+        overlayConfig.currentScale =
+          overlayConfig.ovlSettings.savescale !== 0 ? overlayConfig.ovlSettings.savescale : 1;
+
+        if (overlayConfig.ovlSettings.savepositionleft !== 0) {
+          overlayElements.MainDeckFrame.style.top = `${overlayConfig.ovlSettings.savepositiontop}%`;
+          overlayElements.MainDeckFrame.style.left = `${overlayConfig.ovlSettings.savepositionleft}%`;
+        }
+        if (overlayConfig.ovlSettings.savepositionleftopp !== 0) {
+          overlayElements.OpponentOutFrame.style.top = `${overlayConfig.ovlSettings.savepositiontopopp}%`;
+          overlayElements.OpponentOutFrame.style.left = `${overlayConfig.ovlSettings.savepositionleftopp}%`;
+        }
+
+        overlayConfig.currentOpacity = overlayConfig.ovlSettings.opacity !== 0 ? overlayConfig.ovlSettings.opacity : 1;
+      }
+
+      if (
+        overlayConfig.ovlSettings &&
+        overlayConfig.ovlSettings.savepositionleft === 0 &&
+        overlayConfig.ovlSettings.savepositiontop === 0
+      ) {
+        overlayElements.MainDeckFrame.style.top = '15%';
+        overlayElements.MainDeckFrame.style.left = '0px';
+      }
+
+      if (
+        overlayConfig.ovlSettings &&
+        overlayConfig.ovlSettings.savepositionleftopp === 0 &&
+        overlayConfig.ovlSettings.savepositiontopopp === 0
+      ) {
+        overlayElements.OpponentOutFrame.style.top = '15%';
+        overlayElements.OpponentOutFrame.style.right = '0px';
+      }
+    } catch (e) {}
 
     if (currentMatch.matchId !== '') {
       updateDeck([]);

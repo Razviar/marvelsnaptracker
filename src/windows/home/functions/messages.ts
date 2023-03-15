@@ -19,16 +19,18 @@ export function installHomeMessages(): void {
       return;
     }
     Object.keys(hkMap).forEach((key) => {
-      const btn = key as
-        | 'hk-my-deck'
-        | 'hk-opp-deck'
-        | 'hk-overlay'
-        | 'hk-inc-size'
-        | 'hk-dec-size'
-        | 'hk-inc-opac'
-        | 'hk-dec-opac';
-      const sw = document.querySelector(`[data-hk="${key}"]`) as HTMLSelectElement;
-      sw.innerHTML = hkMap[btn].toUpperCase();
+      try {
+        const btn = key as
+          | 'hk-my-deck'
+          | 'hk-opp-deck'
+          | 'hk-overlay'
+          | 'hk-inc-size'
+          | 'hk-dec-size'
+          | 'hk-inc-opac'
+          | 'hk-dec-opac';
+        const sw = document.querySelector(`[data-hk="${key}"]`) as HTMLSelectElement;
+        sw.innerHTML = hkMap[btn].toUpperCase();
+      } catch (e) {}
     });
   });
 

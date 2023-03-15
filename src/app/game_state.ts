@@ -53,7 +53,7 @@ class GameState {
       this.deckStats[this.selectedDeck].cube_win = isWinner ? cubes : 0;
       this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
     }
-    console.log(this.deckStats);
+    // console.log(this.deckStats);
     sendMessageToOverlayWindow('stats-update', this.deckStats);
   }
 
@@ -121,7 +121,7 @@ class GameState {
   }
 
   public sendInitialMessages(): void {
-    console.log('sendInitialMessages!');
+    //console.log('sendInitialMessages!');
     const account = settingsStore.getAccount();
     const ovlSettings = account?.overlaySettings;
     sendMessageToOverlayWindow('set-ovlsettings', ovlSettings);
@@ -131,7 +131,9 @@ class GameState {
 
   public overlayPositionSetter(onlySetPosition?: boolean): void {
     const account = settingsStore.getAccount();
-
+    if (!account || !settingsStore.get().overlay) {
+      return;
+    }
     if (!onlySetPosition) {
       this.overlayPositioner.findAndHookSnap();
     }
@@ -141,12 +143,12 @@ class GameState {
     }
 
     let overlayWindow = getOverlayWindow();
-
+    const ovlSettings = account.overlaySettings;
     if (!overlayWindow) {
       overlayWindow = createOverlayWindow();
-      console.log('Creating!');
+      /*console.log('Creating!');
       console.log(this.selectedDeck);
-      console.log(this.decks);
+      console.log(this.decks);*/
       setTimeout(this.sendInitialMessages.bind(this), 500);
     }
     /*if (electronIsDev) {
@@ -173,7 +175,10 @@ class GameState {
         error("couldn't set overlay bounds, hiding overlay for now", err);
         this.hideOverlay(overlayWindow);
       }
-    } else if (this.overlayPositioner.bounds.width === 0 || !this.overlayIsPositioned) {
+    } else if (
+      (this.overlayPositioner.bounds.width === 0 && (!ovlSettings || !ovlSettings.neverhide)) ||
+      !this.overlayIsPositioned
+    ) {
       this.hideOverlay(overlayWindow);
     } else {
       this.showOverlay(overlayWindow);
