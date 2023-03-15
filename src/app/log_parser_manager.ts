@@ -1,7 +1,8 @@
 import electronIsDev from 'electron-is-dev';
 import {sendEventsToServer} from 'root/api/logsender';
+import {gameState} from 'root/app/game_state';
 import {LogParser} from 'root/app/log-parser/log_parser';
-import {sendMessageToHomeWindow} from 'root/app/messages';
+import {sendMessageToHomeWindow, sendMessageToOverlayWindow} from 'root/app/messages';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {error} from 'root/lib/logger';
 
@@ -24,7 +25,7 @@ export function createGlobalLogParser(dev?: boolean): LogParser {
 
   logParser.emitter.on('newdata', (data) => {
     if (data.events.length > 0) {
-      const userToken = settingsStore.get().userToken?.mtga;
+      const userToken = settingsStore.get().userToken;
       if (userToken !== undefined && userToken.includes('SKIPPING')) {
         sendMessageToHomeWindow('show-status', {message: 'Skipping this account...', color: '#dbb63d'});
         return;
@@ -42,6 +43,13 @@ export function createGlobalLogParser(dev?: boolean): LogParser {
       }
       sendEventsToServer(data.events, data.parsingMetadata.logSender, data.state);
     }
+  });
+
+  logParser.emitter.on('decks-message', (msg) => {
+    //if (settingsStore.get().overlay) {
+    gameState.setDecks(msg);
+    //sendMessageToOverlayWindow('decks-message', msg);
+    //}
   });
 
   logParser.emitter.on('error', (msg) => {

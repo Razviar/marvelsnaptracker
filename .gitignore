@@ -92,9 +92,7 @@ conf/conf.env
 cert/
 
 #getFrontWindow
-src/getFrontWindow/.vs
-src/getFrontWindow/bin
-src/getFrontWindow/obj
-src/GetData2/.vs
-src/GetData2/bin
-src/GetData2/obj
+src/snapHooker/.vs
+src/snapHooker/bin
+src/snapHooker/obj
+src/snapHooker/lib

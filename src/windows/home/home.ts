@@ -16,6 +16,7 @@ import {tabclick} from 'root/windows/home/functions/tabclick';
 import 'root/windows/home/home.css';
 import 'root/windows/home/icons.css';
 import {onMessageFromIpcMain, sendMessageToIpcMain} from 'root/windows/messages';
+import {setHkClick} from 'root/windows/home/functions/setHkClick';
 
 export const HomePageElements = {
   header: document.getElementById('header') as HTMLElement,
@@ -36,11 +37,14 @@ export const HomePageElements = {
   directSyncLink: document.getElementById('directSyncLink') as HTMLElement,
   LordirectSyncLink: document.getElementById('LordirectSyncLink') as HTMLElement,
   buttons: document.getElementsByClassName('button'),
+  hkSetters: document.getElementsByClassName('setHk'),
   tabs: document.getElementsByClassName('tab'),
   controls: document.getElementsByClassName('controlButton'),
   settings: document.getElementsByClassName('settings'),
   MtgaTab: document.getElementsByClassName('MtgaTab'),
   StartupTitle: document.getElementById('startup-title') as HTMLElement,
+  OverlaySwitch: document.getElementById('OverlaySwitch') as HTMLElement,
+  hotkeyMap: document.getElementById('hotkeyMap') as HTMLElement,
 };
 
 export const currentCreds: {
@@ -81,6 +85,10 @@ Array.from(HomePageElements.controls).forEach((el) => {
 
 Array.from(HomePageElements.settings).forEach((el) => {
   el.addEventListener('change', settingsChecker);
+});
+
+Array.from(HomePageElements.hkSetters).forEach((el) => {
+  el.addEventListener('click', setHkClick);
 });
 
 onMessageFromIpcMain('network-status', (status) => {

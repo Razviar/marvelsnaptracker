@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Marvel Snap Tracker</title>
+  </head>
+  <body>
+    <div class="overlay">
+      <div class="main hidden" id="MainDeckFrame">
+        <div class="deckHeader">
+          <div id="deckName"></div>
+          <div class="Handles">
+            <div id="TransparencyHandle" class="Handle Interactive" title="Adjust Opacity">
+              <img class="glassIco Ico" />
+            </div>
+            <div class="Handle Interactive" id="scaleOut" title="Reduce Scale">
+              <img class="scaleOutIco Ico" />
+            </div>
+            <div class="Handle Interactive" id="scaleIn" title="Increase Scale">
+              <img class="scaleInIco Ico" />
+            </div>
+            <div id="MoveHandle" class="Move Handle"><img class="moveIco Ico" /></div>
+          </div>
+        </div>
+        <div id="MainOut" class="DeckOut"></div>
+        <div class="MoreDecks link Interactive" data-link="https://marvelsnap.pro/decks/">
+          <img class="imgico Linkico" width="15" /> Get More Decks From MarvelSnap.pro
+        </div>
+      </div>
+      <div class="opponent hidden" id="OpponentOutFrame">
+        <div class="deckHeader">
+          <div id="deckName"></div>
+          <div class="Handles">
+            <div id="OppMoveHandle" class="Move Handle"><img class="moveIco Ico" /></div>
+          </div>
+        </div>
+        <div id="OpponentOut" class="DeckOut"></div>
+      </div>
+      <!--<div id="OverlayMenu">
+        <div id="Collapser" class="Interactive CollapserIco"><img /></div>
+        <div class="smallLogo"><span id="LogoSpan" class="ms ms-w"></span>MTGAPro</div>
+        <div id="CollapsibleMenu">
+          <div class="interfaceButton Interactive" id="ToggleMe"><img class="eyeIco IcoGeneral" />Me</div>
+          <div class="interfaceButton Interactive" id="ToggleOpp"><img class="eyeIco IcoGeneral" />Opp</div>
+          <div class="interfaceButton Interactive" id="scaleOut">
+            <img class="scaleOutIco IcoGeneral" />
+          </div>
+          <div class="interfaceButton Interactive" id="scaleIn">
+            <img class="scaleInIco IcoGeneral" />
+          </div>
+        </div>
+      </div>-->
+      <div id="RestartWarning" class="hidden">
+        <strong>SNAP is running with higher than Tracker system permissions.</strong><br />Most likely it was an update
+        or you've launched SNAP as Admin<br />Please restart the game (Alt+R) to keep using the Tracker.
+      </div>
+    </div>
+  </body>
+</html>

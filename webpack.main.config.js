@@ -15,6 +15,11 @@ module.exports = {
   module: {
     rules: require('./webpack.rules'),
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [{context: 'src/our-active-win', from: '*.dll*', to: 'native_modules'}],
+    }),
+  ],
   resolve: {
     alias: {
       root: SRC,

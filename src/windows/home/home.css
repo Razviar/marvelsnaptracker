@@ -174,7 +174,7 @@ input#token {
 
 .pretty {
   width: 47%;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
 }
 
 .fab {
@@ -425,7 +425,7 @@ div#hotkeyMap {
 
 .hotkey {
   display: inline-block;
-  width: 37%;
+  width: 49%;
   margin-bottom: 6px;
 }
 

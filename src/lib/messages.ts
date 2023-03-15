@@ -2,14 +2,13 @@ import {TokenCheckRes, TokenRequestRes} from 'root/api/userbytokenid';
 import {Account, LatestSettings, OverlaySettings} from 'root/app/settings-store/settings_store';
 import {HotkeysSettingsV1} from 'root/app/settings-store/v8';
 import {CardPlayed} from 'root/models/cards';
-import {Metadata, UserMetadata} from 'root/models/metadata';
+import {UserMetadata} from 'root/models/metadata';
+import {UserDeck} from 'root/models/snap_deck';
 import {UserResult} from 'root/models/userbytokenid';
 
 export interface Messages {
   'start-sync': {playerid: string; plguid: string};
-  'lor-start-sync': undefined;
   'sync-process': TokenRequestRes;
-  'lor-sync-process': TokenRequestRes;
   'token-waiter': string;
   'need-reset-sync': undefined;
   'token-waiter-responce': {
@@ -47,21 +46,39 @@ export interface Messages {
   'match-started': {
     matchId: string;
     uid: string;
-    seatId: number;
-    eventId: string;
-    gameNumber: number;
+    players: string[];
+    selectedDeckId: string;
   };
+  'match-set-player': {
+    accountId: string;
+    name: string;
+    entityId: number;
+    deckEntityId: number;
+    graveyardEntityId: number;
+    handEntityId: number;
+  };
+  'match-create-card-entity': {
+    entityId: number;
+    ownerEntityId: number;
+    zoneEntityId: number;
+  };
+  'match-card-reveal': {
+    entityId: number;
+    cardDefId: string;
+    rarityDefId: string;
+    artVariantDefId: string;
+  };
+  'match-card-move': {
+    cardEntityId: number;
+    cardOwnerEntityId: number;
+    targetZoneEntityId: number;
+  };
+  'stats-update': Record<string, {win: number; loss: number; cube_win: number; cube_loss: number}>;
+  'match-set-location': {entityId: number; locationSlot: number};
   'enable-clicks': undefined;
   'disable-clicks': undefined;
-  'deck-submission': {
-    commandZoneGRPIds: number[];
-    mainDeck: {[index: number]: number};
-    deckName: string;
-    deckId: string;
-    InternalEventName: string;
-  };
-  'deck-message': {[index: number]: number};
-  'set-metadata': Metadata;
+  'deck-message': string;
+  'decks-message': Array<UserDeck>;
   'set-userdata': UserMetadata;
   mulligan: boolean;
   'set-version': string;
@@ -73,7 +90,6 @@ export interface Messages {
   'set-setting-icon': string;
   'set-setting-do-uploads': boolean;
   'set-setting-disable-hotkeys': boolean;
-  'match-over': undefined;
   'card-played': CardPlayed;
   'set-setting-o-hidezero': boolean;
   'set-setting-o-hidemy': boolean;
@@ -117,13 +133,9 @@ export interface Messages {
   'set-icosettings': string | undefined;
   'set-scale': number;
   'set-zoom': number;
-  'draft-turn': {
-    DraftPack: number[];
-    PackNumber: number;
-    PickNumber: number;
-  };
+
   'set-ovlsettings': OverlaySettings | undefined;
-  'draft-complete': undefined;
+
   'turn-info': {decisionPlayer: number; turnNumber?: number};
   'error-in-renderer': {
     error: string | Event;
@@ -140,7 +152,7 @@ export interface Messages {
   'stop-shadow-sync': undefined;
   'shadow-sync-over': undefined;
   nologfile: undefined;
-  'game-switch': 'lor' | 'mtga';
+
   'show-dev-buttons': undefined;
   'dev-log': boolean;
   'startup-title': string;

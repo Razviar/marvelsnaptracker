@@ -1,3 +1,5 @@
+import {Message} from 'root/lib/messages';
+import {hasOwnProperty} from 'root/lib/type_utils';
 import {login} from 'root/windows/home/functions/login';
 import {showPrompt} from 'root/windows/home/functions/showPrompt';
 import {tokenWaiter} from 'root/windows/home/functions/tokenWaiter';
@@ -70,6 +72,11 @@ export function installHomeMessages(): void {
     HomePageElements.AccountsTab.innerHTML = output;
     updatelinks();
 
+    if (newSettings.overlay) {
+      const sw = document.querySelector('[data-setting="overlay"]') as HTMLInputElement;
+      sw.checked = newSettings.overlay;
+    }
+
     if (newSettings.autorun) {
       const sw = document.querySelector('[data-setting="autorun"]') as HTMLInputElement;
       sw.checked = newSettings.autorun;
@@ -85,6 +92,16 @@ export function installHomeMessages(): void {
       sw.checked = newSettings.manualUpdate;
     }
 
+    if (newSettings.nohotkeys !== undefined) {
+      const sw = document.querySelector('[data-setting="disable-hotkeys"]') as HTMLInputElement;
+      sw.checked = newSettings.nohotkeys;
+      if (!newSettings.nohotkeys) {
+        HomePageElements.hotkeyMap.classList.remove('hidden');
+      } else {
+        HomePageElements.hotkeyMap.classList.add('hidden');
+      }
+    }
+
     if (newSettings.logPath !== undefined) {
       const sw = document.getElementById('CurrentLogPath') as HTMLElement;
       sw.innerHTML = `<strong>${newSettings.logPath}</strong>`;
@@ -98,6 +115,56 @@ export function installHomeMessages(): void {
       const opts = sw.options;
       sw.selectedIndex = Array.from(opts).findIndex((opt) => opt.value === newSettings.icon);
     }
+  });
+
+  onMessageFromIpcMain('set-o-settings', (newOSettings) => {
+    const overlaySettingsBoolean: Message[] = [
+      'set-setting-o-hidezero',
+      'set-setting-o-showcardicon',
+      'set-setting-o-hidemy',
+      'set-setting-o-hideopp',
+      'set-setting-o-timers',
+      'set-setting-o-neverhide',
+      'set-setting-o-mydecks',
+      'set-setting-o-cardhover',
+      'set-setting-o-detach',
+      'set-setting-o-hidemain',
+      'set-setting-o-interactive',
+    ];
+    const overlaySettingsNumber: Message[] = [
+      'set-setting-o-leftdigit',
+      'set-setting-o-rightdigit',
+      'set-setting-o-leftdraftdigit',
+      'set-setting-o-rightdraftdigit',
+      'set-setting-o-bottomdigit',
+      'set-setting-o-fontcolor',
+    ];
+
+    overlaySettingsBoolean.forEach((settingName) => {
+      const settingType = settingName.split('set-setting-o-')[1] ?? '';
+      const sw = document.querySelector(`[data-setting="o-${settingType}"]`) as HTMLInputElement;
+      if (hasOwnProperty(newOSettings, settingType)) {
+        const value = newOSettings[settingType];
+        if (typeof value === 'boolean') {
+          sw.checked = value;
+        }
+      }
+    });
+
+    overlaySettingsNumber.forEach((settingName) => {
+      const settingType = settingName.split('set-setting-o-')[1] ?? '';
+      const sw = document.querySelector(`[data-setting="o-${settingType}"]`) as HTMLSelectElement;
+      const opts = sw.options;
+      sw.selectedIndex = Array.from(opts).findIndex((opt) => {
+        if (hasOwnProperty(newOSettings, settingType)) {
+          const value = newOSettings[settingType];
+          if (typeof value === 'number') {
+            return +opt.value === value;
+          }
+        }
+        return false;
+      });
+    });
   });
 
   onMessageFromIpcMain('set-version', (version) => {

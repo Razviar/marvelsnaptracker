@@ -8,11 +8,15 @@ import {disableAutoLauncher, enableAutoLauncher} from 'root/app/auto_launcher';
 import {checkForUpdates, quitAndInstall} from 'root/app/auto_updater';
 import {withLogParser} from 'root/app/log_parser_manager';
 import {withHomeWindow} from 'root/app/main_window';
-import {onMessageFromBrowserWindow, sendMessageToHomeWindow} from 'root/app/messages';
+import {onMessageFromBrowserWindow, sendMessageToHomeWindow, sendMessageToOverlayWindow} from 'root/app/messages';
 import {oldStore} from 'root/app/old_store';
+import {withOverlayWindow} from 'root/app/overlay_window';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {stateStore} from 'root/app/state_store';
 import {error} from 'root/lib/logger';
+import {Message} from 'root/lib/messages';
+import {hasOwnProperty} from 'root/lib/type_utils';
+import {DefaultOvlSettings} from 'root/lib/utils';
 
 export function setupIpcMain(app: App): void {
   onMessageFromBrowserWindow('token-input', (newAccount) => {
@@ -132,12 +136,6 @@ export function setupIpcMain(app: App): void {
     settingsStore.save();
   });
 
-  onMessageFromBrowserWindow('set-setting-disable-hotkeys', (newHotkeys) => {
-    const settings = settingsStore.get();
-    settings.nohotkeys = newHotkeys;
-    settingsStore.save();
-  });
-
   onMessageFromBrowserWindow('set-setting-icon', (newIcon) => {
     const settings = settingsStore.get();
     settings.icon = newIcon;
@@ -231,4 +229,114 @@ export function setupIpcMain(app: App): void {
   onMessageFromBrowserWindow('apply-update', () => {
     quitAndInstall();
   });
+
+  onMessageFromBrowserWindow('enable-clicks', () => {
+    withOverlayWindow((overlayWindow) => {
+      overlayWindow.setIgnoreMouseEvents(false);
+    });
+  });
+
+  onMessageFromBrowserWindow('disable-clicks', () => {
+    withOverlayWindow((overlayWindow) => {
+      overlayWindow.setIgnoreMouseEvents(true, {forward: true});
+    });
+  });
+
+  onMessageFromBrowserWindow('restart-mtga-now', () => {
+    // tslint:disable-next-line: no-console
+    console.log('restart-mtga');
+    //gameState.doMTGARestart().catch();
+  });
+
+  onMessageFromBrowserWindow('wipe-position', () => {
+    const session = settingsStore.getAccount();
+    if (!session) {
+      return;
+    }
+    if (!session.overlaySettings) {
+      session.overlaySettings = DefaultOvlSettings;
+      session.overlay = true;
+    }
+
+    session.overlaySettings['savepositiontop'] = 0;
+    session.overlaySettings['savepositionleft'] = 0;
+    session.overlaySettings['savepositiontopopp'] = 0;
+    session.overlaySettings['savepositionleftopp'] = 0;
+    settingsStore.save();
+    sendMessageToOverlayWindow('set-ovlsettings', session.overlaySettings);
+  });
+
+  /*HOTKEY SETTINGS BEGIN*/
+
+  const hkSettings = [
+    'hk-my-deck',
+    'hk-opp-deck',
+    'hk-overlay',
+    'hk-inc-size',
+    'hk-dec-size',
+    'hk-inc-opac',
+    'hk-dec-opac',
+  ];
+
+  onMessageFromBrowserWindow('set-setting-disable-hotkeys', (newHotkeys) => {
+    const settings = settingsStore.get();
+    settings.nohotkeys = newHotkeys;
+    settingsStore.save();
+  });
+
+  hkSettings.forEach((settings) => {
+    const set = settings as
+      | 'hk-my-deck'
+      | 'hk-opp-deck'
+      | 'hk-overlay'
+      | 'hk-inc-size'
+      | 'hk-dec-size'
+      | 'hk-inc-opac'
+      | 'hk-dec-opac';
+    onMessageFromBrowserWindow(set, (newHotkeyBinding) => {
+      const session = settingsStore.getAccount();
+      if (session === undefined) {
+        return;
+      }
+      if (session.hotkeysSettings === undefined) {
+        return;
+      }
+      session.hotkeysSettings[set] = newHotkeyBinding;
+      settingsStore.save();
+      sendMessageToHomeWindow('set-hotkey-map', session.hotkeysSettings);
+    });
+  });
+
+  /*HOTKEY SETTINGS END*/
+
+  /*OVERLAY SETTINGS*/
+  const overlaySettingsBoolean: Message[] = [
+    'set-setting-o-hidezero',
+    'set-setting-o-showcardicon',
+    'set-setting-o-hidemy',
+    'set-setting-o-hideopp',
+    'set-setting-o-neverhide',
+    'set-setting-o-cardhover',
+  ];
+
+  overlaySettingsBoolean.forEach((settingName) => {
+    const settingType = settingName.split('set-setting-o-')[1] ?? '';
+    onMessageFromBrowserWindow(settingName, (newOverlaySetting) => {
+      const session = settingsStore.getAccount();
+      if (!session) {
+        return;
+      }
+      if (!session.overlaySettings) {
+        session.overlaySettings = DefaultOvlSettings;
+        session.overlay = true;
+      }
+      if (hasOwnProperty(session.overlaySettings, settingType)) {
+        session.overlaySettings[settingType] = newOverlaySetting;
+      }
+      settingsStore.save();
+      sendMessageToOverlayWindow('set-ovlsettings', session.overlaySettings);
+    });
+  });
+
+  /*OVERLAY SETTINGS END*/
 }

@@ -1,6 +1,7 @@
 import {LogFileParsingState, ParsingMetadata} from 'root/app/log-parser/model';
 import {CardPlayed} from 'root/models/cards';
 import {ParseResults} from 'root/models/indicators';
+import {UserDeck} from 'root/models/snap_deck';
 
 export interface PlayerData {
   playerId: string;
@@ -13,34 +14,14 @@ interface LogParserEvents {
   language: string;
   status: string;
   'old-log-complete': undefined;
-  'match-started': {
-    matchId: string;
-    seatId: number;
-    gameNumber: number;
-    eventId: string;
-  };
-  'match-over': undefined;
-  'card-played': CardPlayed;
   mulligan: boolean;
   newdata: {
     events: ParseResults[];
     parsingMetadata: ParsingMetadata;
     state: LogFileParsingState;
   };
-  'deck-message': {[index: number]: number};
-  'deck-submission': {
-    commandZoneGRPIds: number[];
-    mainDeck: {[index: number]: number};
-    deckName: string;
-    deckId: string;
-    InternalEventName: string;
-  };
-  'draft-turn': {
-    DraftPack: number[];
-    PackNumber: number;
-    PickNumber: number;
-  };
-  'draft-complete': undefined;
+  'deck-message': string;
+  'decks-message': Array<UserDeck>;
   'turn-info': {decisionPlayer: number; turnNumber?: number};
   nologfile: undefined;
 }

@@ -58,10 +58,23 @@ module.exports = {
     new CspHtmlWebpackPlugin(
       {
         'base-uri': "'self'",
+        'default-src': ["'self'", 'https://marvelsnap.pro/', 'https://static.marvelsnap.pro/', 'data:'],
         'object-src': "'none'",
+        'img-src': ["'self'", 'https://marvelsnap.pro/', 'https://static.marvelsnap.pro/', 'data:'],
         'script-src': ["'self'"],
-        'img-src': ["'self'", 'https://marvelsnap.pro/', 'data:'],
-        'style-src': ["'self'", "'unsafe-inline'"],
+        'style-src': [
+          "'self'",
+          'https://marvelsnap.pro/',
+          'https://static.marvelsnap.pro/',
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+        ],
+        'font-src': [
+          "'self'",
+          'https://marvelsnap.pro/',
+          'https://static.marvelsnap.pro/',
+          'https://fonts.gstatic.com',
+        ],
       },
       {
         enabled: true,
@@ -77,7 +90,10 @@ module.exports = {
       }
     ),
     new CopyPlugin({
-      patterns: [{context: 'src/windows', from: '*.woff*', to: 'home_window'}],
+      patterns: [
+        {context: 'src/windows', from: '*.woff*', to: 'home_window'},
+        {context: 'src/windows', from: '*.woff*', to: 'overlay_window'},
+      ],
     }),
   ],
 };

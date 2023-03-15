@@ -182,3 +182,29 @@ export function lz(n: number): string {
 export function isMac(): boolean {
   return process.platform === 'darwin';
 }
+
+export const DefaultOvlSettings = {
+  leftdigit: 2,
+  rightdigit: 1,
+  bottomdigit: 3,
+  leftdraftdigit: 3,
+  rightdraftdigit: 1,
+  hidemy: false,
+  hideopp: false,
+  hidezero: false,
+  showcardicon: true,
+  neverhide: false,
+  mydecks: false,
+  cardhover: false,
+  timers: false,
+  savepositiontop: 0,
+  savepositionleft: 0,
+  savepositiontopopp: 0,
+  savepositionleftopp: 0,
+  savescale: 0,
+  opacity: 0,
+  fontcolor: 0,
+  detach: false,
+  hidemain: false,
+  interactive: true,
+};

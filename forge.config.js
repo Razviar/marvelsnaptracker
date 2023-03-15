@@ -70,6 +70,7 @@ module.exports = {
       config: {
         devServer: {hot: false, liveReload: false},
         mainConfig: './webpack.main.config.js',
+        devContentSecurityPolicy: "'*'",
         renderer: {
           config: './webpack.renderer.config.js',
           entryPoints: [
@@ -80,6 +81,14 @@ module.exports = {
                 js: './src/windows/preload.js',
               },
               name: 'home_window',
+            },
+            {
+              html: './src/windows/overlay/overlay.html',
+              js: './src/windows/overlay/overlay.ts',
+              preload: {
+                js: './src/windows/preload.js',
+              },
+              name: 'overlay_window',
             },
           ],
         },

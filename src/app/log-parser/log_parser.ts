@@ -19,6 +19,7 @@ import {asyncForEach} from 'root/lib/asyncforeach';
 import {error} from 'root/lib/logger';
 
 import {ParseResults} from 'root/models/indicators';
+import {DeckCardArray, SnapCard, UserDeck} from 'root/models/snap_deck';
 
 const FIVE_SECONDS = 5000;
 
@@ -204,7 +205,7 @@ export class LogParser {
             //console.log(ResolvableElement, interestingThing);
           });
         } catch (e) {
-          console.log(e);
+          console.log('parsingMetadata.ResolveRefs', e);
         }
 
         Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
@@ -239,6 +240,7 @@ export class LogParser {
         });
       });
     } catch (e) {
+      console.log('GatherFromArray');
       this.emitter.emit('error', String(e));
       //setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
     }
@@ -301,6 +303,13 @@ export class LogParser {
     //console.log('CardsInLocations', parsedResults['CardsInLocations']);
 
     const eventsToSend: ParseResults[] = [];
+    Object.keys(parsedResults).forEach((indicator) => {
+      switch (indicator) {
+        case 'Decks':
+          this.handleDecksMessage(parsedResults[indicator]);
+          break;
+      }
+    });
     //console.log(parsingMetadata.sendToServer);
 
     parsingMetadata.sendToServer.map((importantData) => {
@@ -350,13 +359,38 @@ export class LogParser {
     setTimeout(() => this.internalLoop(parsingMetadata), timeout);
   }
 
+  private handleDecksMessage(decks: Array<any>): void {
+    try {
+      const DecksArray: Array<UserDeck> = [];
+      decks.forEach((deckDetails) => {
+        const cardsInDeck: DeckCardArray = [];
+        if (deckDetails.Cards === undefined || !Array.isArray(deckDetails.Cards)) {
+          return;
+        }
+        deckDetails.Cards.forEach((card: SnapCard) => {
+          cardsInDeck.push({
+            CardDefId: card.CardDefId,
+            RarityDefId: card.RarityDefId,
+            ArtVariantDefId: card.ArtVariantDefId === undefined ? '' : card.ArtVariantDefId,
+          });
+        });
+
+        DecksArray.push({name: deckDetails.Name, cards: cardsInDeck, id: deckDetails.Id});
+      });
+      //console.log('handleDecksMessage', DecksArray);
+      this.emitter.emit('decks-message', DecksArray);
+    } catch (e) {
+      console.log('handleDecksMessage', e);
+    }
+  }
+
   private handleUserChangeEvent(newPlayerId: string, screenName: string): boolean {
     const account = settingsStore.getAccount();
 
     if (!this.currentState || this.currentState.state.userId !== newPlayerId) {
       sendMessageToHomeWindow('set-screenname', {screenName, newPlayerId});
-      console.log('setting screename');
-      console.log(screenName);
+      /*console.log('setting screename');
+      console.log(screenName);*/
       //const overlayWindow = getOverlayWindow();
       /*if (account && settingsStore.get().overlay && overlayWindow !== undefined) {
         getUserMetadata(+account.uid)
