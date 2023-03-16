@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -14,7 +13,6 @@ namespace DataGetter
     {
         private readonly ServerInterface pipeServer;
         private readonly Queue<string> dataExtracted = new Queue<string>();
-        public int DataCursor;
         //public int packetNumber = 0;
 
         public IntPtr TargetAddress { get; set; }
@@ -32,60 +30,63 @@ namespace DataGetter
 
         public void WebsocketDataRecievedHook(IntPtr socket, IntPtr data, int offset, int length)
         {
+            //packetNumber++;
             byte[] numArray = new byte[length];
             SigScanSharp.Win32.ReadProcessMemory(TargetProcess.Handle, (ulong)data.ToInt64() + 32UL, numArray, length);
             //File.WriteAllBytes("binDebug/debugFile" + packetNumber.ToString() + ".bin", numArray);
-            //packetNumber++;
-            if ((numArray[0] != 72 || numArray[1] != 84) && length > 0)
+            
+            if (numArray[0] != 72 && numArray[1] != 84 && numArray[1] != 88 && length > 0)
             {
-                using (MemoryStream input = new MemoryStream(numArray))
+                int startingCursor = 0;
+                List<byte> byteList = new List<byte>();
+
+                if (length < 4096 && DataRead == null)
                 {
-                    using (BinaryReader reader = new BinaryReader(input))
+                    for (int innerCursor = 0; innerCursor < length; innerCursor++)
                     {
-                        try
+                        if (numArray[innerCursor] == 123)
                         {
-                            byte[] bytes;
-                            if (length == 4096 || DataCursor > 0)
-                            {
-                                int count = 4 * DataCursor++;
-                                List<byte> byteList = new List<byte>();
-                                if (count > 0)
-                                    byteList.AddRange(reader.ReadBytes(count));
-                                DecodeInt32(reader);
-                                if (input.Position < input.Length)
-                                    byteList.AddRange(reader.ReadBytes((int)(input.Length - input.Position)));
-                                bytes = byteList.ToArray();
-                            }
-                            else
-                            {
-                                int count = DecodeInt32(reader);
-                                bytes = reader.ReadBytes(count);
-                            }
-                            if (DataRead == null)
-                                DataRead = "";
-                            DataRead += Encoding.UTF8.GetString(bytes);
-                            if (length != 4096)
-                            {
-                                pipeServer.ReportPacket(DataRead);
-                                DataRead = null;
-                                DataCursor = 0;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            pipeServer.ReportMessage(string.Format("Error: {0}", ex));
+                            startingCursor = innerCursor; break;
                         }
                     }
                 }
+
+                for (int innerCursor = startingCursor; innerCursor < length; innerCursor++)
+                {
+                    if (numArray[innerCursor] == 0 || numArray[innerCursor] == 1 || numArray[innerCursor] == 128 || numArray[innerCursor] == 129)
+                    {
+                        innerCursor += 3;
+                    }
+                    else
+                    {
+                        byteList.Add(numArray[innerCursor]);
+                    }
+                }
+
+                byte[] bytes = byteList.ToArray();
+
+                var DataReadInternal = Encoding.UTF8.GetString(bytes);
+                //File.AppendAllText("binDebug2/debugFile" + packetNumber.ToString() + ".txt", DataReadInternal);
+
+                if (DataRead == null)
+                {
+                    DataRead = DataReadInternal;
+                }
+                else
+                {
+                    DataRead += DataReadInternal;
+                }
+
+                if (length < 4096)
+                {
+                    if (DataRead.Length > 4)
+                    {
+                        pipeServer.ReportPacket(DataRead);
+                    }
+                    DataRead = null;
+                }
             }
             (Marshal.GetDelegateForFunctionPointer(TargetAddress, typeof(WebsocketDataRecieved_Delegate)) as WebsocketDataRecieved_Delegate)(socket, data, offset, length);
-        }
-
-        public static int DecodeInt32(BinaryReader reader)
-        {
-            int num1 = reader.ReadByte();
-            int num2 = reader.ReadByte();
-            return num1 == 129 && num2 != 126 ? num2 : 128 * (2 * reader.ReadByte()) + reader.ReadByte();
         }
 
         public IntPtr GetHookTarget()

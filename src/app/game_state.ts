@@ -1,3 +1,5 @@
+import {exec, execFile} from 'child_process';
+import {join} from 'path';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';
@@ -9,6 +11,7 @@ import {createOverlayWindow, getOverlayWindow} from 'root/app/overlay_window';
 import {settingsStore} from 'root/app/settings-store/settings_store';
 import {error} from 'root/lib/logger';
 import {hasOwnProperty} from 'root/lib/type_utils';
+import {sleep} from 'root/lib/utils';
 import {UserDeck} from 'root/models/snap_deck';
 
 const FIVE_SECONDS = 5000;
@@ -22,6 +25,7 @@ class GameState {
   private badErrorHappening: boolean = false;
   private refreshMillis = 1000;
   private readonly processName = 'SNAP.exe';
+  private processPath: string | undefined = '';
   private readonly movementSensitivity = 1;
   private readonly overlayPositioner = new WindowLocator();
   private overlayIsPositioned = false;
@@ -212,6 +216,7 @@ class GameState {
   public checkProcessId(): void {
     if (this.processId !== undefined && !this.badErrorHappening) {
       try {
+        process.kill(this.processId, 0);
       } catch (e: unknown) {
         console.log('checkProcessId');
         if (e instanceof Object && hasOwnProperty(e, 'code') && e.code === 'ESRCH') {
@@ -236,6 +241,16 @@ class GameState {
             if (!this.badErrorHappening) {
               console.log('setting PID');
               this.processId = res.pid;
+              exec(`wmic process where "ProcessID=${this.processId}" get ExecutablePath`, (e, out) => {
+                out.split('\n').forEach((splitted) => {
+                  if (splitted.includes('SNAP.exe')) {
+                    this.processPath = splitted;
+                    console.log(this.processPath);
+                  }
+                });
+              });
+              /*this.processPath = res.cmd;
+              console.log(res);*/
             }
             this.setRunning(true);
           } else {
@@ -250,6 +265,27 @@ class GameState {
         .catch(() => {
           console.log('psList error');
         });
+    }
+
+    if (this.overlayPositioner.SpawnedProcess && !this.running) {
+      this.overlayPositioner.killSpawnedProcess();
+    }
+  }
+
+  public async doMTGARestart(): Promise<void> {
+    try {
+      const mtgaPath = settingsStore.get().mtgaPath;
+      if (this.processId !== undefined && mtgaPath !== undefined) {
+        exec(`wmic process where "ProcessID=${this.processId}" delete`).unref();
+        this.setRunning(false);
+        await sleep(1000);
+        execFile(join(mtgaPath, '..', 'MTGA.exe')).unref();
+        await sleep(1000);
+        this.checkProcessId();
+      }
+    } catch (e) {
+      // tslint:disable-next-line: no-console
+      console.log(e);
     }
   }
 }

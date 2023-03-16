@@ -7,7 +7,6 @@ import {join} from 'path';
 import {sendMessageToOverlayWindow} from 'root/app/messages';
 import ourActiveWin from 'root/our-active-win';
 import {settingsStore} from 'root/app/settings-store/settings_store';
-import {getJSONData} from 'root/app/log-parser/events';
 import {jsonrepair} from 'jsonrepair';
 
 export class WindowLocator {
@@ -176,12 +175,13 @@ export class WindowLocator {
   }
 
   private brutallyParseJSON(raw: string): void {
-    /*try {
+    try {
       const test = JSON.parse(raw);
     } catch (e) {
+      console.log(e);
       console.log('-------------------testing error!------------------------');
       console.log(raw);
-    }*/
+    }
     const changesIndex = raw.indexOf('"changes":[');
     const lastCloseBracket = raw.lastIndexOf(']');
 
