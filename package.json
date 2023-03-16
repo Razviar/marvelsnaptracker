@@ -1,7 +1,7 @@
 {
   "name": "marvelsnaptracker",
   "productName": "Marvel Snap Tracker",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Marvel Snap Tracker",
   "main": "./.webpack/main",
   "scripts": {

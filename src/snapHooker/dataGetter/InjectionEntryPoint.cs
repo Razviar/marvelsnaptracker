@@ -55,7 +55,14 @@ namespace DataGetter
                 {
                     if (numArray[innerCursor] == 0 || numArray[innerCursor] == 1 || numArray[innerCursor] == 128 || numArray[innerCursor] == 129)
                     {
-                        innerCursor += 3;
+                        if (numArray[innerCursor + 1] <= 125)
+                        {
+                            innerCursor += 1;
+                        }
+                        else
+                        {
+                            innerCursor += 3;
+                        }
                     }
                     else
                     {

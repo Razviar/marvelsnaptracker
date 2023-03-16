@@ -1,6 +1,7 @@
 ﻿using DataGetter;
 using EasyHook;
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -15,6 +16,27 @@ using System.Windows.Forms;
 
 namespace getFrontWindow
 {
+    public static class NonBlockingConsole
+    {
+        private static BlockingCollection<string> m_Queue = new BlockingCollection<string>();
+
+        static NonBlockingConsole()
+        {
+            var thread = new Thread(
+              () =>
+              {
+                  while (true) Console.WriteLine(m_Queue.Take());
+              });
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        public static void WriteLine(string value)
+        {
+            m_Queue.Add(value);
+        }
+    }
+
     public class NamedPipeServer
     {
         public void Start() => new Thread(new ThreadStart(this.ServerThread))
@@ -31,7 +53,7 @@ namespace getFrontWindow
             {
                 string responseJson = streamReader.ReadLine();
                 if (responseJson != null)
-                    Console.WriteLine(responseJson);
+                    NonBlockingConsole.WriteLine(responseJson);
                 Thread.Sleep(50);
             }
         }
@@ -158,7 +180,7 @@ namespace getFrontWindow
                 currentBounds.y = result.y;
                 currentBounds.height = result.height;
                 currentBounds.width = result.width;
-                Console.WriteLine(json);
+                NonBlockingConsole.WriteLine(json);
             }
         }
 
@@ -167,7 +189,7 @@ namespace getFrontWindow
             output.title = "NotWhatYouWant";
             output.owner.processId = 0;
             string json = new JavaScriptSerializer().Serialize(output);
-            Console.WriteLine(json);
+            NonBlockingConsole.WriteLine(json);
             UnhookWinEvent(hook[0]);
             UnhookWinEvent(hook[1]);
             UnhookWinEvent(hook[2]);
@@ -222,11 +244,11 @@ namespace getFrontWindow
                             {
                                 if (CantDoInjection)
                                 {
-                                    Console.WriteLine("ERROR");
+                                    NonBlockingConsole.WriteLine("ERROR");
                                 }
                                 else
                                 {
-                                    Console.WriteLine("OK");
+                                    NonBlockingConsole.WriteLine("OK");
                                 }
                                 Environment.Exit(0);
                             }
@@ -239,7 +261,7 @@ namespace getFrontWindow
 
                         string json = new JavaScriptSerializer().Serialize(output);
 
-                        Console.WriteLine(json);
+                        NonBlockingConsole.WriteLine(json);
                         deleTargetMoved = new WinEventDelegate(TargetMoved);
                         deleForegroundChanged = new WinEventDelegate(ForegroundChanged);
                         hook[0] = SetWinEventHook(EVENT_OBJECT_LOCATIONCHANGE, EVENT_OBJECT_LOCATIONCHANGE, IntPtr.Zero, deleTargetMoved, SNAPprocessID, threadID, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS | WINEVENT_SKIPOWNTHREAD);
@@ -256,7 +278,7 @@ namespace getFrontWindow
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e.ToString());
+                                NonBlockingConsole.WriteLine(e.ToString());
                             }
                             dataHookSet = true;
                         }
@@ -267,10 +289,10 @@ namespace getFrontWindow
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                NonBlockingConsole.WriteLine(e.ToString());
                 ForegroundWindowOutput output = new ForegroundWindowOutput { platform = "windows", id = 0, owner = { processId = 0 }, bounds = { x = 0, y = 0, width = 0, height = 0 } };
                 string json = new JavaScriptSerializer().Serialize(output);
-                Console.WriteLine(json);
+                NonBlockingConsole.WriteLine(json);
             }
         }
 
