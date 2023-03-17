@@ -162,12 +162,14 @@ export class WindowLocator {
           });
           break;
         case 'CubeGame.GameResultChange':
-          console.log(change);
+          //console.log(change);
           const cubes = +change?.message?.finalCubeValue;
           const winner =
             change?.message?.gameResultAccountItems[0]?.isWinner === true
               ? change?.message?.gameResultAccountItems[0]?.accountId
-              : change?.message?.gameResultAccountItems[1]?.accountId;
+              : change?.message?.gameResultAccountItems[1]?.isWinner === true
+              ? change?.message?.gameResultAccountItems[1]?.accountId
+              : undefined;
           gameState.updateDeckStats(winner, cubes);
           break;
       }
@@ -175,13 +177,13 @@ export class WindowLocator {
   }
 
   private brutallyParseJSON(raw: string): void {
-    try {
+    /*try {
       const test = JSON.parse(raw);
     } catch (e) {
       console.log(e);
       console.log('-------------------testing error!------------------------');
       console.log(raw);
-    }
+    }*/
     const changesIndex = raw.indexOf('"changes":[');
     const lastCloseBracket = raw.lastIndexOf(']');
 

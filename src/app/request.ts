@@ -1,4 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios';
+import https from 'https';
 import zlib from 'zlib';
 
 import {isStillSendingEvents} from 'root/api/logsender';
@@ -20,6 +21,8 @@ async function makeAxios(
       url: `${baseURL}${path.startsWith('/') ? '' : '/'}${path}`,
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
+      timeout: 20000,
+      httpsAgent: new https.Agent({keepAlive: true}),
       method,
     });
     const sendingEvents = path.indexOf('cm_uploadpackfile') > -1;

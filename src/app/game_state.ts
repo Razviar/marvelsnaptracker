@@ -41,21 +41,23 @@ class GameState {
     this.checkProcessId();
   }
 
-  public updateDeckStats(winner: string, cubes: number) {
+  public updateDeckStats(winner: string | undefined, cubes: number) {
     const account = settingsStore.getAccount();
     const userId = account?.player?.playerId;
     const isWinner = winner === userId;
-    if (this.deckStats[this.selectedDeck] !== undefined) {
-      this.deckStats[this.selectedDeck].win += isWinner ? 1 : 0;
-      this.deckStats[this.selectedDeck].loss += isWinner ? 0 : 1;
-      this.deckStats[this.selectedDeck].cube_win += isWinner ? cubes : 0;
-      this.deckStats[this.selectedDeck].cube_loss += isWinner ? 0 : cubes;
-    } else {
-      this.deckStats[this.selectedDeck] = {win: 0, loss: 0, cube_win: 0, cube_loss: 0};
-      this.deckStats[this.selectedDeck].win = isWinner ? 1 : 0;
-      this.deckStats[this.selectedDeck].loss = isWinner ? 0 : 1;
-      this.deckStats[this.selectedDeck].cube_win = isWinner ? cubes : 0;
-      this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
+    if (winner !== undefined) {
+      if (this.deckStats[this.selectedDeck] !== undefined) {
+        this.deckStats[this.selectedDeck].win += isWinner ? 1 : 0;
+        this.deckStats[this.selectedDeck].loss += isWinner ? 0 : 1;
+        this.deckStats[this.selectedDeck].cube_win += isWinner ? cubes : 0;
+        this.deckStats[this.selectedDeck].cube_loss += isWinner ? 0 : cubes;
+      } else {
+        this.deckStats[this.selectedDeck] = {win: 0, loss: 0, cube_win: 0, cube_loss: 0};
+        this.deckStats[this.selectedDeck].win = isWinner ? 1 : 0;
+        this.deckStats[this.selectedDeck].loss = isWinner ? 0 : 1;
+        this.deckStats[this.selectedDeck].cube_win = isWinner ? cubes : 0;
+        this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
+      }
     }
     // console.log(this.deckStats);
     sendMessageToOverlayWindow('stats-update', this.deckStats);
