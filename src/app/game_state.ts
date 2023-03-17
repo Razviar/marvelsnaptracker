@@ -120,6 +120,10 @@ class GameState {
         this.processId = undefined;
         this.badErrorHappening = false;
       }
+      const overlayWindow = getOverlayWindow();
+      if (overlayWindow) {
+        this.hideOverlay(overlayWindow);
+      }
       sendMessageToHomeWindow('show-status', {message: 'Game is not running!', color: '#dbb63d'});
     }
   }
@@ -274,12 +278,17 @@ class GameState {
 
   public async doMTGARestart(): Promise<void> {
     try {
-      const mtgaPath = settingsStore.get().mtgaPath;
-      if (this.processId !== undefined && mtgaPath !== undefined) {
+      if (
+        this.processId !== undefined &&
+        this.processPath !== undefined &&
+        this.processPath !== '' &&
+        this.processPath.includes('SNAP')
+      ) {
         exec(`wmic process where "ProcessID=${this.processId}" delete`).unref();
         this.setRunning(false);
         await sleep(1000);
-        execFile(join(mtgaPath, '..', 'MTGA.exe')).unref();
+        console.log(this.processPath);
+        execFile(this.processPath).unref();
         await sleep(1000);
         this.checkProcessId();
       }

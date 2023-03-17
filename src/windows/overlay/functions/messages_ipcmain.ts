@@ -25,11 +25,6 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   onMessageFromIpcMain('set-ovlsettings', (settings) => {
     //console.log('setting settings');
     overlayConfig.ovlSettings = settings;
-    scalesetter(false);
-    dragger(overlayElements.MainDeckFrame, overlayElements.MoveHandle);
-    dragger(overlayElements.OpponentOutFrame, overlayElements.OppMoveHandle);
-    opacitySetter(false);
-    updatelinks();
 
     try {
       setInteractiveHandler(settings);
@@ -68,6 +63,12 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
         overlayElements.OpponentOutFrame.style.right = '0px';
       }
     } catch (e) {}
+
+    scalesetter(false);
+    dragger(overlayElements.MainDeckFrame, overlayElements.MoveHandle);
+    dragger(overlayElements.OpponentOutFrame, overlayElements.OppMoveHandle);
+    opacitySetter(false);
+    updatelinks();
 
     if (currentMatch.matchId !== '') {
       updateDeck([]);

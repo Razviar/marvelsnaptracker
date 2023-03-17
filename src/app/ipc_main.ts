@@ -6,6 +6,7 @@ import {loadAppIcon} from 'root/app/app_icon';
 import {sendSettingsToRenderer} from 'root/app/auth';
 import {disableAutoLauncher, enableAutoLauncher} from 'root/app/auto_launcher';
 import {checkForUpdates, quitAndInstall} from 'root/app/auto_updater';
+import {gameState} from 'root/app/game_state';
 import {withLogParser} from 'root/app/log_parser_manager';
 import {withHomeWindow} from 'root/app/main_window';
 import {onMessageFromBrowserWindow, sendMessageToHomeWindow, sendMessageToOverlayWindow} from 'root/app/messages';
@@ -244,8 +245,8 @@ export function setupIpcMain(app: App): void {
 
   onMessageFromBrowserWindow('restart-mtga-now', () => {
     // tslint:disable-next-line: no-console
-    console.log('restart-mtga');
-    //gameState.doMTGARestart().catch();
+    //console.log('restart-mtga');
+    gameState.doMTGARestart().catch();
   });
 
   onMessageFromBrowserWindow('wipe-position', () => {
@@ -310,16 +311,22 @@ export function setupIpcMain(app: App): void {
   /*HOTKEY SETTINGS END*/
 
   /*OVERLAY SETTINGS*/
-  const overlaySettingsBoolean: Message[] = [
+  const overlaySettings: Message[] = [
     'set-setting-o-hidezero',
     'set-setting-o-showcardicon',
     'set-setting-o-hidemy',
     'set-setting-o-hideopp',
     'set-setting-o-neverhide',
     'set-setting-o-cardhover',
+    'set-setting-o-savepositiontop',
+    'set-setting-o-savepositionleft',
+    'set-setting-o-savepositiontopopp',
+    'set-setting-o-savepositionleftopp',
+    'set-setting-o-savescale',
+    'set-setting-o-opacity',
   ];
 
-  overlaySettingsBoolean.forEach((settingName) => {
+  overlaySettings.forEach((settingName, i) => {
     const settingType = settingName.split('set-setting-o-')[1] ?? '';
     onMessageFromBrowserWindow(settingName, (newOverlaySetting) => {
       const session = settingsStore.getAccount();
@@ -334,7 +341,9 @@ export function setupIpcMain(app: App): void {
         session.overlaySettings[settingType] = newOverlaySetting;
       }
       settingsStore.save();
-      sendMessageToOverlayWindow('set-ovlsettings', session.overlaySettings);
+      if (i <= 5) {
+        sendMessageToOverlayWindow('set-ovlsettings', session.overlaySettings);
+      }
     });
   });
 
