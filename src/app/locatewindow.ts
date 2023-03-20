@@ -258,10 +258,10 @@ export class WindowLocator {
         return;
       }
 
-      const path = join(app.getPath('userData'), 'debugging.txt');
+      //const path = join(app.getPath('userData'), 'debugging.txt');
 
       try {
-        fs.appendFileSync(path, raw + '\r\n\r\n\r\n');
+        //fs.appendFileSync(path, raw + '\r\n\r\n\r\n');
         raw
           .trim()
           .split('\n')

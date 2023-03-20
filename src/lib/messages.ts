@@ -152,7 +152,6 @@ export interface Messages {
   'stop-shadow-sync': undefined;
   'shadow-sync-over': undefined;
   nologfile: undefined;
-
   'show-dev-buttons': undefined;
   'dev-log': boolean;
   'startup-title': string;
@@ -160,6 +159,7 @@ export interface Messages {
   'enable-screen-recording': undefined;
   'need-to-restart-mtga': boolean;
   'cant-inject': undefined;
+  'get-suggestions': string[];
 }
 
 export enum NetworkStatusMessage {

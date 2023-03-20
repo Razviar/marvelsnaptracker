@@ -1,5 +1,6 @@
 import {App, dialog, nativeImage, shell} from 'electron';
 import {join} from 'path';
+import {getSuggestions} from 'root/api/getsuggestions';
 
 import {setuserdata, tokencheck, tokenrequest, userbytokenid, UserData} from 'root/api/userbytokenid';
 import {loadAppIcon} from 'root/app/app_icon';
@@ -348,4 +349,18 @@ export function setupIpcMain(app: App): void {
   });
 
   /*OVERLAY SETTINGS END*/
+
+  onMessageFromBrowserWindow('get-suggestions', (oppdeck) => {
+    console.log(oppdeck);
+    if (oppdeck.length < 2) {
+      return;
+    }
+    getSuggestions(oppdeck)
+      .then((suggestions) => {
+        console.log(suggestions);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 }

@@ -96,11 +96,13 @@ export function installHomeMessages(): void {
 
     if (newSettings.nohotkeys !== undefined) {
       const sw = document.querySelector('[data-setting="disable-hotkeys"]') as HTMLInputElement;
-      sw.checked = newSettings.nohotkeys;
-      if (!newSettings.nohotkeys) {
-        HomePageElements.hotkeyMap.classList.remove('hidden');
-      } else {
-        HomePageElements.hotkeyMap.classList.add('hidden');
+      if (sw) {
+        sw.checked = newSettings.nohotkeys;
+        if (!newSettings.nohotkeys) {
+          HomePageElements.hotkeyMap.classList.remove('hidden');
+        } else {
+          HomePageElements.hotkeyMap.classList.add('hidden');
+        }
       }
     }
 
@@ -122,50 +124,20 @@ export function installHomeMessages(): void {
   onMessageFromIpcMain('set-o-settings', (newOSettings) => {
     const overlaySettingsBoolean: Message[] = [
       'set-setting-o-hidezero',
-      'set-setting-o-showcardicon',
       'set-setting-o-hidemy',
       'set-setting-o-hideopp',
-      'set-setting-o-timers',
       'set-setting-o-neverhide',
-      'set-setting-o-mydecks',
-      'set-setting-o-cardhover',
-      'set-setting-o-detach',
-      'set-setting-o-hidemain',
-      'set-setting-o-interactive',
-    ];
-    const overlaySettingsNumber: Message[] = [
-      'set-setting-o-leftdigit',
-      'set-setting-o-rightdigit',
-      'set-setting-o-leftdraftdigit',
-      'set-setting-o-rightdraftdigit',
-      'set-setting-o-bottomdigit',
-      'set-setting-o-fontcolor',
     ];
 
     overlaySettingsBoolean.forEach((settingName) => {
       const settingType = settingName.split('set-setting-o-')[1] ?? '';
       const sw = document.querySelector(`[data-setting="o-${settingType}"]`) as HTMLInputElement;
-      if (hasOwnProperty(newOSettings, settingType)) {
+      if (sw && hasOwnProperty(newOSettings, settingType)) {
         const value = newOSettings[settingType];
         if (typeof value === 'boolean') {
           sw.checked = value;
         }
       }
-    });
-
-    overlaySettingsNumber.forEach((settingName) => {
-      const settingType = settingName.split('set-setting-o-')[1] ?? '';
-      const sw = document.querySelector(`[data-setting="o-${settingType}"]`) as HTMLSelectElement;
-      const opts = sw.options;
-      sw.selectedIndex = Array.from(opts).findIndex((opt) => {
-        if (hasOwnProperty(newOSettings, settingType)) {
-          const value = newOSettings[settingType];
-          if (typeof value === 'number') {
-            return +opt.value === value;
-          }
-        }
-        return false;
-      });
     });
   });
 

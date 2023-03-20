@@ -91,7 +91,6 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     console.log('match-started', newMatch);
     if (currentMatch.matchId !== '') {
       currentMatch.over();
-      drawDeck();
       updateOppDeck([]);
     }
     overlayConfig.selectedDeck = newMatch.selectedDeckId;
@@ -160,9 +159,13 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     currentMatch.cardEntityIDs[revealedCard.entityId].rarityDefId = revealedCard.rarityDefId;
     currentMatch.cardEntityIDs[revealedCard.entityId].artVariantDefId = revealedCard.artVariantDefId;
     if (currentMatch.cardEntityIDs[revealedCard.entityId].ownerEntityId === currentMatch.myEntityId) {
-      updateDeck([revealedCard.cardDefId]);
+      if (!overlayConfig.ovlSettings?.hidemy) {
+        updateDeck([revealedCard.cardDefId]);
+      }
     } else {
-      updateOppDeck([revealedCard.cardDefId]);
+      if (!overlayConfig.ovlSettings?.hideopp) {
+        updateOppDeck([revealedCard.cardDefId]);
+      }
     }
     //console.log('match-card-reveal', revealedCard);
   });

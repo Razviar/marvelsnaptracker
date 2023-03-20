@@ -118,10 +118,9 @@ export function drawSession(
   overlayElements.DeckName.innerHTML = 'Current Session Stats';
   overlayElements.MainOut.innerHTML = output;
 
-  if (!overlayConfig.ovlSettings?.hidemy) {
-    overlayElements.MainDeckFrame.classList.remove('hidden');
-    //toggleButtonClass(overlayElements.ToggleMe, overlayElements.MainDeckFrame.classList.contains('hidden'));
-  }
+  overlayElements.MainDeckFrame.classList.remove('hidden');
+  //toggleButtonClass(overlayElements.ToggleMe, overlayElements.MainDeckFrame.classList.contains('hidden'));
+
   /*const AllCards = document.getElementsByClassName('DcDrow');
   Array.from(AllCards).forEach((theCard) => {
     HoverEventListener(theCard);
