@@ -111,7 +111,7 @@ namespace DataGetter
                 }
             }
             sigScanSharp.SelectModule(targetModule);
-            sigScanSharp.AddPattern("DataReceived", "40 53 55 56 41 54 41 55 41 56 41 57 48 83 EC 30 80 3D ? ? ? ? 00 41 8B F1 41 8B E8 4C 8B E2");
+            sigScanSharp.AddPattern("DataReceived", "40 53 55 56 41 54 41 55 41 57 48 83 EC 38 80 3D ? ? ? ? 00 41 8B F1 45 8B F8");
             return new IntPtr((long)sigScanSharp.FindPatterns(out long _)["DataReceived"]);
         }
 
