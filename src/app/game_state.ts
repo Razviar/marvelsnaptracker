@@ -59,7 +59,8 @@ class GameState {
         this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
       }
     }
-    // console.log(this.deckStats);
+    /*console.log(this.deckStats);
+    console.log(userId, winner);*/
     sendMessageToOverlayWindow('stats-update', this.deckStats);
   }
 

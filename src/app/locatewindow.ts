@@ -88,8 +88,8 @@ export class WindowLocator {
       ).replace('Roaming\\', '');
       const data = fs.readFileSync(path, {encoding: 'utf8', flag: 'r'});
       const dataParsed = JSON.parse(data.slice(data.indexOf('{')));
-      gameState.setSelectedDeck(dataParsed.SelectedDeckId);
-      return dataParsed.SelectedDeckId;
+      gameState.setSelectedDeck(dataParsed.SelectedDeckId.Value);
+      return dataParsed.SelectedDeckId.Value;
     } catch (e) {
       console.log('getWhatDeckIsselected', e);
       return '';
@@ -107,68 +107,72 @@ export class WindowLocator {
   ];
 
   private handleChangesData(changes: any[]): void {
+    //console.log('changes', changes);
     const userID = settingsStore.getAccount()?.player?.playerId;
     if (userID === undefined) {
       return;
     }
     changes.forEach((change) => {
       const typeSplitted = change['$type'].split(', ');
+      //console.log(typeSplitted[0], JSON.stringify(change));
       switch (typeSplitted[0]) {
         case 'CubeGame.GameCreateChange':
           const selectedDeckId = this.getWhatDeckIsSelected();
+          //console.log(selectedDeckId);
           sendMessageToOverlayWindow('match-started', {
-            matchId: change.id,
-            players: [change.players[0].accountId as string, change.players[1].accountId as string],
+            matchId: change.Id,
+            players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
             uid: userID,
             selectedDeckId,
           });
           break;
         case 'CubeGame.GameCreatePlayerChange':
           sendMessageToOverlayWindow('match-set-player', {
-            accountId: change.accountId,
-            name: change.name,
-            entityId: +change.entityId,
-            deckEntityId: +change.deckEntityId,
-            graveyardEntityId: +change.graveyardEntityId,
-            handEntityId: +change.handEntityId,
+            accountId: change.AccountId,
+            name: change.Name,
+            entityId: +change.EntityId,
+            deckEntityId: +change.DeckEntityId,
+            graveyardEntityId: +change.GraveyardEntityId,
+            handEntityId: +change.HandEntityId,
           });
         case 'CubeGame.GameCreateLocationChange':
           sendMessageToOverlayWindow('match-set-location', {
-            entityId: change.entityId,
-            locationSlot: change.locationSlot,
+            entityId: change.EntityId,
+            locationSlot: change.LocationSlot,
           });
           break;
         case 'CubeGame.GameCreateCardChange':
           sendMessageToOverlayWindow('match-create-card-entity', {
-            entityId: change.entityId,
-            ownerEntityId: change.ownerEntityId,
-            zoneEntityId: change.zoneEntityId,
+            entityId: change.EntityId,
+            ownerEntityId: change.OwnerEntityId,
+            zoneEntityId: change.ZoneEntityId,
           });
           break;
         case 'CubeGame.GameRevealCardChange':
           //console.log(change);
           sendMessageToOverlayWindow('match-card-reveal', {
-            entityId: change.entityId,
-            cardDefId: change.cardDefId,
-            rarityDefId: change.rarityDefId,
-            artVariantDefId: change.artVariantDefId,
+            entityId: change.EntityId,
+            cardDefId: change.CardDefId,
+            rarityDefId: change.RarityDefId,
+            artVariantDefId: change.ArtVariantDefId,
           });
           break;
         case 'CubeGame.CardMoveChange':
           sendMessageToOverlayWindow('match-card-move', {
-            cardEntityId: change.cardEntityId,
-            cardOwnerEntityId: change.cardOwnerEntityId,
-            targetZoneEntityId: change.targetZoneEntityId,
+            cardEntityId: change.CardEntityId,
+            cardOwnerEntityId: change.CardOwnerEntityId,
+            targetZoneEntityId: change.TargetZoneEntityId,
           });
           break;
         case 'CubeGame.GameResultChange':
-          //console.log(change);
-          const cubes = +change?.message?.finalCubeValue;
+          /*console.log('GameResultChange');
+          console.log(change);*/
+          const cubes = +change?.Message?.FinalCubeValue;
           const winner =
-            change?.message?.gameResultAccountItems[0]?.isWinner === true
-              ? change?.message?.gameResultAccountItems[0]?.accountId
-              : change?.message?.gameResultAccountItems[1]?.isWinner === true
-              ? change?.message?.gameResultAccountItems[1]?.accountId
+            change?.Message?.GameResultAccountItems[0]?.IsWinner === true
+              ? change?.Message?.GameResultAccountItems[0]?.AccountId
+              : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
+              ? change?.Message?.GameResultAccountItems[1]?.AccountId
               : undefined;
           gameState.updateDeckStats(winner, cubes);
           break;
@@ -184,14 +188,14 @@ export class WindowLocator {
       console.log('-------------------testing error!------------------------');
       console.log(raw);
     }*/
-    const changesIndex = raw.indexOf('"changes":[');
+    const changesIndex = raw.indexOf('"Changes":[');
     const lastCloseBracket = raw.lastIndexOf(']');
 
     if (changesIndex === -1) {
       return;
     }
 
-    const changesString = raw.substring(changesIndex + '"changes":['.length, lastCloseBracket);
+    const changesString = raw.substring(changesIndex + '"Changes":['.length, lastCloseBracket);
     const changesArray: string[] = [];
     const changes: any[] = [];
     //console.log('brutallyParseJSON', changesArray);
