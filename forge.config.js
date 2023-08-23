@@ -19,7 +19,6 @@ module.exports = {
   publishers: [
     {
       name: '@electron-forge/publisher-github',
-      platforms: ['darwin', 'win32'],
       config: {
         repository: {
           owner: 'Razviar',
@@ -52,17 +51,8 @@ module.exports = {
       },
     },
     {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
-    },
-    {
-      name: '@electron-forge/maker-deb',
-      config: {},
-    },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {},
-    },
+      name: '@electron-forge/maker-zip'
+    }
   ],
   plugins: [
     {
