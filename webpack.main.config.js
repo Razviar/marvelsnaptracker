@@ -18,8 +18,6 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        {context: 'src/our-active-win', from: '*.dll*', to: 'native_modules'},
-        {context: 'src/our-active-win', from: '*.pdb*', to: 'native_modules'},
         {context: 'src/our-active-win', from: '*.exe.config', to: 'native_modules'},
       ],
     }),
