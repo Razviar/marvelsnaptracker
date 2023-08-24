@@ -34,8 +34,9 @@ export class Match {
   public DecisionPlayer: number = 0;
   public totalCards: number = 0;
   public oppEntityId: number = 0;
+  public oppDeckStable: Array<{cardDefId: string; rarity: string; artVariantDefId: string}> = [];
 
-  public over(): void {
+  public over(purgeOpp?:boolean): void {
     this.matchId = '';
     this.ourUid = '';
     this.zones = {};
@@ -49,6 +50,9 @@ export class Match {
     this.DecisionPlayer = 0;
     this.totalCards = 0;
     this.timers = {me: 0, opponent: 0};
+    if(purgeOpp){
+      this.oppDeckStable=[];
+    }
   }
 
   public switchTimer(decisionPlayer: number): void {
