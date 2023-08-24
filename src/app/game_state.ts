@@ -1,5 +1,4 @@
 import {exec, execFile} from 'child_process';
-import {join} from 'path';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';

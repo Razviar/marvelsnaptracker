@@ -1,15 +1,15 @@
-import { OverlaySettings } from 'root/app/settings-store/settings_store';
-import { SnapCard } from 'root/models/snap_deck';
-import { onMessageFromIpcMain, sendMessageToIpcMain } from 'root/windows/messages';
-import { dragger } from 'root/windows/overlay/functions/dragger';
-import { drawDeck } from 'root/windows/overlay/functions/drawdeck';
-import { drawSession } from 'root/windows/overlay/functions/drawsession';
-import { opacityIncrement, scaleIncrement } from 'root/windows/overlay/functions/sethandlers';
-import { opacitySetter, scalesetter } from 'root/windows/overlay/functions/setters';
-import { updateDeck } from 'root/windows/overlay/functions/updatedeck';
-import { updatelinks } from 'root/windows/overlay/functions/updatelinks';
-import { updateOppDeck } from 'root/windows/overlay/functions/updateoppdeck';
-import { currentMatch, icons, overlayConfig, overlayElements, playerDecks } from 'root/windows/overlay/overlay';
+import {OverlaySettings} from 'root/app/settings-store/settings_store';
+import {SnapCard} from 'root/models/snap_deck';
+import {onMessageFromIpcMain, sendMessageToIpcMain} from 'root/windows/messages';
+import {dragger} from 'root/windows/overlay/functions/dragger';
+import {drawDeck} from 'root/windows/overlay/functions/drawdeck';
+import {drawSession} from 'root/windows/overlay/functions/drawsession';
+import {opacityIncrement, scaleIncrement} from 'root/windows/overlay/functions/sethandlers';
+import {opacitySetter, scalesetter} from 'root/windows/overlay/functions/setters';
+import {updateDeck} from 'root/windows/overlay/functions/updatedeck';
+import {updatelinks} from 'root/windows/overlay/functions/updatelinks';
+import {updateOppDeck} from 'root/windows/overlay/functions/updateoppdeck';
+import {currentMatch, icons, overlayConfig, overlayElements, playerDecks} from 'root/windows/overlay/overlay';
 
 export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySettings | undefined) => void): void {
   onMessageFromIpcMain('set-icosettings', (ico) => {
@@ -62,7 +62,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
         overlayElements.OpponentOutFrame.style.top = '15%';
         overlayElements.OpponentOutFrame.style.right = '0px';
       }
-    } catch (e) { }
+    } catch (e) {}
 
     scalesetter(false);
     dragger(overlayElements.MainDeckFrame, overlayElements.MoveHandle);
@@ -88,7 +88,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });*/
 
   onMessageFromIpcMain('match-started', (newMatch) => {
-    console.log('match-started', newMatch);
+    //console.log('match-started', newMatch);
     if (currentMatch.matchId !== '') {
       currentMatch.over(!newMatch.isBattle || newMatch.isNewBattle);
       updateOppDeck([]);

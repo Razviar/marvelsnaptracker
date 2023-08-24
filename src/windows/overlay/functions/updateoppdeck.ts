@@ -2,7 +2,6 @@ import {makeCard} from 'root/windows/overlay/functions/makecard';
 import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
 
 export function updateOppDeck(highlight: string[]): void {
-  
   const oppGraveyard: Array<{cardDefId: string; rarity: string; artVariantDefId: string}> = [];
   Object.keys(currentMatch.cardEntityIDs).forEach((cardEntityID) => {
     const TheEntity = currentMatch.cardEntityIDs[+cardEntityID];
@@ -31,20 +30,10 @@ export function updateOppDeck(highlight: string[]): void {
         artVariantDefId: TheEntity.artVariantDefId,
       });
     }
-
-    /*if (+TheEntity.ownerEntityId === +currentMatch.oppEntityId && TheEntity.cardDefId !== '') {
-      oppDeckStrings.push(TheEntity.cardDefId);
-    }*/
   });
-
-  /*if (oppDeckStrings.length > 2) {
-    sendMessageToIpcMain('get-suggestions', oppDeckStrings);
-  }*/
 
   let output = '';
   let outputGrave = '';
-
-  //sortcards(forsort, true, SortLikeMTGA)
 
   currentMatch.oppDeckStable.forEach((card) => {
     output += makeCard(card.cardDefId, false, card.rarity, card.artVariantDefId);

@@ -1,16 +1,16 @@
-import { ChildProcessWithoutNullStreams } from 'child_process';
-import { app, screen } from 'electron';
+import {ChildProcessWithoutNullStreams} from 'child_process';
+import {app, screen} from 'electron';
 import fs from 'fs';
 
-import { gameState } from 'root/app/game_state';
-import { join } from 'path';
-import { sendMessageToOverlayWindow } from 'root/app/messages';
+import {gameState} from 'root/app/game_state';
+import {join} from 'path';
+import {sendMessageToOverlayWindow} from 'root/app/messages';
 import ourActiveWin from 'root/our-active-win';
-import { settingsStore } from 'root/app/settings-store/settings_store';
-import { jsonrepair } from 'jsonrepair';
+import {settingsStore} from 'root/app/settings-store/settings_store';
+import {jsonrepair} from 'jsonrepair';
 
 export class WindowLocator {
-  public bounds: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 };
+  public bounds: {x: number; y: number; width: number; height: number} = {x: 0, y: 0, width: 0, height: 0};
   public isFullscreen: boolean = false;
   public SpawnedProcess: ChildProcessWithoutNullStreams | undefined;
   private severalPagesJSONReader: Buffer | undefined;
@@ -86,7 +86,7 @@ export class WindowLocator {
         'nvprod',
         'PlayState.json'
       ).replace('Roaming\\', '');
-      const data = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' });
+      const data = fs.readFileSync(path, {encoding: 'utf8', flag: 'r'});
       const dataParsed = JSON.parse(data.slice(data.indexOf('{')));
       gameState.setSelectedDeck(dataParsed.SelectedDeckId.Value);
       return dataParsed.SelectedDeckId.Value;
@@ -120,7 +120,12 @@ export class WindowLocator {
           const selectedDeckId = this.getWhatDeckIsSelected();
           //console.log(selectedDeckId);
 
-          if (change?.GameModeData !== undefined && change?.GameModeData?.['$type'] !== undefined && change?.GameModeData?.['$type']?.includes('BattleGameModeData') && change?.GameModeData?.BattleHistory?.GameResults !== undefined) {
+          if (
+            change?.GameModeData !== undefined &&
+            change?.GameModeData?.['$type'] !== undefined &&
+            change?.GameModeData?.['$type']?.includes('BattleGameModeData') &&
+            change?.GameModeData?.BattleHistory?.GameResults !== undefined
+          ) {
             gameState.startBattleMode(change?.GameModeData?.BattleHistory?.GameResults);
           } else {
             gameState.startNormalMatch();
@@ -131,8 +136,13 @@ export class WindowLocator {
             players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
             uid: userID,
             selectedDeckId,
-            isBattle: change?.GameModeData !== undefined && change?.GameModeData?.['$type'] !== undefined && change?.GameModeData?.['$type']?.includes('BattleGameModeData'),
-            isNewBattle: Array.isArray(change?.GameModeData?.BattleHistory?.GameResults) && change?.GameModeData?.BattleHistory.GameResults.length === 0
+            isBattle:
+              change?.GameModeData !== undefined &&
+              change?.GameModeData?.['$type'] !== undefined &&
+              change?.GameModeData?.['$type']?.includes('BattleGameModeData'),
+            isNewBattle:
+              Array.isArray(change?.GameModeData?.BattleHistory?.GameResults) &&
+              change?.GameModeData?.BattleHistory.GameResults.length === 0,
           });
           break;
         case 'CubeGame.GameCreatePlayerChange':
@@ -183,8 +193,8 @@ export class WindowLocator {
             change?.Message?.GameResultAccountItems[0]?.IsWinner === true
               ? change?.Message?.GameResultAccountItems[0]?.AccountId
               : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
-                ? change?.Message?.GameResultAccountItems[1]?.AccountId
-                : undefined;
+              ? change?.Message?.GameResultAccountItems[1]?.AccountId
+              : undefined;
           if (+change?.Message?.IsBattleMode) {
             gameState.updateBattleDeckStats(winner, cubes);
           } else {
@@ -254,8 +264,8 @@ export class WindowLocator {
       }
     });
 
-    const path = join(app.getPath('userData'), 'debugging.txt');
-    fs.appendFileSync(path, JSON.stringify(changes) + '\r\n\r\n\r\n');
+    /*const path = join(app.getPath('userData'), 'debugging.txt');
+    fs.appendFileSync(path, JSON.stringify(changes) + '\r\n\r\n\r\n');*/
 
     //console.log('brutallyParseJSON', changes);
 
