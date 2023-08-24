@@ -216,7 +216,7 @@ export class LogParser {
           const pathToInterestingArray = parsingMetadata.GatherFromArray[DataObjectArray].path.slice(1);
           const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as Array<any>;
 
-          interestingArray.map((_, interestingArrayIndex) => {
+          interestingArray?.map((_, interestingArrayIndex) => {
             const gatheredResult: any = {};
             const ResolvedArray = extractValue(
               dataParsed,
