@@ -48,6 +48,8 @@ export interface Messages {
     uid: string;
     players: string[];
     selectedDeckId: string;
+    isBattle: boolean;
+    isNewBattle: boolean;
   };
   'match-set-player': {
     accountId: string;

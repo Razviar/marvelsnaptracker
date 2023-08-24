@@ -119,11 +119,30 @@ export class WindowLocator {
         case 'CubeGame.GameCreateChange':
           const selectedDeckId = this.getWhatDeckIsSelected();
           //console.log(selectedDeckId);
+
+          if (
+            change?.GameModeData !== undefined &&
+            change?.GameModeData?.['$type'] !== undefined &&
+            change?.GameModeData?.['$type']?.includes('BattleGameModeData') &&
+            change?.GameModeData?.BattleHistory?.GameResults !== undefined
+          ) {
+            gameState.startBattleMode(change?.GameModeData?.BattleHistory?.GameResults);
+          } else {
+            gameState.startNormalMatch();
+          }
+
           sendMessageToOverlayWindow('match-started', {
             matchId: change.Id,
             players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
             uid: userID,
             selectedDeckId,
+            isBattle:
+              change?.GameModeData !== undefined &&
+              change?.GameModeData?.['$type'] !== undefined &&
+              change?.GameModeData?.['$type']?.includes('BattleGameModeData'),
+            isNewBattle:
+              Array.isArray(change?.GameModeData?.BattleHistory?.GameResults) &&
+              change?.GameModeData?.BattleHistory.GameResults.length === 0,
           });
           break;
         case 'CubeGame.GameCreatePlayerChange':
@@ -150,12 +169,14 @@ export class WindowLocator {
           break;
         case 'CubeGame.GameRevealCardChange':
           //console.log(change);
-          sendMessageToOverlayWindow('match-card-reveal', {
-            entityId: change.EntityId,
-            cardDefId: change.CardDefId,
-            rarityDefId: change.RarityDefId,
-            artVariantDefId: change.ArtVariantDefId,
-          });
+          if (change.CreatedByCardDefId === undefined && change.CreatedByLocationDefId === undefined) {
+            sendMessageToOverlayWindow('match-card-reveal', {
+              entityId: change.EntityId,
+              cardDefId: change.CardDefId,
+              rarityDefId: change.RarityDefId,
+              artVariantDefId: change.ArtVariantDefId,
+            });
+          }
           break;
         case 'CubeGame.CardMoveChange':
           sendMessageToOverlayWindow('match-card-move', {
@@ -174,7 +195,11 @@ export class WindowLocator {
               : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
               ? change?.Message?.GameResultAccountItems[1]?.AccountId
               : undefined;
-          gameState.updateDeckStats(winner, cubes);
+          if (+change?.Message?.IsBattleMode) {
+            gameState.updateBattleDeckStats(winner, cubes);
+          } else {
+            gameState.updateDeckStats(winner, cubes);
+          }
           break;
       }
     });
@@ -238,6 +263,9 @@ export class WindowLocator {
         }
       }
     });
+
+    /*const path = join(app.getPath('userData'), 'debugging.txt');
+    fs.appendFileSync(path, JSON.stringify(changes) + '\r\n\r\n\r\n');*/
 
     //console.log('brutallyParseJSON', changes);
 

@@ -88,9 +88,9 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });*/
 
   onMessageFromIpcMain('match-started', (newMatch) => {
-    console.log('match-started', newMatch);
+    //console.log('match-started', newMatch);
     if (currentMatch.matchId !== '') {
-      currentMatch.over();
+      currentMatch.over(!newMatch.isBattle || newMatch.isNewBattle);
       updateOppDeck([]);
     }
     overlayConfig.selectedDeck = newMatch.selectedDeckId;
@@ -186,7 +186,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
 
   onMessageFromIpcMain('stats-update', (statUpdate) => {
     //console.log(JSON.stringify(currentMatch));
-    currentMatch.over();
+    currentMatch.over(true);
     updateOppDeck([]);
     overlayElements.OpponentOutFrame.classList.add('hidden');
     drawSession(statUpdate);

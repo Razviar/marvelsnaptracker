@@ -1,20 +1,17 @@
-import {sendMessageToIpcMain} from 'root/windows/messages';
 import {makeCard} from 'root/windows/overlay/functions/makecard';
 import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
 
 export function updateOppDeck(highlight: string[]): void {
-  const oppDeck: Array<{cardDefId: string; rarity: string; artVariantDefId: string}> = [];
   const oppGraveyard: Array<{cardDefId: string; rarity: string; artVariantDefId: string}> = [];
-  const oppDeckStrings: string[] = [];
   Object.keys(currentMatch.cardEntityIDs).forEach((cardEntityID) => {
     const TheEntity = currentMatch.cardEntityIDs[+cardEntityID];
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      oppDeck.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
+      currentMatch.oppDeckStable.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
       currentMatch.zones[TheEntity.zoneId].type !== 'graveyardEntity'
     ) {
-      oppDeck.push({
+      currentMatch.oppDeckStable.push({
         cardDefId: TheEntity.cardDefId,
         rarity: TheEntity.rarityDefId,
         artVariantDefId: TheEntity.artVariantDefId,
@@ -24,7 +21,7 @@ export function updateOppDeck(highlight: string[]): void {
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      oppDeck.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
+      currentMatch.oppDeckStable.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
       currentMatch.zones[TheEntity.zoneId].type === 'graveyardEntity'
     ) {
       oppGraveyard.push({
@@ -33,22 +30,12 @@ export function updateOppDeck(highlight: string[]): void {
         artVariantDefId: TheEntity.artVariantDefId,
       });
     }
-
-    /*if (+TheEntity.ownerEntityId === +currentMatch.oppEntityId && TheEntity.cardDefId !== '') {
-      oppDeckStrings.push(TheEntity.cardDefId);
-    }*/
   });
-
-  /*if (oppDeckStrings.length > 2) {
-    sendMessageToIpcMain('get-suggestions', oppDeckStrings);
-  }*/
 
   let output = '';
   let outputGrave = '';
 
-  //sortcards(forsort, true, SortLikeMTGA)
-
-  oppDeck.forEach((card) => {
+  currentMatch.oppDeckStable.forEach((card) => {
     output += makeCard(card.cardDefId, false, card.rarity, card.artVariantDefId);
   });
 

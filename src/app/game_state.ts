@@ -1,5 +1,4 @@
 import {exec, execFile} from 'child_process';
-import {join} from 'path';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';
@@ -33,12 +32,56 @@ class GameState {
   private decks: UserDeck[] = [];
   private selectedDeck: string = '';
   private deckStats: Record<string, {win: number; loss: number; cube_win: number; cube_loss: number}> = {};
+  public isDoingBattle: Boolean = false;
+  public battleScores: [number, number] = [10, 10];
 
   constructor() {
     this.startTimeMillis = Date.now();
     this.running = false;
     this.AVBlocked = false;
     this.checkProcessId();
+  }
+
+  public startBattleMode(GameResults: any) {
+    this.isDoingBattle = true;
+    const account = settingsStore.getAccount();
+    const userId = account?.player?.playerId;
+    this.battleScores = [10, 10];
+    GameResults.forEach((gameResult: any) => {
+      const cubeValue = gameResult.FinalCubeValue;
+      const ourResult = gameResult.GameResultAccountItems.find((res: any) => res.AccountId === userId);
+      if (ourResult.IsWinner && ourResult.IsWinner === true) {
+        this.battleScores[1] -= cubeValue;
+      } else if (ourResult.IsLoser && ourResult.IsLoser === true) {
+        this.battleScores[0] -= cubeValue;
+      }
+    });
+    //console.log('startBattleMode',this.battleScores);
+  }
+
+  public startNormalMatch() {
+    this.isDoingBattle = false;
+    this.battleScores = [10, 10];
+  }
+
+  public updateBattleDeckStats(winner: string | undefined, cubes: number) {
+    const account = settingsStore.getAccount();
+    const userId = account?.player?.playerId;
+    const isWinner = winner === userId;
+    if (winner !== undefined) {
+      if (isWinner) {
+        this.battleScores[1] -= cubes;
+      } else {
+        this.battleScores[0] -= cubes;
+      }
+    }
+    //console.log('updateBattleDeckStats', this.battleScores);
+
+    if (this.battleScores[0] === 0 || this.battleScores[1] === 0) {
+      this.isDoingBattle = false;
+      this.battleScores = [10, 10];
+      sendMessageToOverlayWindow('stats-update', this.deckStats);
+    }
   }
 
   public updateDeckStats(winner: string | undefined, cubes: number) {
