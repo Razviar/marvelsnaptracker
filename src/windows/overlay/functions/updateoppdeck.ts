@@ -1,33 +1,33 @@
+import {SnapCard} from 'root/models/snap_deck';
 import {makeCard} from 'root/windows/overlay/functions/makecard';
+import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
 import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
 
 export function updateOppDeck(highlight: string[]): void {
-  const oppGraveyard: Array<{cardDefId: string; rarity: string; artVariantDefId: string}> = [];
+  let oppGraveyard: SnapCard[] = [];
   Object.keys(currentMatch.cardEntityIDs).forEach((cardEntityID) => {
     const TheEntity = currentMatch.cardEntityIDs[+cardEntityID];
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.oppDeckStable.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
-      currentMatch.zones[TheEntity.zoneId].type !== 'graveyardEntity'
+      currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === TheEntity.cardDefId) === -1
     ) {
       currentMatch.oppDeckStable.push({
-        cardDefId: TheEntity.cardDefId,
-        rarity: TheEntity.rarityDefId,
-        artVariantDefId: TheEntity.artVariantDefId,
+        CardDefId: TheEntity.cardDefId,
+        RarityDefId: TheEntity.rarityDefId,
+        ArtVariantDefId: TheEntity.artVariantDefId,
       });
     }
 
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.oppDeckStable.findIndex((el) => el.cardDefId === TheEntity.cardDefId) === -1 &&
       currentMatch.zones[TheEntity.zoneId].type === 'graveyardEntity'
     ) {
       oppGraveyard.push({
-        cardDefId: TheEntity.cardDefId,
-        rarity: TheEntity.rarityDefId,
-        artVariantDefId: TheEntity.artVariantDefId,
+        CardDefId: TheEntity.cardDefId,
+        RarityDefId: TheEntity.rarityDefId,
+        ArtVariantDefId: TheEntity.artVariantDefId,
       });
     }
   });
@@ -35,12 +35,16 @@ export function updateOppDeck(highlight: string[]): void {
   let output = '';
   let outputGrave = '';
 
+  currentMatch.oppDeckStable = sortDeck(currentMatch.oppDeckStable, true);
+
   currentMatch.oppDeckStable.forEach((card) => {
-    output += makeCard(card.cardDefId, false, card.rarity, card.artVariantDefId);
+    output += makeCard(card.CardDefId, false, card.RarityDefId, card.ArtVariantDefId);
   });
 
+  oppGraveyard = sortDeck(oppGraveyard, true);
+
   oppGraveyard.forEach((card) => {
-    outputGrave += makeCard(card.cardDefId, false, card.rarity, card.artVariantDefId);
+    outputGrave += makeCard(card.CardDefId, false, card.RarityDefId, card.ArtVariantDefId);
   });
 
   overlayElements.OpponentOut.innerHTML =

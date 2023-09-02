@@ -1,7 +1,7 @@
 import {TokenCheckRes, TokenRequestRes} from 'root/api/userbytokenid';
 import {Account, LatestSettings, OverlaySettings} from 'root/app/settings-store/settings_store';
 import {HotkeysSettingsV1} from 'root/app/settings-store/v8';
-import {CardPlayed} from 'root/models/cards';
+import {Cards} from 'root/models/cards';
 import {UserMetadata} from 'root/models/metadata';
 import {UserDeck} from 'root/models/snap_deck';
 import {UserResult} from 'root/models/userbytokenid';
@@ -81,6 +81,7 @@ export interface Messages {
   'disable-clicks': undefined;
   'deck-message': string;
   'decks-message': Array<UserDeck>;
+  'cards-message': Cards;
   'set-userdata': UserMetadata;
   mulligan: boolean;
   'set-version': string;
@@ -92,7 +93,6 @@ export interface Messages {
   'set-setting-icon': string;
   'set-setting-do-uploads': boolean;
   'set-setting-disable-hotkeys': boolean;
-  'card-played': CardPlayed;
   'set-setting-o-hidezero': boolean;
   'set-setting-o-hidemy': boolean;
   'set-setting-o-hideopp': boolean;

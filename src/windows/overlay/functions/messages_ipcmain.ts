@@ -81,11 +81,10 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     sendMessageToIpcMain('set-scale', zoom);
   });
 
-  /*onMessageFromIpcMain('set-metadata', (meta) => {
-    overlayConfig.metaData = meta;
-    overlayConfig.allCards = new Map(meta.allcards);
-    overlayConfig.metaData.allcards = [];
-  });*/
+  onMessageFromIpcMain('cards-message', (cards) => {
+    overlayConfig.allCards = cards;
+    //console.log(overlayConfig.allCards);
+  });
 
   onMessageFromIpcMain('match-started', (newMatch) => {
     //console.log('match-started', newMatch);
