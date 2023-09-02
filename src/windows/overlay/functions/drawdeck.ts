@@ -1,9 +1,11 @@
 import {makeCard} from 'root/windows/overlay/functions/makecard';
+import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
 import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
 
 export function drawDeck(): void {
   let output = '';
   currentMatch.totalCards = 0;
+  currentMatch.myFullDeck = sortDeck(currentMatch.myFullDeck, true);
   currentMatch.myFullDeck.forEach((card) => {
     output += makeCard(card.CardDefId, true, card.RarityDefId, card.ArtVariantDefId);
   });

@@ -2,6 +2,7 @@ import {exec, execFile} from 'child_process';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';
+import {getCards} from 'root/api/cards';
 import {registerHotkeys, unRegisterHotkeys} from 'root/app/hotkeys';
 import {WindowLocator} from 'root/app/locatewindow';
 import {withLogParser} from 'root/app/log_parser_manager';
@@ -181,6 +182,9 @@ class GameState {
     sendMessageToOverlayWindow('set-ovlsettings', ovlSettings);
     sendMessageToOverlayWindow('deck-message', this.selectedDeck);
     sendMessageToOverlayWindow('decks-message', this.decks);
+    getCards().then((cards) => {
+      sendMessageToOverlayWindow('cards-message', cards);
+    });
   }
 
   public overlayPositionSetter(onlySetPosition?: boolean): void {

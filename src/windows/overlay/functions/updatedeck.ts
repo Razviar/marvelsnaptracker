@@ -1,11 +1,10 @@
+import {SnapCard} from 'root/models/snap_deck';
 import {makeCard} from 'root/windows/overlay/functions/makecard';
+import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
 import {currentMatch, overlayConfig, overlayElements} from 'root/windows/overlay/overlay';
 
 export function updateDeck(highlight: string[]): void {
-  /*currentMatch.myFullDeck.forEach((TheCard) => {
-    genBattleCardNum(TheCard.CardDefId);
-  });*/
-  const graveyard: string[] = [];
+  let graveyard: SnapCard[] = [];
   let output = '';
   let graveyardString = '';
 
@@ -16,17 +15,19 @@ export function updateDeck(highlight: string[]): void {
       TheEntity.cardDefId !== '' &&
       currentMatch.zones[TheEntity.zoneId].type === 'graveyardEntity'
     ) {
-      graveyard.push(TheEntity.cardDefId);
+      graveyard.push({
+        CardDefId: TheEntity.cardDefId,
+        RarityDefId: TheEntity.rarityDefId,
+        ArtVariantDefId: TheEntity.artVariantDefId,
+      });
     }
   });
 
+  graveyard = sortDeck(graveyard, true);
+
   if (graveyard.length > 0) {
-    currentMatch.myFullDeck.forEach((card) => {
-      if (graveyard.includes(card.CardDefId)) {
-        graveyardString += makeCard(card.CardDefId, true, card.RarityDefId, card.ArtVariantDefId);
-      } else {
-        output += makeCard(card.CardDefId, true, card.RarityDefId, card.ArtVariantDefId);
-      }
+    graveyard.forEach((card) => {
+      graveyardString += makeCard(card.CardDefId, true, card.RarityDefId, card.ArtVariantDefId);
     });
 
     overlayElements.MainOut.innerHTML =
