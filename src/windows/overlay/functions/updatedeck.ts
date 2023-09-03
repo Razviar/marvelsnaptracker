@@ -13,7 +13,7 @@ export function updateDeck(highlight: string[]): void {
     if (
       +TheEntity.ownerEntityId === +currentMatch.myEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.zones[TheEntity.zoneId].type === 'graveyardEntity'
+      currentMatch.zones?.[TheEntity.zoneId]?.type === 'graveyardEntity'
     ) {
       graveyard.push({
         CardDefId: TheEntity.cardDefId,

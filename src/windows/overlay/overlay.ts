@@ -28,6 +28,7 @@ export const overlayElements = {
   OpponentOutFrame: document.getElementById('OpponentOutFrame') as HTMLElement,
   OppMoveHandle: document.getElementById('OppMoveHandle') as HTMLElement,
   TransparencyHandle: document.getElementById('TransparencyHandle') as HTMLElement,
+  TableHandle: document.getElementById('TableHandle') as HTMLElement,
   LogoSpan: document.getElementById('LogoSpan') as HTMLElement,
   RestartWarning: document.getElementById('RestartWarning') as HTMLElement,
   AVWarning: document.getElementById('AVWarning') as HTMLElement,
@@ -40,10 +41,11 @@ export const playerDecks: UserDeck[] = [];
 export const userCollection: Map<number, number> = new Map();
 export const overlayConfig: OverlayConfig = {
   ovlSettings: undefined,
-  allCards: new Map(),
+  allCards: {},
   currentScale: 1,
   currentOpacity: 1,
   dopplerOpacity: -0.1,
+  cardsInARow: 6,
   justcreated: true,
   icon: '',
   highlightTimeout: 4000,

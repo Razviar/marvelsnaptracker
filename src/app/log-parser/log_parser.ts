@@ -17,7 +17,6 @@ import {StateInfo, stateStore} from 'root/app/state_store';
 import {getAccountFromScreenName} from 'root/app/userswitch';
 import {asyncForEach} from 'root/lib/asyncforeach';
 import {error} from 'root/lib/logger';
-
 import {ParseResults} from 'root/models/indicators';
 import {DeckCardArray, SnapCard, UserDeck} from 'root/models/snap_deck';
 
@@ -26,7 +25,7 @@ const FIVE_SECONDS = 5000;
 export class LogParser {
   private shouldStop: boolean = false;
   public isRunning: boolean = false;
-  private currentState: StateInfo;
+  private readonly currentState: StateInfo;
   private internalLoopTimeout: number = 0;
   private parsingMetadata: ParsingMetadata | undefined;
   private justStarted = true;
@@ -102,9 +101,9 @@ export class LogParser {
       return;
     }
     //console.log('loop!');
-    let parsedResults: {[index: string]: any} = {};
-    let nextFilesState: {[index: string]: FileParsingState} = {};
-    let latestUpdateDate: Date | undefined = undefined;
+    const parsedResults: {[index: string]: any} = {};
+    const nextFilesState: {[index: string]: FileParsingState} = {};
+    let latestUpdateDate: Date | undefined;
     const variables: {[index: string]: any} = {};
 
     try {
@@ -112,7 +111,7 @@ export class LogParser {
         const path = this.getPath(fileToParse);
         //console.log(path);
         //const LogFromMTGAFolder = locateMostRecentDate();
-        let stats: Stats | undefined = undefined;
+        let stats: Stats | undefined;
         try {
           stats = statSync(path);
         } catch (e) {
@@ -154,7 +153,7 @@ export class LogParser {
             return;
           }
           const pathToVariableToExtract = parsingMetadata.Variables[Variable].slice(1);
-          const extractedElementToProcess = extractValue(dataParsed, pathToVariableToExtract) as Array<any>;
+          const extractedElementToProcess = extractValue(dataParsed, pathToVariableToExtract) as any[];
           //console.log('extractedElementToProcess', extractedElementToProcess);
           switch (Variable) {
             case 'PLAYER_ID':
@@ -214,7 +213,7 @@ export class LogParser {
           }
 
           const pathToInterestingArray = parsingMetadata.GatherFromArray[DataObjectArray].path.slice(1);
-          const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as Array<any>;
+          const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as any[];
 
           interestingArray?.map((_, interestingArrayIndex) => {
             const gatheredResult: any = {};
@@ -359,9 +358,9 @@ export class LogParser {
     setTimeout(() => this.internalLoop(parsingMetadata), timeout);
   }
 
-  private handleDecksMessage(decks: Array<any>): void {
+  private handleDecksMessage(decks: any[]): void {
     try {
-      const DecksArray: Array<UserDeck> = [];
+      const DecksArray: UserDeck[] = [];
       decks.forEach((deckDetails) => {
         const cardsInDeck: DeckCardArray = [];
         if (deckDetails.Cards === undefined || !Array.isArray(deckDetails.Cards)) {

@@ -8,6 +8,7 @@ export interface OverlayConfig {
   currentScale: number;
   currentOpacity: number;
   dopplerOpacity: number;
+  cardsInARow: number;
   justcreated: boolean;
   icon: string;
   highlightTimeout: number;
