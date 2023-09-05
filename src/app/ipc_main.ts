@@ -325,6 +325,7 @@ export function setupIpcMain(app: App): void {
     'set-setting-o-savepositionleftopp',
     'set-setting-o-savescale',
     'set-setting-o-opacity',
+    'set-setting-o-cardsinarow',
   ];
 
   overlaySettings.forEach((settingName, i) => {

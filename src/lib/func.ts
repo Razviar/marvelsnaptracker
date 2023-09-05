@@ -146,20 +146,20 @@ export function Cut(str: string, from: string, to: string, offset?: number): str
 }*/
 
 export function getObject(o: any, prop: any, val: any): any {
-  if (o == null) return false;
+  if (o == undefined) { return false; }
   if (o[prop] === val) {
     return o;
   }
-  var result;
+  let result;
   if (o instanceof Array) {
-    for (var i = 0; i < o.length; i++) {
+    for (let i = 0; i < o.length; i++) {
       result = getObject(o[i], prop, val);
       if (result) {
         return result;
       }
     }
   } else {
-    for (var p in o) {
+    for (let p in o) {
       if (p == prop) {
         if (o[p] == val) {
           return o;

@@ -5,6 +5,7 @@ import {join} from 'path';
 import {AccountV0, OverlaySettingsV0, SettingsV1} from 'root/app/settings-store/v0';
 import {AccountV9, OverlaySettingsV7, SettingsV10} from 'root/app/settings-store/v10';
 import {AccountV10, SettingsV11} from 'root/app/settings-store/v11';
+import {AccountV11, OverlaySettingsV8, SettingsV12} from 'root/app/settings-store/v12';
 import {AccountV2, OverlaySettingsV2, SettingsV2} from 'root/app/settings-store/v2';
 import {AccountV3, OverlaySettingsV3, SettingsV3} from 'root/app/settings-store/v3';
 import {AccountV4, OverlaySettingsV4, SettingsV4} from 'root/app/settings-store/v4';
@@ -80,9 +81,9 @@ class SettingsStore {
   }
 }
 
-export type LatestSettings = SettingsV11;
-export type OverlaySettings = OverlaySettingsV7;
-export type Account = AccountV10;
+export type LatestSettings = SettingsV12;
+export type OverlaySettings = OverlaySettingsV8;
+export type Account = AccountV11;
 type AllSettings =
   | SettingsV0
   | SettingsV1
@@ -95,7 +96,8 @@ type AllSettings =
   | SettingsV8
   | SettingsV9
   | SettingsV10
-  | SettingsV11;
+  | SettingsV11
+  | SettingsV12;
 
 export enum Version {
   v0,
@@ -110,6 +112,7 @@ export enum Version {
   v9,
   v10,
   v11,
+  v12,
 }
 
 export interface SettingsBase {
@@ -419,6 +422,64 @@ function asOverlaySettingsV7(ovlSettings: OverlaySettingsV6 | undefined): Overla
   };
 }
 
+function asOverlaySettingsV8(ovlSettings: OverlaySettingsV7 | undefined): OverlaySettingsV8 | undefined {
+  if (!ovlSettings) {
+    return undefined;
+  }
+
+  const leftdigit = ovlSettings.leftdigit;
+  const rightdigit = ovlSettings.rightdigit;
+  const bottomdigit = ovlSettings.bottomdigit;
+  const rightdraftdigit = ovlSettings.rightdraftdigit;
+  const leftdraftdigit = ovlSettings.leftdigit;
+  const hidemy = ovlSettings.hidemy;
+  const hideopp = ovlSettings.hideopp;
+  const hidezero = ovlSettings.hidezero;
+  const showcardicon = ovlSettings.showcardicon;
+  const cardsinarow = 6;
+  const timers = ovlSettings.timers;
+  const neverhide = ovlSettings.neverhide;
+  const mydecks = ovlSettings.mydecks;
+  const cardhover = ovlSettings.cardhover;
+  const savepositiontop = ovlSettings.savepositiontop;
+  const savepositionleft = ovlSettings.savepositionleft;
+  const savepositiontopopp = ovlSettings.savepositiontopopp;
+  const savepositionleftopp = ovlSettings.savepositionleftopp;
+  const savescale = ovlSettings.savescale;
+  const opacity = ovlSettings.opacity;
+  const fontcolor = ovlSettings.fontcolor;
+  const detach = false;
+  const hidemain = false;
+  const interactive = !isMac();
+
+  return {
+    leftdigit,
+    rightdigit,
+    bottomdigit,
+    rightdraftdigit,
+    leftdraftdigit,
+    hidemy,
+    hideopp,
+    hidezero,
+    showcardicon,
+    timers,
+    neverhide,
+    mydecks,
+    cardhover,
+    savepositiontop,
+    savepositionleft,
+    savepositiontopopp,
+    savepositionleftopp,
+    savescale,
+    opacity,
+    cardsinarow,
+    fontcolor,
+    detach,
+    hidemain,
+    interactive,
+  };
+}
+
 function asPlayer(anyMap: AnyMap | undefined): Player | undefined {
   if (!anyMap) {
     return undefined;
@@ -622,6 +683,23 @@ function asAccountsV10(accountsV9: AccountV9[]): AccountV10[] {
   return res;
 }
 
+function asAccountsV11(accountsV10: AccountV10[]): AccountV11[] {
+  const res: AccountV11[] = [];
+  accountsV10.forEach((acc) => {
+    res.push({
+      uid: acc.uid,
+      token: acc.token,
+      nick: acc.nick,
+      overlay: acc.overlay,
+      player: acc.player,
+      overlaySettings: asOverlaySettingsV8(acc.overlaySettings),
+      hotkeysSettings: acc.hotkeysSettings,
+      game: 'mtga',
+    });
+  });
+  return res;
+}
+
 function migrateV0toV1(v0: SettingsV0): SettingsV1 {
   return {
     version: Version.v1,
@@ -808,6 +886,24 @@ function migrateV10toV11(v10: SettingsV10): SettingsV11 {
   };
 }
 
+function migrateV11toV12(v11: SettingsV11): SettingsV12 {
+  return {
+    version: Version.v12,
+    accounts: asAccountsV11(v11.accounts),
+    userToken: undefined,
+    icon: v11.icon,
+    autorun: v11.autorun,
+    minimized: v11.minimized,
+    overlay: v11.overlay,
+    manualUpdate: v11.manualUpdate,
+    awaiting: v11.awaiting,
+    logPath: v11.logPath,
+    mtgaPath: v11.mtgaPath,
+    nohotkeys: v11.nohotkeys,
+    uploads: v11.uploads,
+  };
+}
+
 function parseSettings(settings: AllSettings): LatestSettings {
   // Recursively parse settings and migrate them to arrive at latest version
   switch (settings.version) {
@@ -833,6 +929,8 @@ function parseSettings(settings: AllSettings): LatestSettings {
       return parseSettings(migrateV9toV10(settings));
     case Version.v10:
       return parseSettings(migrateV10toV11(settings));
+    case Version.v11:
+      return parseSettings(migrateV11toV12(settings));
     default:
       return settings;
   }

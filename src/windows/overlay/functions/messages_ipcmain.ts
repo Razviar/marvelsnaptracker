@@ -62,6 +62,10 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
         overlayElements.OpponentOutFrame.style.top = '15%';
         overlayElements.OpponentOutFrame.style.right = '0px';
       }
+
+      if (overlayConfig.ovlSettings && overlayConfig.ovlSettings.cardsinarow) {
+        overlayConfig.cardsInARow = +overlayConfig.ovlSettings.cardsinarow;
+      }
     } catch (e) {}
 
     scalesetter(false);

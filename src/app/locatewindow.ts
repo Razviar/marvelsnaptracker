@@ -1,13 +1,13 @@
 import {ChildProcessWithoutNullStreams} from 'child_process';
 import {app, screen} from 'electron';
 import fs from 'fs';
+import {jsonrepair} from 'jsonrepair';
+import {join} from 'path';
 
 import {gameState} from 'root/app/game_state';
-import {join} from 'path';
 import {sendMessageToOverlayWindow} from 'root/app/messages';
-import ourActiveWin from 'root/our-active-win';
 import {settingsStore} from 'root/app/settings-store/settings_store';
-import {jsonrepair} from 'jsonrepair';
+import ourActiveWin from 'root/our-active-win';
 
 export class WindowLocator {
 	public bounds: {x: number; y: number; width: number; height: number} = {x: 0, y: 0, width: 0, height: 0};
@@ -107,7 +107,7 @@ export class WindowLocator {
 		}
 	}
 
-	private interestingStrings = [
+	private readonly interestingStrings = [
 		'CubeGame.GameCreateChange',
 		'CubeGame.GameCreatePlayerChange',
 		'CubeGame.GameCreateLocationChange',

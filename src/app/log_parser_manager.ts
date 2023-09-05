@@ -1,4 +1,5 @@
 import electronIsDev from 'electron-is-dev';
+
 import {sendEventsToServer} from 'root/api/logsender';
 import {gameState} from 'root/app/game_state';
 import {LogParser} from 'root/app/log-parser/log_parser';

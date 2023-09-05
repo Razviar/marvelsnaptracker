@@ -21,7 +21,7 @@ interface LogParserEvents {
     state: LogFileParsingState;
   };
   'deck-message': string;
-  'decks-message': Array<UserDeck>;
+  'decks-message': UserDeck[];
   'turn-info': {decisionPlayer: number; turnNumber?: number};
   nologfile: undefined;
 }
