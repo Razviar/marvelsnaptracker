@@ -263,6 +263,10 @@ a[href^="ftp://"]
   content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAilBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////2N2iNAAAALXRSTlMABSX6T8GiiD/z2n1FDd3Qzbsp78aq4NTKXVRJORHrq4JaNBUD5aeaknEZtHYm5omjAAABaklEQVRIx+3T13KDQAwF0LtmKaaY5kpx74n+//di2WEHWNwykzefJ2nRzggJ8PHxX3ozexGOU8NIx+HCnvXwiJDWjlp2lhTolhxS6pQeEuicmB6InXbnI3oiTuq9ewY9ZXhCNT+ll0x/R5an9KK+5PpvesMJONFbfMxrmSkHeslAmrXsC6RMfKDf0TjgT1Q2rl0IcO8CApUNMVYxD80ljct7VdkMvtoZb39PGguAXyXHLbAeuaHHX4YHICNNBsDji7m9LFCZXU4iAELraSAAhJdghbpz9RKSWmT1Cmc08Kz3HNjNepvPuOEYTTk/XQPY2o36LYDituIWbtMtOZKumqjkvOT1h2hzuCIWHIrMmvT7Eyu7ZdytUaBBNW9u0FLGfL6ETgyvU1yjoRjwqSnQIZgSG/Wg9BbEhgE6lUO6ijwnCYLE8SJS9d3E0iDdUeA+J9L+fAeP5Wa93PTx3GZlRXPDmEfWaoOPP/kB8MmI4Xkg568AAAAASUVORK5CYII=');
 }
 
+.tableIco {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCzIhnAAAAD1BMVEUAAAD///////////////+PQt5oAAAABHRSTlMA4+JJe39gOQAAAFNJREFUWMPt2LEJACAMRNHsoBs4gY4g2X8muzQBCdgc8n//mitSxEi36Tkzz7UgvUp2EK8Sh0AgEE3yU7IjQyAQCDdZZ2QIBAK5k5cXwaqSYSTbAUoGJtON8lgfAAAAAElFTkSuQmCC');
+}
+
 .glassIco {
   content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAbFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8+T+BWAAAAI3RSTlMAwkL6xAOJPtiG6eUMCspoReJ0bgbdjIJQOygm9O1Vps+bpyLQrqUAAAFkSURBVEjH7ZTdjoIwEIV3ipSWPxEEFUXdPe//jjvdbKwyBbzZZGM8FySUHPqd6XQ+Xlhx0q3S6NSSVtunDEWd4qasLpYd5w1grDoWRa+0AdL9EpMFysS/qxLo4lnHF6L149I6wuecxWJwW2zPF3Oi37VkQDeTA5Fz7Fuw6AYXoZqs1QZMFWvg2vTFHRs2+YSlRslPzXFGgUvUE9lTJEzl4EZSaMNVS2A4ectwQgYqaOlgXQWugR9q7IKWlfvVBU3gUwWyWWZFx6U4OoQ+YDniR3a8HoFLeeKHVA7gcEC2ooCFeHHaQiTBhASYjM8Kx9+5+GOwDjps8EUmkkcpNH+Uceo/TDQMg8m2DKrk8/VgsvmlmsnmF10srpgAY+0wyM4ffCVJWuKLGBeNGBdyH5TqcSjp2J82BfO40aerPs/7ShsgczkE2NyAbYrnxvhBuzFuyCb+UgmwJXmwP9Eb7A12B/bP9Q0Hixt7mFRHugAAAABJRU5ErkJggg==');
 }
@@ -367,7 +371,7 @@ a[href^="ftp://"]
   flex-wrap: wrap;
   justify-content: center;
   flex-basis: 100%;
-  width: 100%;
+  width: 480px;
 }
 
 .MoreDecks {

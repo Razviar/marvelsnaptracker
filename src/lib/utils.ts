@@ -1,7 +1,7 @@
 // Welcome to the kingdom of chaos
 // tslint:disable: no-magic-numbers
 
-import {Card} from 'root/models/cards';
+import {OverlaySettings} from 'root/app/settings-store/settings_store';
 
 // tslint:disable: no-any
 export const types = ['Aggro', 'Mid-Range', 'Control'];
@@ -46,16 +46,6 @@ export const superclassfont: {[index: string]: string} = {
   Creature: 'creature',
   Land: 'land',
 };
-
-export function cardSuperclass(card: Card): number {
-  if (card['is_land'] === 1) {
-    return 2;
-  } else if (card['txttype'].includes('Creature')) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
 
 export const selectStyles = {
   control: () => ({
@@ -183,7 +173,7 @@ export function isMac(): boolean {
   return process.platform === 'darwin';
 }
 
-export const DefaultOvlSettings = {
+export const DefaultOvlSettings: OverlaySettings = {
   leftdigit: 2,
   rightdigit: 1,
   bottomdigit: 3,
@@ -207,4 +197,5 @@ export const DefaultOvlSettings = {
   detach: false,
   hidemain: false,
   interactive: true,
+  cardsinarow: 6,
 };

@@ -80,7 +80,7 @@ export interface Messages {
   'enable-clicks': undefined;
   'disable-clicks': undefined;
   'deck-message': string;
-  'decks-message': Array<UserDeck>;
+  'decks-message': UserDeck[];
   'cards-message': Cards;
   'set-userdata': UserMetadata;
   mulligan: boolean;
@@ -112,6 +112,7 @@ export interface Messages {
   'set-setting-o-savepositionleftopp': number;
   'set-setting-o-savescale': number;
   'set-setting-o-opacity': number;
+  'set-setting-o-cardsinarow': number;
   'set-setting-o-fontcolor': number;
   'set-setting-o-detach': boolean;
   'set-setting-o-hidemain': boolean;

@@ -22,7 +22,7 @@ export function updateOppDeck(highlight: string[]): void {
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.zones[TheEntity.zoneId].type === 'graveyardEntity'
+      currentMatch.zones?.[TheEntity.zoneId]?.type === 'graveyardEntity'
     ) {
       oppGraveyard.push({
         CardDefId: TheEntity.cardDefId,

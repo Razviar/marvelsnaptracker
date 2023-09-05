@@ -1,6 +1,6 @@
-export type SnapCard = {CardDefId: string; RarityDefId: string; ArtVariantDefId: string};
+export interface SnapCard {CardDefId: string; RarityDefId: string; ArtVariantDefId: string}
 
-export type DeckCardArray = Array<SnapCard>;
+export type DeckCardArray = SnapCard[];
 
 export interface UserDeck {
   name: string;
