@@ -1,10 +1,6 @@
 name: make snap tracker
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: push
 
 jobs:
   build:
@@ -15,10 +11,10 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@master
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@master
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -26,3 +22,13 @@ jobs:
       run: |
         npm install --force
         npm run make
+
+    - name: Get version
+      id: version
+      run: echo "::set-output name=version::$(cat package.json | jq -r '.version')"
+
+    - name: Release
+      uses: softprops/action-gh-release@master
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: /home/runner/work/marvelsnaptracker/marvelsnaptracker/out/make/zip/linux/x64/Marvel Snap Tracker-linux-x64-${{ steps.version.outputs.version }}.zip
