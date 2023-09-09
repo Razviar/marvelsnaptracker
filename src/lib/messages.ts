@@ -1,6 +1,7 @@
 import {TokenCheckRes, TokenRequestRes} from 'root/api/userbytokenid';
 import {Account, LatestSettings, OverlaySettings} from 'root/app/settings-store/settings_store';
 import {HotkeysSettingsV1} from 'root/app/settings-store/v8';
+import {Bots} from 'root/models/bots';
 import {Cards} from 'root/models/cards';
 import {UserMetadata} from 'root/models/metadata';
 import {UserDeck} from 'root/models/snap_deck';
@@ -46,7 +47,8 @@ export interface Messages {
   'match-started': {
     matchId: string;
     uid: string;
-    players: string[];
+    players: [string, string];
+    playerNicks: [string, string];
     selectedDeckId: string;
     isBattle: boolean;
     isNewBattle: boolean;
@@ -82,6 +84,7 @@ export interface Messages {
   'deck-message': string;
   'decks-message': UserDeck[];
   'cards-message': Cards;
+  'bots-message': Bots;
   'set-userdata': UserMetadata;
   mulligan: boolean;
   'set-version': string;

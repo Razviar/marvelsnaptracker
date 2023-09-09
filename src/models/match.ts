@@ -35,6 +35,7 @@ export class Match {
   public totalCards: number = 0;
   public oppEntityId: number = 0;
   public oppDeckStable: SnapCard[] = [];
+  public opponentNick: string = '';
 
   public over(purgeOpp?: boolean): void {
     this.matchId = '';
@@ -49,6 +50,7 @@ export class Match {
     this.GameNumber = 0;
     this.DecisionPlayer = 0;
     this.totalCards = 0;
+    this.opponentNick = '';
     this.timers = {me: 0, opponent: 0};
     if (purgeOpp) {
       this.oppDeckStable = [];

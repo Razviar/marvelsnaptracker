@@ -1,16 +1,23 @@
 import {SnapCard} from 'root/models/snap_deck';
+import {CheckBottiness} from 'root/windows/overlay/functions/checkbot';
 import {makeCard} from 'root/windows/overlay/functions/makecard';
 import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
-import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
+import {currentMatch, overlayConfig, overlayElements} from 'root/windows/overlay/overlay';
 
 export function updateOppDeck(highlight: string[]): void {
+  overlayElements.DeckNameOpp.innerHTML = CheckBottiness();
+
   let oppGraveyard: SnapCard[] = [];
+  if (currentMatch.oppDeckStable.length > 12) {
+    currentMatch.oppDeckStable.length = 0;
+  }
   Object.keys(currentMatch.cardEntityIDs).forEach((cardEntityID) => {
     const TheEntity = currentMatch.cardEntityIDs[+cardEntityID];
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === TheEntity.cardDefId) === -1
+      currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === TheEntity.cardDefId) === -1 &&
+      currentMatch.oppDeckStable.length <= 12
     ) {
       currentMatch.oppDeckStable.push({
         CardDefId: TheEntity.cardDefId,

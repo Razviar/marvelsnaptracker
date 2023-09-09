@@ -134,6 +134,7 @@ export class WindowLocator {
           sendMessageToOverlayWindow('match-started', {
             matchId: change.Id,
             players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
+            playerNicks: [change.Players[0].Name as string, change.Players[1].Name as string],
             uid: userID,
             selectedDeckId,
             isBattle:

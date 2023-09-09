@@ -1,6 +1,6 @@
 import {makeCard} from 'root/windows/overlay/functions/makecard';
 import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
-import {currentMatch, overlayConfig, overlayElements, toggleButtonClass} from 'root/windows/overlay/overlay';
+import {currentMatch, overlayConfig, overlayElements} from 'root/windows/overlay/overlay';
 
 export function drawDeck(): void {
   let output = '';

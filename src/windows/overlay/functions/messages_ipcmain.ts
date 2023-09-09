@@ -90,12 +90,21 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     //console.log(overlayConfig.allCards);
   });
 
+  onMessageFromIpcMain('bots-message', (bots) => {
+    overlayConfig.allBots = bots;
+    //console.log(overlayConfig.allBots);
+  });
+
   onMessageFromIpcMain('match-started', (newMatch) => {
     //console.log('match-started', newMatch);
+    const ourPlayerPosition: 0 | 1 = newMatch.players[0] === newMatch.uid ? 0 : 1;
+    currentMatch.opponentNick = newMatch.playerNicks[ourPlayerPosition === 0 ? 1 : 0];
+
     if (currentMatch.matchId !== '') {
       currentMatch.over(!newMatch.isBattle || newMatch.isNewBattle);
       updateOppDeck([]);
     }
+
     overlayConfig.selectedDeck = newMatch.selectedDeckId;
     overlayElements.MainDeckFrame.classList.add('hidden');
     //(overlayElements.ToggleMe, overlayElements.MainDeckFrame.classList.contains('hidden'));

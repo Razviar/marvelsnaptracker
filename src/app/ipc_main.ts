@@ -1,7 +1,7 @@
 import {App, dialog, nativeImage, shell} from 'electron';
 import {join} from 'path';
-import {getSuggestions} from 'root/api/getsuggestions';
 
+import {getSuggestions} from 'root/api/getsuggestions';
 import {setuserdata, tokencheck, tokenrequest, userbytokenid, UserData} from 'root/api/userbytokenid';
 import {loadAppIcon} from 'root/app/app_icon';
 import {sendSettingsToRenderer} from 'root/app/auth';
