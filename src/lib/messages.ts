@@ -5,6 +5,7 @@ import {Bots} from 'root/models/bots';
 import {Cards} from 'root/models/cards';
 import {UserMetadata} from 'root/models/metadata';
 import {UserDeck} from 'root/models/snap_deck';
+import {Suggestions} from 'root/models/suggestions';
 import {UserResult} from 'root/models/userbytokenid';
 
 export interface Messages {
@@ -44,6 +45,7 @@ export interface Messages {
   'new-account': undefined;
   'show-status': {color: string; message: string};
   'set-screenname': {screenName: string; newPlayerId: string};
+  'got-suggestions': Suggestions;
   'match-started': {
     matchId: string;
     uid: string;
@@ -60,6 +62,7 @@ export interface Messages {
     deckEntityId: number;
     graveyardEntityId: number;
     handEntityId: number;
+    CardBackDefId: string;
   };
   'match-create-card-entity': {
     entityId: number;
@@ -99,6 +102,7 @@ export interface Messages {
   'set-setting-o-hidezero': boolean;
   'set-setting-o-hidemy': boolean;
   'set-setting-o-hideopp': boolean;
+  'set-setting-o-hidesuggestions': boolean;
   'set-setting-o-showcardicon': boolean;
   'set-setting-o-leftdigit': number;
   'set-setting-o-rightdigit': number;

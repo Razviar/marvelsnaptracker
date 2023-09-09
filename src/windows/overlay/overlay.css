@@ -315,7 +315,7 @@ a[href^="ftp://"]
 }
 
 .deckNameBattle {
-  max-width: 200px;
+  max-width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: bold;
@@ -350,6 +350,10 @@ a[href^="ftp://"]
   background-color: transparent;
   border-radius: 10px;
   position: static;
+}
+
+.SuggestionCard {
+  filter: brightness(0.7);
 }
 
 .CardPicRenderer {

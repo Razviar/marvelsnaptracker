@@ -154,6 +154,7 @@ export class WindowLocator {
             deckEntityId: +change.DeckEntityId,
             graveyardEntityId: +change.GraveyardEntityId,
             handEntityId: +change.HandEntityId,
+            CardBackDefId: change.CardBack.CardBackDefId ? change.CardBack.CardBackDefId : 'Snap_01',
           });
         case 'CubeGame.GameCreateLocationChange':
           sendMessageToOverlayWindow('match-set-location', {

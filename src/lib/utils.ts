@@ -198,4 +198,5 @@ export const DefaultOvlSettings: OverlaySettings = {
   hidemain: false,
   interactive: true,
   cardsinarow: 6,
+  hidesuggestions: false,
 };

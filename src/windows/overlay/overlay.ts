@@ -57,6 +57,7 @@ export const overlayConfig: OverlayConfig = {
     HiddenAiMarvelNames: [],
     HiddenAiNamePostfixes: [],
     HiddenAiRealPlayerNames: [],
+    HiddenAiNamePrefixes: [],
   },
 };
 

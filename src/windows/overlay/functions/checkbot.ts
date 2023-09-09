@@ -3,6 +3,7 @@ import {currentMatch, overlayConfig} from 'root/windows/overlay/overlay';
 export function CheckBottiness(): string {
   let nick = currentMatch.opponentNick;
   let botLikness = 0;
+  let LSTM = false;
 
   overlayConfig.allBots.HiddenAiHumanNames.forEach((nameToTest) => {
     if (nick === nameToTest) {
@@ -13,6 +14,9 @@ export function CheckBottiness(): string {
   overlayConfig.allBots.HiddenAiLSTMNames.forEach((nameToTest) => {
     if (nick.includes(nameToTest) && nameToTest.length > 3) {
       botLikness++;
+    }
+    if (nick === nameToTest) {
+      LSTM = true;
     }
   });
 
@@ -40,5 +44,7 @@ export function CheckBottiness(): string {
     }
   });
 
-  return `${nick} (${botLikness === 0 ? 'Human' : botLikness > 1 ? 'Definitely a Bot' : 'Possibly a Bot'})`;
+  return `${nick} (${
+    LSTM ? 'LSTM Bot' : botLikness === 0 ? 'Human' : botLikness > 1 ? 'Definitely a Bot' : 'Possibly a Bot'
+  })`;
 }
