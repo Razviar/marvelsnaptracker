@@ -127,6 +127,7 @@ export function installHomeMessages(): void {
       'set-setting-o-hidemy',
       'set-setting-o-hideopp',
       'set-setting-o-neverhide',
+      'set-setting-o-hidesuggestions',
     ];
 
     overlaySettingsBoolean.forEach((settingName) => {

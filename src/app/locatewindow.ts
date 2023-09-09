@@ -142,62 +142,64 @@ export class WindowLocator {
 						gameState.startNormalMatch();
 					}
 
-					sendMessageToOverlayWindow('match-started', {
-						matchId: change.Id,
-						players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
-						uid: userID,
-						selectedDeckId,
-						isBattle:
-							change?.GameModeData !== undefined &&
-							change?.GameModeData?.['$type'] !== undefined &&
-							change?.GameModeData?.['$type']?.includes('BattleGameModeData'),
-						isNewBattle:
-							Array.isArray(change?.GameModeData?.BattleHistory?.GameResults) &&
-							change?.GameModeData?.BattleHistory.GameResults.length === 0,
-					});
-					break;
-				case 'CubeGame.GameCreatePlayerChange':
-					sendMessageToOverlayWindow('match-set-player', {
-						accountId: change.AccountId,
-						name: change.Name,
-						entityId: +change.EntityId,
-						deckEntityId: +change.DeckEntityId,
-						graveyardEntityId: +change.GraveyardEntityId,
-						handEntityId: +change.HandEntityId,
-					});
-				case 'CubeGame.GameCreateLocationChange':
-					sendMessageToOverlayWindow('match-set-location', {
-						entityId: change.EntityId,
-						locationSlot: change.LocationSlot,
-					});
-					break;
-				case 'CubeGame.GameCreateCardChange':
-					sendMessageToOverlayWindow('match-create-card-entity', {
-						entityId: change.EntityId,
-						ownerEntityId: change.OwnerEntityId,
-						zoneEntityId: change.ZoneEntityId,
-					});
-					break;
-				case 'CubeGame.GameRevealCardChange':
-					//console.log(change);
-					if (change.CreatedByCardDefId === undefined && change.CreatedByLocationDefId === undefined) {
-						sendMessageToOverlayWindow('match-card-reveal', {
-							entityId: change.EntityId,
-							cardDefId: change.CardDefId,
-							rarityDefId: change.RarityDefId,
-							artVariantDefId: change.ArtVariantDefId,
-						});
-					}
-					break;
-				case 'CubeGame.CardMoveChange':
-					sendMessageToOverlayWindow('match-card-move', {
-						cardEntityId: change.CardEntityId,
-						cardOwnerEntityId: change.CardOwnerEntityId,
-						targetZoneEntityId: change.TargetZoneEntityId,
-					});
-					break;
-				case 'CubeGame.GameResultChange':
-					/*console.log('GameResultChange');
+          sendMessageToOverlayWindow('match-started', {
+            matchId: change.Id,
+            players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
+            playerNicks: [change.Players[0].Name as string, change.Players[1].Name as string],
+            uid: userID,
+            selectedDeckId,
+            isBattle:
+              change?.GameModeData !== undefined &&
+              change?.GameModeData?.['$type'] !== undefined &&
+              change?.GameModeData?.['$type']?.includes('BattleGameModeData'),
+            isNewBattle:
+              Array.isArray(change?.GameModeData?.BattleHistory?.GameResults) &&
+              change?.GameModeData?.BattleHistory.GameResults.length === 0,
+          });
+          break;
+        case 'CubeGame.GameCreatePlayerChange':
+          sendMessageToOverlayWindow('match-set-player', {
+            accountId: change.AccountId,
+            name: change.Name,
+            entityId: +change.EntityId,
+            deckEntityId: +change.DeckEntityId,
+            graveyardEntityId: +change.GraveyardEntityId,
+            handEntityId: +change.HandEntityId,
+            CardBackDefId: change.CardBack.CardBackDefId ? change.CardBack.CardBackDefId : 'Snap_01',
+          });
+        case 'CubeGame.GameCreateLocationChange':
+          sendMessageToOverlayWindow('match-set-location', {
+            entityId: change.EntityId,
+            locationSlot: change.LocationSlot,
+          });
+          break;
+        case 'CubeGame.GameCreateCardChange':
+          sendMessageToOverlayWindow('match-create-card-entity', {
+            entityId: change.EntityId,
+            ownerEntityId: change.OwnerEntityId,
+            zoneEntityId: change.ZoneEntityId,
+          });
+          break;
+        case 'CubeGame.GameRevealCardChange':
+          //console.log(change);
+          if (change.CreatedByCardDefId === undefined && change.CreatedByLocationDefId === undefined) {
+            sendMessageToOverlayWindow('match-card-reveal', {
+              entityId: change.EntityId,
+              cardDefId: change.CardDefId,
+              rarityDefId: change.RarityDefId,
+              artVariantDefId: change.ArtVariantDefId,
+            });
+          }
+          break;
+        case 'CubeGame.CardMoveChange':
+          sendMessageToOverlayWindow('match-card-move', {
+            cardEntityId: change.CardEntityId,
+            cardOwnerEntityId: change.CardOwnerEntityId,
+            targetZoneEntityId: change.TargetZoneEntityId,
+          });
+          break;
+        case 'CubeGame.GameResultChange':
+          /*console.log('GameResultChange');
           console.log(change);*/
 					const cubes = +change?.Message?.FinalCubeValue;
 					const winner =

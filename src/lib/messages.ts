@@ -1,9 +1,11 @@
 import {TokenCheckRes, TokenRequestRes} from 'root/api/userbytokenid';
 import {Account, LatestSettings, OverlaySettings} from 'root/app/settings-store/settings_store';
 import {HotkeysSettingsV1} from 'root/app/settings-store/v8';
+import {Bots} from 'root/models/bots';
 import {Cards} from 'root/models/cards';
 import {UserMetadata} from 'root/models/metadata';
 import {UserDeck} from 'root/models/snap_deck';
+import {Suggestions} from 'root/models/suggestions';
 import {UserResult} from 'root/models/userbytokenid';
 
 export interface Messages {
@@ -43,10 +45,12 @@ export interface Messages {
   'new-account': undefined;
   'show-status': {color: string; message: string};
   'set-screenname': {screenName: string; newPlayerId: string};
+  'got-suggestions': Suggestions;
   'match-started': {
     matchId: string;
     uid: string;
-    players: string[];
+    players: [string, string];
+    playerNicks: [string, string];
     selectedDeckId: string;
     isBattle: boolean;
     isNewBattle: boolean;
@@ -58,6 +62,7 @@ export interface Messages {
     deckEntityId: number;
     graveyardEntityId: number;
     handEntityId: number;
+    CardBackDefId: string;
   };
   'match-create-card-entity': {
     entityId: number;
@@ -82,6 +87,7 @@ export interface Messages {
   'deck-message': string;
   'decks-message': UserDeck[];
   'cards-message': Cards;
+  'bots-message': Bots;
   'set-userdata': UserMetadata;
   mulligan: boolean;
   'set-version': string;
@@ -96,6 +102,7 @@ export interface Messages {
   'set-setting-o-hidezero': boolean;
   'set-setting-o-hidemy': boolean;
   'set-setting-o-hideopp': boolean;
+  'set-setting-o-hidesuggestions': boolean;
   'set-setting-o-showcardicon': boolean;
   'set-setting-o-leftdigit': number;
   'set-setting-o-rightdigit': number;

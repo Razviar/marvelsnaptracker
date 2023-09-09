@@ -314,11 +314,10 @@ a[href^="ftp://"]
   background-color: #20252b;
 }
 
-#deckName {
-  max-width: 180px;
+.deckNameBattle {
+  max-width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* color: #fff; */
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -342,12 +341,6 @@ a[href^="ftp://"]
   font-weight: bold;
 }
 
-#deckName {
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .CardMainWrapper {
   display: flex;
   flex-flow: column nowrap;
@@ -357,6 +350,10 @@ a[href^="ftp://"]
   background-color: transparent;
   border-radius: 10px;
   position: static;
+}
+
+.SuggestionCard {
+  filter: brightness(0.7);
 }
 
 .CardPicRenderer {

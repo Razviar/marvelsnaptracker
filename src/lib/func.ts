@@ -159,7 +159,7 @@ export function getObject(o: any, prop: any, val: any): any {
       }
     }
   } else {
-    for (let p in o) {
+    for (const p in o) {
       if (p == prop) {
         if (o[p] == val) {
           return o;

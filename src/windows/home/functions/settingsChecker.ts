@@ -58,6 +58,9 @@ export function settingsChecker(event: Event): void {
     case 'o-hideopp':
       sendMessageToIpcMain('set-setting-o-hideopp', cl.checked);
       break;
+    case 'o-hidesuggestions':
+      sendMessageToIpcMain('set-setting-o-hidesuggestions', cl.checked);
+      break;
     case 'o-neverhide':
       sendMessageToIpcMain('set-setting-o-neverhide', cl.checked);
       break;

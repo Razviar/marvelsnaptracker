@@ -6,6 +6,7 @@ import {AccountV0, OverlaySettingsV0, SettingsV1} from 'root/app/settings-store/
 import {AccountV9, OverlaySettingsV7, SettingsV10} from 'root/app/settings-store/v10';
 import {AccountV10, SettingsV11} from 'root/app/settings-store/v11';
 import {AccountV11, OverlaySettingsV8, SettingsV12} from 'root/app/settings-store/v12';
+import {AccountV12, OverlaySettingsV9, SettingsV15} from 'root/app/settings-store/v15';
 import {AccountV2, OverlaySettingsV2, SettingsV2} from 'root/app/settings-store/v2';
 import {AccountV3, OverlaySettingsV3, SettingsV3} from 'root/app/settings-store/v3';
 import {AccountV4, OverlaySettingsV4, SettingsV4} from 'root/app/settings-store/v4';
@@ -81,9 +82,9 @@ class SettingsStore {
   }
 }
 
-export type LatestSettings = SettingsV12;
-export type OverlaySettings = OverlaySettingsV8;
-export type Account = AccountV11;
+export type LatestSettings = SettingsV15;
+export type OverlaySettings = OverlaySettingsV9;
+export type Account = AccountV12;
 type AllSettings =
   | SettingsV0
   | SettingsV1
@@ -97,7 +98,8 @@ type AllSettings =
   | SettingsV9
   | SettingsV10
   | SettingsV11
-  | SettingsV12;
+  | SettingsV12
+  | SettingsV15;
 
 export enum Version {
   v0,
@@ -113,6 +115,7 @@ export enum Version {
   v10,
   v11,
   v12,
+  v15,
 }
 
 export interface SettingsBase {
@@ -480,6 +483,66 @@ function asOverlaySettingsV8(ovlSettings: OverlaySettingsV7 | undefined): Overla
   };
 }
 
+function asOverlaySettingsV9(ovlSettings: OverlaySettingsV8 | undefined): OverlaySettingsV9 | undefined {
+  if (!ovlSettings) {
+    return undefined;
+  }
+
+  const leftdigit = ovlSettings.leftdigit;
+  const rightdigit = ovlSettings.rightdigit;
+  const bottomdigit = ovlSettings.bottomdigit;
+  const rightdraftdigit = ovlSettings.rightdraftdigit;
+  const leftdraftdigit = ovlSettings.leftdigit;
+  const hidemy = ovlSettings.hidemy;
+  const hideopp = ovlSettings.hideopp;
+  const hidezero = ovlSettings.hidezero;
+  const showcardicon = ovlSettings.showcardicon;
+  const cardsinarow = 6;
+  const timers = ovlSettings.timers;
+  const neverhide = ovlSettings.neverhide;
+  const mydecks = ovlSettings.mydecks;
+  const cardhover = ovlSettings.cardhover;
+  const savepositiontop = ovlSettings.savepositiontop;
+  const savepositionleft = ovlSettings.savepositionleft;
+  const savepositiontopopp = ovlSettings.savepositiontopopp;
+  const savepositionleftopp = ovlSettings.savepositionleftopp;
+  const savescale = ovlSettings.savescale;
+  const opacity = ovlSettings.opacity;
+  const fontcolor = ovlSettings.fontcolor;
+  const detach = false;
+  const hidemain = false;
+  const interactive = !isMac();
+  const hidesuggestions = false;
+
+  return {
+    leftdigit,
+    rightdigit,
+    bottomdigit,
+    rightdraftdigit,
+    leftdraftdigit,
+    hidemy,
+    hideopp,
+    hidezero,
+    showcardicon,
+    timers,
+    neverhide,
+    mydecks,
+    cardhover,
+    savepositiontop,
+    savepositionleft,
+    savepositiontopopp,
+    savepositionleftopp,
+    savescale,
+    opacity,
+    cardsinarow,
+    fontcolor,
+    detach,
+    hidemain,
+    interactive,
+    hidesuggestions,
+  };
+}
+
 function asPlayer(anyMap: AnyMap | undefined): Player | undefined {
   if (!anyMap) {
     return undefined;
@@ -700,6 +763,23 @@ function asAccountsV11(accountsV10: AccountV10[]): AccountV11[] {
   return res;
 }
 
+function asAccountsV12(accountsV11: AccountV11[]): AccountV12[] {
+  const res: AccountV12[] = [];
+  accountsV11.forEach((acc) => {
+    res.push({
+      uid: acc.uid,
+      token: acc.token,
+      nick: acc.nick,
+      overlay: acc.overlay,
+      player: acc.player,
+      overlaySettings: asOverlaySettingsV9(acc.overlaySettings),
+      hotkeysSettings: acc.hotkeysSettings,
+      game: 'mtga',
+    });
+  });
+  return res;
+}
+
 function migrateV0toV1(v0: SettingsV0): SettingsV1 {
   return {
     version: Version.v1,
@@ -904,6 +984,24 @@ function migrateV11toV12(v11: SettingsV11): SettingsV12 {
   };
 }
 
+function migrateV12toV15(v12: SettingsV12): SettingsV15 {
+  return {
+    version: Version.v15,
+    accounts: asAccountsV12(v12.accounts),
+    userToken: undefined,
+    icon: v12.icon,
+    autorun: v12.autorun,
+    minimized: v12.minimized,
+    overlay: v12.overlay,
+    manualUpdate: v12.manualUpdate,
+    awaiting: v12.awaiting,
+    logPath: v12.logPath,
+    mtgaPath: v12.mtgaPath,
+    nohotkeys: v12.nohotkeys,
+    uploads: v12.uploads,
+  };
+}
+
 function parseSettings(settings: AllSettings): LatestSettings {
   // Recursively parse settings and migrate them to arrive at latest version
   switch (settings.version) {
@@ -931,6 +1029,8 @@ function parseSettings(settings: AllSettings): LatestSettings {
       return parseSettings(migrateV10toV11(settings));
     case Version.v11:
       return parseSettings(migrateV11toV12(settings));
+    case Version.v12:
+      return parseSettings(migrateV12toV15(settings));
     default:
       return settings;
   }

@@ -35,6 +35,10 @@ export class Match {
   public totalCards: number = 0;
   public oppEntityId: number = 0;
   public oppDeckStable: SnapCard[] = [];
+  public opponentNick: string = '';
+  public oppCardBack: string = 'Snap_01';
+  public oppDeckSuggestions: Record<string, string> = {};
+  public oppDeckATSuggestion: string = '';
 
   public over(purgeOpp?: boolean): void {
     this.matchId = '';
@@ -49,9 +53,13 @@ export class Match {
     this.GameNumber = 0;
     this.DecisionPlayer = 0;
     this.totalCards = 0;
+    this.opponentNick = '';
+    this.oppCardBack = 'Snap_01';
+    this.oppDeckATSuggestion = '';
     this.timers = {me: 0, opponent: 0};
     if (purgeOpp) {
       this.oppDeckStable = [];
+      this.oppDeckSuggestions = {};
     }
   }
 

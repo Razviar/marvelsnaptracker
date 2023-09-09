@@ -2,6 +2,7 @@ import {exec, execFile} from 'child_process';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';
+import {getBots} from 'root/api/bots';
 
 import {getCards} from 'root/api/cards';
 import {registerHotkeys, unRegisterHotkeys} from 'root/app/hotkeys';
@@ -24,7 +25,7 @@ class GameState {
   private psListInterval: NodeJS.Timeout | undefined;
   private processId: number | undefined;
   private badErrorHappening: boolean = false;
-  private refreshMillis = 1000;
+  private readonly refreshMillis = 1000;
   private readonly processName = 'SNAP.exe';
   private processPath: string | undefined = '';
   private readonly movementSensitivity = 1;
@@ -33,7 +34,7 @@ class GameState {
   public isFullscreen: boolean = false;
   private decks: UserDeck[] = [];
   private selectedDeck: string = '';
-  private deckStats: Record<string, {win: number; loss: number; cube_win: number; cube_loss: number}> = {};
+  private readonly deckStats: Record<string, {win: number; loss: number; cube_win: number; cube_loss: number}> = {};
   public isDoingBattle: Boolean = false;
   public battleScores: [number, number] = [10, 10];
 
@@ -185,6 +186,9 @@ class GameState {
     sendMessageToOverlayWindow('decks-message', this.decks);
     getCards().then((cards) => {
       sendMessageToOverlayWindow('cards-message', cards);
+    });
+    getBots().then((bots) => {
+      sendMessageToOverlayWindow('bots-message', bots);
     });
   }
 

@@ -1,7 +1,7 @@
 import {App, dialog, nativeImage, shell} from 'electron';
 import {join} from 'path';
-import {getSuggestions} from 'root/api/getsuggestions';
 
+import {getSuggestions} from 'root/api/getsuggestions';
 import {setuserdata, tokencheck, tokenrequest, userbytokenid, UserData} from 'root/api/userbytokenid';
 import {loadAppIcon} from 'root/app/app_icon';
 import {sendSettingsToRenderer} from 'root/app/auth';
@@ -317,6 +317,7 @@ export function setupIpcMain(app: App): void {
     'set-setting-o-showcardicon',
     'set-setting-o-hidemy',
     'set-setting-o-hideopp',
+    'set-setting-o-hidesuggestions',
     'set-setting-o-neverhide',
     'set-setting-o-cardhover',
     'set-setting-o-savepositiontop',
@@ -352,13 +353,13 @@ export function setupIpcMain(app: App): void {
   /*OVERLAY SETTINGS END*/
 
   onMessageFromBrowserWindow('get-suggestions', (oppdeck) => {
-    console.log(oppdeck);
+    //console.log(oppdeck);
     if (oppdeck.length < 2) {
       return;
     }
     getSuggestions(oppdeck)
       .then((suggestions) => {
-        console.log(suggestions);
+        sendMessageToOverlayWindow('got-suggestions', suggestions);
       })
       .catch((e) => {
         console.log(e);

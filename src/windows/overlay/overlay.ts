@@ -3,22 +3,23 @@
 import {OverlaySettings} from 'root/app/settings-store/settings_store';
 import {Match} from 'root/models/match';
 import {OverlayConfig} from 'root/models/overlay';
+import {UserDeck} from 'root/models/snap_deck';
 import 'root/windows/css.css';
 import 'root/windows/keyrune.css';
 import 'root/windows/keyrune.woff2';
 import 'root/windows/mana.css';
 import 'root/windows/mana.woff2';
 import {sendMessageToIpcMain} from 'root/windows/messages';
-import 'root/windows/rP2Hp2ywxg089UriCZ2IHSeH.woff2';
-import 'root/windows/rP2Hp2ywxg089UriCZOIHQ.woff2';
 import {SetMessages} from 'root/windows/overlay/functions/messages_ipcmain';
 import {SetHandlers} from 'root/windows/overlay/functions/sethandlers';
 import 'root/windows/overlay/overlay.css';
-import {UserDeck} from 'root/models/snap_deck';
+import 'root/windows/rP2Hp2ywxg089UriCZ2IHSeH.woff2';
+import 'root/windows/rP2Hp2ywxg089UriCZOIHQ.woff2';
 
 export const overlayElements = {
   MainOut: document.getElementById('MainOut') as HTMLElement,
   DeckName: document.getElementById('deckName') as HTMLElement,
+  DeckNameOpp: document.getElementById('deckNameOpp') as HTMLElement,
   MainDeckFrame: document.getElementById('MainDeckFrame') as HTMLElement,
   MoveHandle: document.getElementById('MoveHandle') as HTMLElement,
   OpponentOut: document.getElementById('OpponentOut') as HTMLElement,
@@ -50,6 +51,14 @@ export const overlayConfig: OverlayConfig = {
   icon: '',
   highlightTimeout: 4000,
   selectedDeck: '',
+  allBots: {
+    HiddenAiHumanNames: [],
+    HiddenAiLSTMNames: [],
+    HiddenAiMarvelNames: [],
+    HiddenAiNamePostfixes: [],
+    HiddenAiRealPlayerNames: [],
+    HiddenAiNamePrefixes: [],
+  },
 };
 
 export const icons: {[index: string]: string} = {'': 'w', '2': 'u', '3': 'b', '1': 'r', '4': 'g'};

@@ -90,12 +90,20 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     //console.log(overlayConfig.allCards);
   });
 
+  onMessageFromIpcMain('bots-message', (bots) => {
+    overlayConfig.allBots = bots;
+    //console.log(overlayConfig.allBots);
+  });
+
   onMessageFromIpcMain('match-started', (newMatch) => {
     //console.log('match-started', newMatch);
+    const ourPlayerPosition: 0 | 1 = newMatch.players[0] === newMatch.uid ? 0 : 1;
+    currentMatch.opponentNick = newMatch.playerNicks[ourPlayerPosition === 0 ? 1 : 0];
+
     if (currentMatch.matchId !== '') {
       currentMatch.over(!newMatch.isBattle || newMatch.isNewBattle);
-      updateOppDeck([]);
     }
+
     overlayConfig.selectedDeck = newMatch.selectedDeckId;
     overlayElements.MainDeckFrame.classList.add('hidden');
     //(overlayElements.ToggleMe, overlayElements.MainDeckFrame.classList.contains('hidden'));
@@ -110,6 +118,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     currentMatch.humanname = selectedDeck ? selectedDeck.name : '';
     // console.log(currentMatch);
     drawDeck();
+    updateOppDeck([]);
   });
 
   onMessageFromIpcMain('match-set-player', (playerCreation) => {
@@ -117,6 +126,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
       currentMatch.myEntityId = playerCreation.entityId;
     } else {
       currentMatch.oppEntityId = playerCreation.entityId;
+      currentMatch.oppCardBack = playerCreation.CardBackDefId;
     }
     const owner = playerCreation.entityId === currentMatch.myEntityId ? 'me' : 'opponent';
 
@@ -157,6 +167,15 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     // console.log('match-create-card-entity', currentMatch);
   });
 
+  onMessageFromIpcMain('got-suggestions', (suggestions) => {
+    //console.log(suggestions);
+    if (currentMatch.opponentNick !== '' && !overlayConfig.ovlSettings?.hidesuggestions) {
+      currentMatch.oppDeckSuggestions = suggestions.deck;
+      currentMatch.oppDeckATSuggestion = suggestions.name;
+      updateOppDeck([]);
+    }
+  });
+
   onMessageFromIpcMain('match-card-reveal', (revealedCard) => {
     currentMatch.cardEntityIDs[revealedCard.entityId].cardDefId = revealedCard.cardDefId;
     currentMatch.cardEntityIDs[revealedCard.entityId].rarityDefId = revealedCard.rarityDefId;
@@ -168,6 +187,13 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     } else {
       if (!overlayConfig.ovlSettings?.hideopp) {
         updateOppDeck([revealedCard.cardDefId]);
+        if (!overlayConfig.ovlSettings?.hidesuggestions) {
+          const oppDeckStrings: string[] = [];
+          currentMatch.oppDeckStable.forEach((card) => {
+            oppDeckStrings.push(card.CardDefId);
+          });
+          sendMessageToIpcMain('get-suggestions', oppDeckStrings);
+        }
       }
     }
     //console.log('match-card-reveal', revealedCard);
