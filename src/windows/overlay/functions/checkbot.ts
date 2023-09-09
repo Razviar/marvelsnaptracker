@@ -28,11 +28,17 @@ export function CheckBottiness(): string {
     }
   });
 
+  overlayConfig.allBots.HiddenAiNamePrefixes.forEach((nameToTest) => {
+    if (nick.includes(nameToTest) && nameToTest.length > 3) {
+      botLikness++;
+    }
+  });
+
   overlayConfig.allBots.HiddenAiRealPlayerNames.forEach((nameToTest) => {
     if (nick.includes(nameToTest) && nameToTest.length > 3) {
       botLikness++;
     }
   });
 
-  return `${nick} (${botLikness === 0 ? 'Human' : botLikness > 1 ? 'Most Likely A Bot' : 'Could Be a Bot'})`;
+  return `${nick} (${botLikness === 0 ? 'Human' : botLikness > 1 ? 'Definitely a Bot' : 'Possibly a Bot'})`;
 }

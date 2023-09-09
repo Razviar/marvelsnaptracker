@@ -4,4 +4,5 @@ export interface Bots {
   HiddenAiMarvelNames: string[];
   HiddenAiNamePostfixes: string[];
   HiddenAiRealPlayerNames: string[];
+  HiddenAiNamePrefixes: string[];
 }

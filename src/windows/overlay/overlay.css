@@ -315,7 +315,7 @@ a[href^="ftp://"]
 }
 
 .deckNameBattle {
-  max-width: 180px;
+  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: bold;
