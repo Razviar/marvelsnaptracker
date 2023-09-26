@@ -1,7 +1,7 @@
 import {currentMatch, overlayConfig} from 'root/windows/overlay/overlay';
 
 export function CheckBottiness(): string {
-  let nick = currentMatch.opponentNick;
+  const nick = currentMatch.opponentNick;
   let botLikness = 0;
   let LSTM = false;
 

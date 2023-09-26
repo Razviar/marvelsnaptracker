@@ -1,22 +1,21 @@
 // tslint:disable: no-any no-unsafe-any no-import-side-effect
 import 'pretty-checkbox/dist/pretty-checkbox.min.css';
-
-import {NetworkStatusMessage} from 'root/lib/messages';
 import 'root/windows/css.css';
 import 'root/windows/fa-brands-400.woff2';
 import 'root/windows/fa-regular-400.woff2';
 import 'root/windows/fa-solid-900.woff2';
+import 'root/windows/rP2Hp2ywxg089UriCZ2IHSeH.woff2';
+import 'root/windows/rP2Hp2ywxg089UriCZOIHQ.woff2';
 import 'root/windows/fontawesome.css';
+import 'root/windows/home/home.css';
+import 'root/windows/home/icons.css';
+import {NetworkStatusMessage} from 'root/lib/messages';
 import {controlClick} from 'root/windows/home/functions/controlclick';
 import {installHomeMessages} from 'root/windows/home/functions/messages';
 import {setHkClick} from 'root/windows/home/functions/setHkClick';
 import {settingsChecker} from 'root/windows/home/functions/settingsChecker';
 import {tabclick} from 'root/windows/home/functions/tabclick';
-import 'root/windows/home/home.css';
-import 'root/windows/home/icons.css';
 import {onMessageFromIpcMain, sendMessageToIpcMain} from 'root/windows/messages';
-import 'root/windows/rP2Hp2ywxg089UriCZ2IHSeH.woff2';
-import 'root/windows/rP2Hp2ywxg089UriCZOIHQ.woff2';
 
 export const HomePageElements = {
   header: document.getElementById('header') as HTMLElement,

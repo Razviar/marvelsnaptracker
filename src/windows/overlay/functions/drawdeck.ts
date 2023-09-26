@@ -1,3 +1,4 @@
+import {HoverEventListener} from 'root/windows/overlay/functions/hovereventlistener';
 import {makeCard} from 'root/windows/overlay/functions/makecard';
 import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
 import {currentMatch, overlayConfig, overlayElements} from 'root/windows/overlay/overlay';
@@ -30,10 +31,9 @@ export function drawDeck(): void {
   overlayElements.MainOut.innerHTML = output;
   if (!overlayConfig.ovlSettings?.hidemy) {
     overlayElements.MainDeckFrame.classList.remove('hidden');
-    //toggleButtonClass(overlayElements.ToggleMe, overlayElements.MainDeckFrame.classList.contains('hidden'));
   }
-  /*const AllCards = document.getElementsByClassName('DcDrow');
+  const AllCards = document.getElementsByClassName('DcDrow');
   Array.from(AllCards).forEach((theCard) => {
     HoverEventListener(theCard);
-  });*/
+  });
 }

@@ -2,8 +2,8 @@ import {exec, execFile} from 'child_process';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
 import psList from 'ps-list';
-import {getBots} from 'root/api/bots';
 
+import {getBots} from 'root/api/bots';
 import {getCards} from 'root/api/cards';
 import {registerHotkeys, unRegisterHotkeys} from 'root/app/hotkeys';
 import {WindowLocator} from 'root/app/locatewindow';

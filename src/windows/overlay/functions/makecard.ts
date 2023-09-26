@@ -38,7 +38,7 @@ export function makeCardBack(cardBackDefId: string, side: boolean): string {
   const cardHeight = cardWidth * 1.3;
 
   return `
-    <div class="DcDrow CardMainWrapper" data-side="${
+    <div class="CardMainWrapper" data-side="${
       side ? 'me' : 'opp'
     }" style="width: ${cardWidth}px; height:${cardHeight}px;">
       <div class="CardPicRenderer" style="width: ${cardWidth}px; height:${cardHeight}px; background-image: url('https://static.marvelsnap.pro/cardbacks/${cardBackDefId}.webp?anticache=${formattedToday}')"></div>

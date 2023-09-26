@@ -173,8 +173,8 @@ export function installHomeMessages(): void {
 
   onMessageFromIpcMain('sync-process', (res) => {
     if (res.mode === 'needauth') {
-      sendMessageToIpcMain('open-link', `https://marvelsnap.pro//sync/?request=${res.request}`);
-      HomePageElements.directSyncLink.innerHTML = `<div class="directSyncLink">https://marvelsnap.pro//sync/?request=${res.request}</div>`;
+      sendMessageToIpcMain('open-link', `https://marvelsnap.pro/sync/?request=${res.request}`);
+      HomePageElements.directSyncLink.innerHTML = `<div class="directSyncLink">https://marvelsnap.pro/sync/?request=${res.request}</div>`;
       tokenWaiter(res.request);
       currentCreds.numberOfSyncAttempts = 0;
     } else if (res.mode === 'hasauth') {
@@ -183,7 +183,7 @@ export function installHomeMessages(): void {
   });
 
   onMessageFromIpcMain('token-waiter-responce', (response) => {
-    console.log('token-waiter-responce', response);
+    //console.log('token-waiter-responce', response);
     if (response.res && response.res.token && response.res.token !== '') {
       login(response.res.token, response.res.uid, response.res.nick);
     } else {
@@ -192,7 +192,7 @@ export function installHomeMessages(): void {
         currentCreds.numberOfSyncAttempts++;
         setTimeout(() => {
           tokenWaiter(response.request);
-        }, 1000);
+        }, 5000);
       }
     }
   });

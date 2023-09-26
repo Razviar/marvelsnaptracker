@@ -2,7 +2,6 @@ const path = require('path');
 const ROOT = path.resolve(__dirname);
 const SRC = path.join(ROOT, 'src');
 const NODE_MODULES = path.join(ROOT, 'node_modules');
-const WebpackHookPlugin = require('webpack-hook-plugin').default;
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {

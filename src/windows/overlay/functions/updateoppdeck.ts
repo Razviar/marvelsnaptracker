@@ -1,5 +1,6 @@
 import {SnapCard} from 'root/models/snap_deck';
 import {CheckBottiness} from 'root/windows/overlay/functions/checkbot';
+import {HoverEventListener} from 'root/windows/overlay/functions/hovereventlistener';
 import {makeCard, makeCardBack} from 'root/windows/overlay/functions/makecard';
 import {sortDeck} from 'root/windows/overlay/functions/sortdeck';
 import {currentMatch, overlayConfig, overlayElements} from 'root/windows/overlay/overlay';
@@ -110,8 +111,8 @@ export function updateOppDeck(highlight: string[]): void {
     });
   }, overlayConfig.highlightTimeout);
 
-  /* const AllCards = document.getElementsByClassName('DcDrow');
+  const AllCards = document.getElementsByClassName('DcDrow');
   Array.from(AllCards).forEach((theCard) => {
     HoverEventListener(theCard);
-  });*/
+  });
 }
