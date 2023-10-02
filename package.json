@@ -1,7 +1,7 @@
 {
   "name": "marvelsnaptracker",
   "productName": "Marvel Snap Tracker",
-  "version": "1.2.22",
+  "version": "1.2.24",
   "description": "Marvel Snap Tracker",
   "main": "./.webpack/main",
   "scripts": {
@@ -24,7 +24,7 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
-    "@types/find": "0.2.1",
+    "@types/find": "0.2.2",
     "auto-launch": "5.0.6",
     "axios": "1.5.0",
     "date-fns": "2.30.0",
@@ -32,7 +32,7 @@
     "error-stack-parser": "2.1.4",
     "find-process": "1.4.7",
     "form-data": "4.0.0",
-    "jsonrepair": "3.2.0",
+    "jsonrepair": "3.2.2",
     "lodash": "4.17.21",
     "moment": "2.29.4",
     "node-abi": "3.47.0",
@@ -51,13 +51,13 @@
     "@electron-forge/plugin-webpack": "6.4.2",
     "@electron-forge/publisher-github": "6.4.2",
     "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
-    "@types/auto-launch": "5.0.2",
-    "@types/lodash": "4.14.198",
+    "@types/auto-launch": "5.0.3",
+    "@types/lodash": "4.14.199",
     "copy-webpack-plugin": "11.0.0",
     "csp-html-webpack-plugin": "5.1.0",
     "css-loader": "6.8.1",
     "dotenv-webpack": "8.0.1",
-    "electron": "26.2.0",
+    "electron": "26.2.2",
     "file-loader": "6.2.0",
     "fork-ts-checker-webpack-plugin": "8.0.0",
     "node-loader": "2.0.0",

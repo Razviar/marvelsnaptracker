@@ -167,16 +167,6 @@ a[href^="ftp://"]
   opacity: 0.8;
 }
 
-#CardHint {
-  position: absolute;
-  transform-origin: top left;
-}
-
-#CardHint > img {
-  border-radius: 4%;
-  width: 300px;
-}
-
 #Scaler {
   position: absolute;
   width: 25px;
@@ -382,6 +372,12 @@ a[href^="ftp://"]
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.CardHint {
+  color: #e7e7e7 !important;
+  padding: 10px;
+  width: 480px;
 }
 
 .DeckSummaryEntity {

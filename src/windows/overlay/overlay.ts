@@ -23,7 +23,6 @@ export const overlayElements = {
   MainDeckFrame: document.getElementById('MainDeckFrame') as HTMLElement,
   MoveHandle: document.getElementById('MoveHandle') as HTMLElement,
   OpponentOut: document.getElementById('OpponentOut') as HTMLElement,
-  CardHint: document.getElementById('CardHint') as HTMLElement,
   scaleIn: document.getElementById('scaleIn') as HTMLElement,
   scaleOut: document.getElementById('scaleOut') as HTMLElement,
   OpponentOutFrame: document.getElementById('OpponentOutFrame') as HTMLElement,
@@ -33,6 +32,8 @@ export const overlayElements = {
   LogoSpan: document.getElementById('LogoSpan') as HTMLElement,
   RestartWarning: document.getElementById('RestartWarning') as HTMLElement,
   AVWarning: document.getElementById('AVWarning') as HTMLElement,
+  CardHint: document.getElementById('CardHint') as HTMLElement,
+  CardHintOpp: document.getElementById('CardHintOpp') as HTMLElement,
 };
 
 const Interactive = document.getElementsByClassName('Interactive');
