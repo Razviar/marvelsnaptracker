@@ -15,8 +15,8 @@ export function drawDeck(): void {
     overlayConfig.ovlSettings?.fontcolor === 2
       ? ' White'
       : overlayConfig.ovlSettings?.fontcolor === 1
-      ? ' LightGrey'
-      : ' DarkGrey'
+        ? ' LightGrey'
+        : ' DarkGrey'
   }">`;
 
   output += '</div>';
@@ -24,8 +24,8 @@ export function drawDeck(): void {
     overlayConfig.ovlSettings?.fontcolor === 2
       ? 'White'
       : overlayConfig.ovlSettings?.fontcolor === 1
-      ? 'LightGrey'
-      : 'DarkGrey'
+        ? 'LightGrey'
+        : 'DarkGrey'
   );
   overlayElements.DeckName.innerHTML = currentMatch.humanname;
   overlayElements.MainOut.innerHTML = output;

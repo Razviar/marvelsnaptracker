@@ -195,8 +195,8 @@ export class WindowLocator {
             change?.Message?.GameResultAccountItems[0]?.IsWinner === true
               ? change?.Message?.GameResultAccountItems[0]?.AccountId
               : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
-              ? change?.Message?.GameResultAccountItems[1]?.AccountId
-              : undefined;
+                ? change?.Message?.GameResultAccountItems[1]?.AccountId
+                : undefined;
           if (+change?.Message?.IsBattleMode) {
             gameState.updateBattleDeckStats(winner, cubes);
           } else {
