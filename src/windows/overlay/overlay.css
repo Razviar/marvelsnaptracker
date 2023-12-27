@@ -74,10 +74,10 @@ a[href^="ftp://"]
   flex-wrap: wrap;
   position: absolute;
   top: 15%;
-  right: 20px;
+  left: 60%;
   width: 520px;
   background-color: rgba(11, 0, 0, 0.5);
-  transform-origin: top right;
+  transform-origin: top left;
 }
 
 .smallmanagroup {

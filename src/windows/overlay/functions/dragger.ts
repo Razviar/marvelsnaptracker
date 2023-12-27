@@ -15,10 +15,14 @@ export function dragger(dragable: HTMLElement, handle: HTMLElement): void {
 
   const DraggingMouseMove = (ee: MouseEvent) => {
     const rect = dragable.getBoundingClientRect();
-    const dopplerX = dragable.id === 'OpponentOutFrame' ? rect.width * overlayConfig.currentScale - rect.width : 0;
-    const windowBoundsX = window.innerWidth - rect.width + dopplerX;
+    //const dopplerX = dragable.id === 'OpponentOutFrame' ? rect.width * overlayConfig.currentScale : 0;
+    const windowBoundsX = window.innerWidth - rect.width;
     const windowBoundsY = window.innerHeight - rect.height;
-    //console.log(dragable.id + '/' + rect.width + '/' + currentScale + '/' + rect.width * currentScale);
+    console.log(window.innerWidth, window.innerHeight);
+    console.log(rect);
+    console.log(
+      dragable.id + '/' + rect.width + '/' + overlayConfig.currentScale + '/' + rect.width * overlayConfig.currentScale
+    );
 
     ee.preventDefault();
     // calculate the new cursor position:
