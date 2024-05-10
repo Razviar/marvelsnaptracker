@@ -12,22 +12,52 @@ export function updateOppDeck(highlight: string[]): void {
 
   let oppGraveyard: SnapCard[] = [];
   const oppDeckStrings: string[] = [];
-  if (currentMatch.oppDeckStable.length > 12) {
+
+  let nOppCardHand = 0;
+  let nOppCardDeck = 0;
+
+  let thanosIndex = currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === 'Thanos');
+  let isThanosDeck = thanosIndex !== -1;
+  let NCardsInDeck = isThanosDeck ? 18 : 12;
+
+  if (currentMatch.oppDeckStable.length > NCardsInDeck) {
     currentMatch.oppDeckStable.length = 0;
   }
+
   Object.keys(currentMatch.cardEntityIDs).forEach((cardEntityID) => {
     const TheEntity = currentMatch.cardEntityIDs[+cardEntityID];
+    const CardIndexInStableDeck = currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === TheEntity.cardDefId);
+
     if (
       +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
       TheEntity.cardDefId !== '' &&
-      currentMatch.oppDeckStable.findIndex((el) => el.CardDefId === TheEntity.cardDefId) === -1 &&
-      currentMatch.oppDeckStable.length <= 12
+      CardIndexInStableDeck === -1 &&
+      currentMatch.oppDeckStable.length <= NCardsInDeck
     ) {
       currentMatch.oppDeckStable.push({
         CardDefId: TheEntity.cardDefId,
         RarityDefId: TheEntity.rarityDefId,
         ArtVariantDefId: TheEntity.artVariantDefId,
       });
+    } else if (
+      +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
+      TheEntity.cardDefId !== '' &&
+      CardIndexInStableDeck !== -1
+    ) {
+      currentMatch.oppDeckStable[CardIndexInStableDeck].RarityDefId = TheEntity.rarityDefId;
+      currentMatch.oppDeckStable[CardIndexInStableDeck].ArtVariantDefId = TheEntity.artVariantDefId;
+    }
+
+    if (
+      +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
+      currentMatch.zones?.[TheEntity.zoneId]?.type === 'handEntity'
+    ) {
+      nOppCardHand++;
+    } else if (
+      +TheEntity.ownerEntityId === +currentMatch.oppEntityId &&
+      currentMatch.zones?.[TheEntity.zoneId]?.type === 'deckEntity'
+    ) {
+      nOppCardDeck++;
     }
 
     if (
@@ -43,6 +73,58 @@ export function updateOppDeck(highlight: string[]): void {
     }
   });
 
+  /*console.log(currentMatch.oppDeckStable);
+  console.log(currentMatch.TurnNumber, nOppCardHand, nOppCardDeck, isThanosDeck, NCardsInDeck);*/
+
+  if (currentMatch.oppDeckStable.length === 0 && currentMatch.TurnNumber == 0 && nOppCardHand === 5) {
+    currentMatch.oppDeckStable.push({
+      CardDefId: 'AgathaHarkness',
+      RarityDefId: '',
+      ArtVariantDefId: '',
+    });
+  }
+
+  if (currentMatch.oppDeckStable.length === 0 && currentMatch.TurnNumber == 0 && nOppCardDeck === 18) {
+    currentMatch.oppDeckStable.push(
+      {
+        CardDefId: 'Thanos',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'SpaceStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'RealityStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'TimeStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'MindStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'PowerStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      },
+      {
+        CardDefId: 'SoulStone',
+        RarityDefId: '',
+        ArtVariantDefId: '',
+      }
+    );
+    NCardsInDeck = 18;
+  }
+
   let output = '';
   let outputGrave = '';
   let alreadyOutputtedCards = 0;
@@ -55,7 +137,7 @@ export function updateOppDeck(highlight: string[]): void {
   });
 
   if (Object.keys(currentMatch.oppDeckSuggestions).length === 0) {
-    for (let unknownCard = 12 - currentMatch.oppDeckStable.length; unknownCard > 0; unknownCard--) {
+    for (let unknownCard = NCardsInDeck - currentMatch.oppDeckStable.length; unknownCard > 0; unknownCard--) {
       output += makeCardBack(currentMatch.oppCardBack, false);
     }
   } else {
@@ -66,9 +148,9 @@ export function updateOppDeck(highlight: string[]): void {
       }
     });
     Object.keys(currentMatch.oppDeckSuggestions)
-      .slice(0, 12 - currentMatch.oppDeckStable.length + n)
+      .slice(0, NCardsInDeck - currentMatch.oppDeckStable.length + n)
       .forEach((cardDefIdSuggestion) => {
-        if (!oppDeckStrings.includes(cardDefIdSuggestion) && alreadyOutputtedCards < 12) {
+        if (!oppDeckStrings.includes(cardDefIdSuggestion) && alreadyOutputtedCards < NCardsInDeck) {
           alreadyOutputtedCards++;
           output += makeCard(
             cardDefIdSuggestion,

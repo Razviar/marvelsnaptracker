@@ -35,9 +35,8 @@ module.exports = {
       platforms: ['win32'],
       config: {
         name: 'marvelsnaptracker',
-        certificateFile: './cert/liubov.p12',
-        certificatePassword: '1111',
         iconUrl: 'https://marvelsnap.pro/snap/icon.ico',
+        signWithParams: '/sha1 13f0485857babe3350c094db5d424bea8307c0af /t http://timestamp.sectigo.com /fd SHA256',
       },
     },
     {

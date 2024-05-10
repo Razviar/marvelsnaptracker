@@ -142,7 +142,8 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
       type: 'handEntity',
       owner,
     };
-    //console.log('match-set-player', currentMatch.zones);
+    updateOppDeck([]);
+    //console.log('match-set-player', playerCreation);
   });
 
   onMessageFromIpcMain('match-set-location', (locationData) => {
@@ -177,6 +178,10 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });
 
   onMessageFromIpcMain('match-card-reveal', (revealedCard) => {
+    if (currentMatch.TurnNumber === 0) {
+      updateOppDeck([]);
+      currentMatch.TurnNumber = 1;
+    }
     currentMatch.cardEntityIDs[revealedCard.entityId].cardDefId = revealedCard.cardDefId;
     currentMatch.cardEntityIDs[revealedCard.entityId].rarityDefId = revealedCard.rarityDefId;
     currentMatch.cardEntityIDs[revealedCard.entityId].artVariantDefId = revealedCard.artVariantDefId;
@@ -200,6 +205,10 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });
 
   onMessageFromIpcMain('match-card-move', (moveCard) => {
+    if (currentMatch.TurnNumber === 0) {
+      updateOppDeck([]);
+      currentMatch.TurnNumber = 1;
+    }
     currentMatch.cardEntityIDs[moveCard.cardEntityId].zoneId = moveCard.targetZoneEntityId;
     currentMatch.cardEntityIDs[moveCard.cardEntityId].ownerEntityId = moveCard.cardOwnerEntityId;
     //console.log('match-card-move', currentMatch.cardEntityIDs);

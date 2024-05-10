@@ -201,22 +201,22 @@ export class WindowLocator {
         case 'CubeGame.GameResultChange':
           /*console.log('GameResultChange');
           console.log(change);*/
-					const cubes = +change?.Message?.FinalCubeValue;
-					const winner =
-						change?.Message?.GameResultAccountItems[0]?.IsWinner === true
-							? change?.Message?.GameResultAccountItems[0]?.AccountId
-							: change?.Message?.GameResultAccountItems[1]?.IsWinner === true
-							? change?.Message?.GameResultAccountItems[1]?.AccountId
-							: undefined;
-					if (+change?.Message?.IsBattleMode) {
-						gameState.updateBattleDeckStats(winner, cubes);
-					} else {
-						gameState.updateDeckStats(winner, cubes);
-					}
-					break;
-			}
-		});
-	}
+          const cubes = +change?.Message?.FinalCubeValue;
+          const winner =
+            change?.Message?.GameResultAccountItems[0]?.IsWinner === true
+              ? change?.Message?.GameResultAccountItems[0]?.AccountId
+              : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
+                ? change?.Message?.GameResultAccountItems[1]?.AccountId
+                : undefined;
+          if (+change?.Message?.IsBattleMode) {
+            gameState.updateBattleDeckStats(winner, cubes);
+          } else {
+            gameState.updateDeckStats(winner, cubes);
+          }
+          break;
+      }
+    });
+  }
 
 	private brutallyParseJSON(raw: string): void {
 		/*try {
