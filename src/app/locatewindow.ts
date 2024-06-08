@@ -133,8 +133,11 @@ export class WindowLocator {
 
           sendMessageToOverlayWindow('match-started', {
             matchId: change.Id,
-            players: [change.Players[0].AccountId as string, change.Players[1].AccountId as string],
-            playerNicks: [change.Players[0].Name as string, change.Players[1].Name as string],
+            players: [
+              change.Players[0].PlayerInfo.AccountId as string,
+              change.Players[1].PlayerInfo.AccountId as string,
+            ],
+            playerNicks: [change.Players[0].PlayerInfo.Name as string, change.Players[1].PlayerInfo.Name as string],
             uid: userID,
             selectedDeckId,
             isBattle:
@@ -148,13 +151,15 @@ export class WindowLocator {
           break;
         case 'CubeGame.GameCreatePlayerChange':
           sendMessageToOverlayWindow('match-set-player', {
-            accountId: change.AccountId,
-            name: change.Name,
+            accountId: change.PlayerInfo.AccountId,
+            name: change.PlayerInfo.Name,
             entityId: +change.EntityId,
             deckEntityId: +change.DeckEntityId,
             graveyardEntityId: +change.GraveyardEntityId,
             handEntityId: +change.HandEntityId,
-            CardBackDefId: change.CardBack.CardBackDefId ? change.CardBack.CardBackDefId : 'Snap_01',
+            CardBackDefId: change.PlayerInfo.CardBack.CardBackDefId
+              ? change.PlayerInfo.CardBack.CardBackDefId
+              : 'Snap_01',
           });
         case 'CubeGame.GameCreateLocationChange':
           sendMessageToOverlayWindow('match-set-location', {

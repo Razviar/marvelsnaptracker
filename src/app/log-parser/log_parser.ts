@@ -1,4 +1,4 @@
-import format from 'date-fns/format';
+import {format} from 'date-fns';
 import {app} from 'electron';
 import {Stats, statSync} from 'fs';
 import {join} from 'path';
@@ -158,7 +158,12 @@ export class LogParser {
           switch (Variable) {
             case 'PLAYER_ID':
               extractedElementToProcess.forEach((extractedElement, i) => {
-                const extractedAccountId = extractValue(dataParsed, [...pathToVariableToExtract, i, 'AccountId']);
+                const extractedAccountId = extractValue(dataParsed, [
+                  ...pathToVariableToExtract,
+                  i,
+                  'PlayerInfo',
+                  'AccountId',
+                ]);
                 if (extractedAccountId && extractedAccountId === this.currentState.state.userId) {
                   variables[Variable] = i;
                   variables['OPPONENT_ID'] = i == 0 ? 1 : 0;

@@ -96,7 +96,7 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
   });
 
   onMessageFromIpcMain('match-started', (newMatch) => {
-    //console.log('match-started', newMatch);
+    console.log('match-started', newMatch);
     const ourPlayerPosition: 0 | 1 = newMatch.players[0] === newMatch.uid ? 0 : 1;
     currentMatch.opponentNick = newMatch.playerNicks[ourPlayerPosition === 0 ? 1 : 0];
 

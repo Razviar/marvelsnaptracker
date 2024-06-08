@@ -37,7 +37,7 @@ module.exports = {
       config: {
         name: 'marvelsnaptracker',
         iconUrl: 'https://marvelsnap.pro/snap/icon.ico',
-        signWithParams: '/sha1 13f0485857babe3350c094db5d424bea8307c0af /t http://timestamp.sectigo.com /fd SHA256',
+        signWithParams: '/sha1 a2ed9c1235299de7e8178c13fad6d2bdde08ad67 /t http://timestamp.sectigo.com /fd SHA256',
       },
     },
     {

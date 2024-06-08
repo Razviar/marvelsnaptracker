@@ -1,4 +1,5 @@
 import {app} from 'electron';
+import electronIsDev from 'electron-is-dev';
 
 import {LogFileParsingState, LogSenderParsingMetadata} from 'root/app/log-parser/model';
 import {sendMessageToHomeWindow} from 'root/app/messages';
@@ -68,13 +69,14 @@ export function sendEventsToServer(
 // API call to server
 async function uploadpackfile(results: ParseResults[], version: string): Promise<string | boolean> {
   try {
+    console.log(`/snap/donew2.php?cmd=cm_uploadpackfile&version=${version}${isMac() ? 'm' : 'w'}`);
     const res = await Request.gzip<ParseResults[]>(
       `/snap/donew2.php?cmd=cm_uploadpackfile&version=${version}${isMac() ? 'm' : 'w'}`,
       results
     );
     const resMap = asMap(res);
-    /*console.log('!!!');
-    console.log(res);
+
+    /*console.log(res);
     console.log('!!!');*/
     if (resMap === undefined) {
       return false;
@@ -118,9 +120,13 @@ async function sendNextBatch(): Promise<void> {
     if (events.length === 0 || events.length + part.events.length <= logSenderParsingMetadata.batchSize) {
       for (const event of part.events) {
         let sendingRate = logSenderParsingMetadata.sendingRates[event.indicator] as number | undefined;
+
         if (sendingRate === undefined) {
           sendingRate = 1;
         }
+        /* if (electronIsDev) {
+          console.log(event.indicator, sendingRate);
+        }*/
         if (Math.random() <= sendingRate) {
           events.push(event);
         }
