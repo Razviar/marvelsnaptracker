@@ -67,17 +67,13 @@ class GameState {
     this.battleScores = [10, 10];
   }
 
-  public updateBattleDeckStats(winner: string | undefined, cubes: number) {
-    const account = settingsStore.getAccount();
-    const userId = account?.player?.playerId;
-    const isWinner = winner === userId;
-    if (winner !== undefined) {
-      if (isWinner) {
-        this.battleScores[1] -= cubes;
-      } else {
-        this.battleScores[0] -= cubes;
-      }
+  public updateBattleDeckStats(isWinner: boolean, cubes: number) {
+    if (isWinner) {
+      this.battleScores[1] -= cubes;
+    } else {
+      this.battleScores[0] -= cubes;
     }
+
     //console.log('updateBattleDeckStats', this.battleScores);
 
     if (this.battleScores[0] === 0 || this.battleScores[1] === 0) {
@@ -87,24 +83,20 @@ class GameState {
     }
   }
 
-  public updateDeckStats(winner: string | undefined, cubes: number) {
-    const account = settingsStore.getAccount();
-    const userId = account?.player?.playerId;
-    const isWinner = winner === userId;
-    if (winner !== undefined) {
-      if (this.deckStats[this.selectedDeck] !== undefined) {
-        this.deckStats[this.selectedDeck].win += isWinner ? 1 : 0;
-        this.deckStats[this.selectedDeck].loss += isWinner ? 0 : 1;
-        this.deckStats[this.selectedDeck].cube_win += isWinner ? cubes : 0;
-        this.deckStats[this.selectedDeck].cube_loss += isWinner ? 0 : cubes;
-      } else {
-        this.deckStats[this.selectedDeck] = {win: 0, loss: 0, cube_win: 0, cube_loss: 0};
-        this.deckStats[this.selectedDeck].win = isWinner ? 1 : 0;
-        this.deckStats[this.selectedDeck].loss = isWinner ? 0 : 1;
-        this.deckStats[this.selectedDeck].cube_win = isWinner ? cubes : 0;
-        this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
-      }
+  public updateDeckStats(isWinner: boolean, cubes: number) {
+    if (this.deckStats[this.selectedDeck] !== undefined) {
+      this.deckStats[this.selectedDeck].win += isWinner ? 1 : 0;
+      this.deckStats[this.selectedDeck].loss += isWinner ? 0 : 1;
+      this.deckStats[this.selectedDeck].cube_win += isWinner ? cubes : 0;
+      this.deckStats[this.selectedDeck].cube_loss += isWinner ? 0 : cubes;
+    } else {
+      this.deckStats[this.selectedDeck] = {win: 0, loss: 0, cube_win: 0, cube_loss: 0};
+      this.deckStats[this.selectedDeck].win = isWinner ? 1 : 0;
+      this.deckStats[this.selectedDeck].loss = isWinner ? 0 : 1;
+      this.deckStats[this.selectedDeck].cube_win = isWinner ? cubes : 0;
+      this.deckStats[this.selectedDeck].cube_loss = isWinner ? 0 : cubes;
     }
+
     /*console.log(this.deckStats);
     console.log(userId, winner);*/
     sendMessageToOverlayWindow('stats-update', this.deckStats);
@@ -321,8 +313,8 @@ class GameState {
             }
           }
         })
-        .catch(() => {
-          console.log('psList error');
+        .catch((e) => {
+          console.log('psList error', e);
         });
     }
 

@@ -1,5 +1,4 @@
 import {LogFileParsingState, ParsingMetadata} from 'root/app/log-parser/model';
-import {CardPlayed} from 'root/models/cards';
 import {ParseResults} from 'root/models/indicators';
 import {UserDeck} from 'root/models/snap_deck';
 

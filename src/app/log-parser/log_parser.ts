@@ -1,7 +1,7 @@
 import {format} from 'date-fns';
 import {app} from 'electron';
-import {Stats, statSync} from 'fs';
-import {join} from 'path';
+import {existsSync, Stats, statSync} from 'fs';
+import {dirname, join} from 'path';
 
 import {getParsingMetadata} from 'root/api/getindicators';
 import {setuserdata, UserData} from 'root/api/userbytokenid';
@@ -115,6 +115,12 @@ export class LogParser {
         try {
           stats = statSync(path);
         } catch (e) {
+          // The game may stop writing some state files after an update (e.g. ShopState.json
+          // was replaced by ShopClientState.json), so a single missing file is not an error.
+          // Only pause parsing when the nvprod folder itself is gone.
+          if (existsSync(dirname(path))) {
+            return;
+          }
           this.emitter.emit('nologfile', undefined);
           throw new Error(
             "Parsing paused: we can't locate your SNAP/Standalone/States/nvprod dir. Please locate it manually in settings! "
@@ -147,46 +153,55 @@ export class LogParser {
         const data = await getJSONData(path);
         const dataParsed = parseAsJSONIfNeeded(data);
 
-        //console.log(parsingMetadata.Variables);
-        Object.keys(parsingMetadata.Variables).forEach((Variable) => {
-          if (parsingMetadata.Variables[Variable][0] !== fileToParse) {
-            return;
-          }
-          const pathToVariableToExtract = parsingMetadata.Variables[Variable].slice(1);
-          const extractedElementToProcess = extractValue(dataParsed, pathToVariableToExtract) as any[];
-          //console.log('extractedElementToProcess', extractedElementToProcess);
-          switch (Variable) {
-            case 'PLAYER_ID':
-              extractedElementToProcess.forEach((extractedElement, i) => {
-                const extractedAccountId = extractValue(dataParsed, [
-                  ...pathToVariableToExtract,
-                  i,
-                  'PlayerInfo',
-                  'AccountId',
-                ]);
-                if (extractedAccountId && extractedAccountId === this.currentState.state.userId) {
-                  variables[Variable] = i;
-                  variables['OPPONENT_ID'] = i == 0 ? 1 : 0;
-                  variables['PLAYER_NUM'] = i == 0 ? 1 : 2;
-                  variables['OPPONENT_NUM'] = i == 0 ? 2 : 1;
-                }
-              });
-              break;
-          }
-          //variables[Variable] = extractedElementToProcess;
-        });
+        try {
+          //console.log(parsingMetadata.Variables);
+          Object.keys(parsingMetadata.Variables).forEach((Variable) => {
+            if (parsingMetadata.Variables[Variable][0] !== fileToParse) {
+              return;
+            }
+            const pathToVariableToExtract = parsingMetadata.Variables[Variable].slice(1);
+            const extractedElementToProcess = extractValue(dataParsed, pathToVariableToExtract) as any[];
+            //console.log('extractedElementToProcess', extractedElementToProcess);
+            switch (Variable) {
+              case 'PLAYER_ID':
+                extractedElementToProcess.forEach((extractedElement, i) => {
+                  const extractedAccountId = extractValue(dataParsed, [
+                    ...pathToVariableToExtract,
+                    i,
+                    'PlayerInfo',
+                    'AccountId',
+                  ]);
+                  if (extractedAccountId && extractedAccountId === this.currentState.state.userId) {
+                    variables[Variable] = i;
+                    variables['OPPONENT_ID'] = i == 0 ? 1 : 0;
+                    variables['PLAYER_NUM'] = i == 0 ? 1 : 2;
+                    variables['OPPONENT_NUM'] = i == 0 ? 2 : 1;
+                  }
+                });
+                break;
+            }
+            //variables[Variable] = extractedElementToProcess;
+          });
+        } catch (e) {
+          console.log('parsingMetadata.Variables', e);
+          console.log(parsingMetadata.Variables);
+        }
 
         //console.log('variables', variables);
-
-        Object.keys(parsingMetadata.ExtractFromFiles).forEach((DataObject) => {
-          if (parsingMetadata.ExtractFromFiles[DataObject][0] !== fileToParse) {
-            return;
-          }
-          const pathToInterestingThing = parsingMetadata.ExtractFromFiles[DataObject].slice(1);
-          const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
-          parsedResults[DataObject] = interestingThing;
-          //console.log(DataObject, interestingThing);
-        });
+        try {
+          Object.keys(parsingMetadata.ExtractFromFiles).forEach((DataObject) => {
+            if (parsingMetadata.ExtractFromFiles[DataObject][0] !== fileToParse) {
+              return;
+            }
+            const pathToInterestingThing = parsingMetadata.ExtractFromFiles[DataObject].slice(1);
+            const interestingThing = extractValue(dataParsed, pathToInterestingThing, variables);
+            parsedResults[DataObject] = interestingThing;
+            //console.log(DataObject, interestingThing);
+          });
+        } catch (e) {
+          console.log('parsingMetadata.ExtractFromFiles', e);
+          console.log(parsingMetadata.ExtractFromFiles);
+        }
 
         try {
           Object.keys(parsingMetadata.ResolveRefs).forEach((ResolvableElement) => {
@@ -212,45 +227,51 @@ export class LogParser {
           console.log('parsingMetadata.ResolveRefs', e);
         }
 
-        Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
-          if (parsingMetadata.GatherFromArray[DataObjectArray].path[0] !== fileToParse) {
-            return;
-          }
+        try {
+          Object.keys(parsingMetadata.GatherFromArray).map((DataObjectArray) => {
+            if (parsingMetadata.GatherFromArray[DataObjectArray].path[0] !== fileToParse) {
+              return;
+            }
 
-          const pathToInterestingArray = parsingMetadata.GatherFromArray[DataObjectArray].path.slice(1);
-          const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as any[];
+            const pathToInterestingArray = parsingMetadata.GatherFromArray[DataObjectArray].path.slice(1);
+            const interestingArray = extractValue(dataParsed, pathToInterestingArray, variables) as any[];
 
-          interestingArray?.map((_, interestingArrayIndex) => {
-            const gatheredResult: any = {};
-            const ResolvedArray = extractValue(
-              dataParsed,
-              [...pathToInterestingArray, interestingArrayIndex],
-              variables
-            );
-            parsingMetadata.GatherFromArray[DataObjectArray].attrsToGet.map((attrToGet) => {
-              const extrectedArrayElement = extractValue(ResolvedArray, [attrToGet], variables);
-              if (extrectedArrayElement) {
-                gatheredResult[attrToGet] = extrectedArrayElement;
+            interestingArray?.map((_, interestingArrayIndex) => {
+              const gatheredResult: any = {};
+              const ResolvedArray = extractValue(
+                dataParsed,
+                [...pathToInterestingArray, interestingArrayIndex],
+                variables
+              );
+              parsingMetadata.GatherFromArray[DataObjectArray].attrsToGet.map((attrToGet) => {
+                const extrectedArrayElement = extractValue(ResolvedArray, [attrToGet], variables);
+                if (extrectedArrayElement) {
+                  gatheredResult[attrToGet] = extrectedArrayElement;
+                }
+              });
+              //console.log('gatheredResult', gatheredResult);
+              if (Object.keys(gatheredResult).length > 0) {
+                if (parsedResults[DataObjectArray] === undefined) {
+                  parsedResults[DataObjectArray] = [];
+                }
+                parsedResults[DataObjectArray].push(gatheredResult);
               }
             });
-            //console.log('gatheredResult', gatheredResult);
-            if (Object.keys(gatheredResult).length > 0) {
-              if (parsedResults[DataObjectArray] === undefined) {
-                parsedResults[DataObjectArray] = [];
-              }
-              parsedResults[DataObjectArray].push(gatheredResult);
-            }
           });
-        });
+        } catch (e) {
+          console.log('GatherFromArray');
+          this.emitter.emit('error', String(e));
+          //setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
+        }
       });
     } catch (e) {
-      console.log('GatherFromArray');
+      console.log('fileToParse');
       this.emitter.emit('error', String(e));
       //setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
     }
 
-    if (parsedResults['Id'] && parsedResults['SnapId']) {
-      const DisplayName = parsedResults['SnapId'];
+    if (parsedResults['Id'] && parsedResults['SnapId'] && parsedResults['SnapTag']) {
+      const DisplayName = parsedResults['SnapId'] + '#' + parsedResults['SnapTag'];
       const AccountID = parsedResults['Id'];
       //console.log(DisplayName, AccountID);
       if (!this.handleUserChangeEvent(AccountID, DisplayName)) {
@@ -408,7 +429,7 @@ export class LogParser {
     if (account && account.player && account.player.playerId === newPlayerId) {
       return true;
     }
-    //console.log('skipped through account confirmation');
+    console.log('skipped through account confirmation');
     sendMessageToHomeWindow('show-status', {message: 'New User Detected!', color: '#dbb63d'});
 
     // If account is defined, it enforces that awaiting is undefined, because account has a screenName

@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\sigscansharp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|solutionrelative:sigscansharp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|c:\\repos\\marvelsnaptracker\\src\\snaphooker\\datagetter\\pipeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|solutionrelative:pipeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\serverinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15E113ED-F018-4D24-AE9C-F1D67C262360}|DataGetter.csproj|solutionrelative:serverinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PipeClient.cs",
+              "DocumentMoniker": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\PipeClient.cs",
+              "RelativeDocumentMoniker": "PipeClient.cs",
+              "ToolTip": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\PipeClient.cs",
+              "RelativeToolTip": "PipeClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-03-06T06:34:13.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServerInterface.cs",
+              "DocumentMoniker": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\ServerInterface.cs",
+              "RelativeDocumentMoniker": "ServerInterface.cs",
+              "ToolTip": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\ServerInterface.cs",
+              "RelativeToolTip": "ServerInterface.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-03-06T06:34:13.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SigScanSharp.cs",
+              "DocumentMoniker": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\SigScanSharp.cs",
+              "RelativeDocumentMoniker": "SigScanSharp.cs",
+              "ToolTip": "C:\\repos\\marvelsnaptracker\\src\\snapHooker\\dataGetter\\SigScanSharp.cs",
+              "RelativeToolTip": "SigScanSharp.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAtwD4AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2023-03-06T06:34:13.7Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -75,17 +75,18 @@ export class WindowLocator {
       let path = '';
       if (specialpath !== undefined) {
         path = join(specialpath, 'PlayState.json');
+      } else {
+        path = join(
+          app.getPath('appData'),
+          'LocalLow',
+          'Second Dinner',
+          'SNAP',
+          'Standalone',
+          'States',
+          'nvprod',
+          'PlayState.json'
+        ).replace('Roaming\\', '');
       }
-      path = join(
-        app.getPath('appData'),
-        'LocalLow',
-        'Second Dinner',
-        'SNAP',
-        'Standalone',
-        'States',
-        'nvprod',
-        'PlayState.json'
-      ).replace('Roaming\\', '');
       const data = fs.readFileSync(path, {encoding: 'utf8', flag: 'r'});
       const dataParsed = JSON.parse(data.slice(data.indexOf('{')));
       gameState.setSelectedDeck(dataParsed.SelectedDeckId.Value);
@@ -196,12 +197,7 @@ export class WindowLocator {
           /*console.log('GameResultChange');
           console.log(change);*/
           const cubes = +change?.Message?.FinalCubeValue;
-          const winner =
-            change?.Message?.GameResultAccountItems[0]?.IsWinner === true
-              ? change?.Message?.GameResultAccountItems[0]?.AccountId
-              : change?.Message?.GameResultAccountItems[1]?.IsWinner === true
-                ? change?.Message?.GameResultAccountItems[1]?.AccountId
-                : undefined;
+          const winner = change?.Message?.GameResultAccountItems[0]?.IsWinner === true;
           if (+change?.Message?.IsBattleMode) {
             gameState.updateBattleDeckStats(winner, cubes);
           } else {
