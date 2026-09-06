@@ -37,6 +37,10 @@ module.exports = {
       config: {
         name: 'marvelsnaptracker',
         iconUrl: 'https://marvelsnap.pro/snap/icon.ico',
+        // Azure Trusted Signing (account dotgg-signing); see scripts/trusted-signing-hook.js.
+        windowsSign: {
+          hookModulePath: require('path').resolve(__dirname, 'scripts', 'trusted-signing-hook.js'),
+        },
       },
     },
     {
