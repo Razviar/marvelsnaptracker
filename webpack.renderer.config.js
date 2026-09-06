@@ -1,4 +1,9 @@
-const rules = require('./webpack.rules');
+// The renderer and preload bundles run sandboxed without node integration, so the
+// native-module asset relocator (which injects a __dirname-based asset base) must not
+// touch them. Only the main process bundle needs it.
+const rules = require('./webpack.rules').filter(
+  (rule) => !(rule.use && rule.use.loader === '@vercel/webpack-asset-relocator-loader')
+);
 const plugins = require('./webpack.plugins');
 const path = require('path');
 const ROOT = path.resolve(__dirname);

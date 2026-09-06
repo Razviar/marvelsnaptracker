@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "lib": ["es2021", "dom"],
     "target": "es2021",
     "sourceMap": true,
-    "baseUrl": ".",
     "outDir": "dist",
+    "rootDir": "./",
     "paths": {
-      "root/*": ["src/*"],
-      "*": ["node_modules/*"]
+      "root/*": ["./src/*"]
     },
     "skipLibCheck": true,
     "noEmit": false,

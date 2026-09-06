@@ -69,7 +69,13 @@ export class WindowLocator {
     }
   }
 
-  private getWhatDeckIsSelected(): string {
+  // PlayState.json format history:
+  //   <= 56.3: {"SelectedDeckId": {"Value": "<guid>"}}
+  //   >= 56.4: {"SerializedSelectedDeckId": "<guid>", "SelectedDeckByLeagueDefId": {"<LeagueDefId>": "<guid>"}}
+  // Limited events (LimitedEventDefId set, e.g. the Marketplace draft) never use the regular
+  // selected deck: use the per-league selection if the game stored one, otherwise the deck learned
+  // from the previous game of the same event.
+  private getWhatDeckIsSelected(leagueDefId?: string, isLimitedEvent?: boolean): string {
     try {
       const specialpath = settingsStore.get().logPath;
       let path = '';
@@ -89,8 +95,20 @@ export class WindowLocator {
       }
       const data = fs.readFileSync(path, {encoding: 'utf8', flag: 'r'});
       const dataParsed = JSON.parse(data.slice(data.indexOf('{')));
-      gameState.setSelectedDeck(dataParsed.SelectedDeckId.Value);
-      return dataParsed.SelectedDeckId.Value;
+      const byLeague = dataParsed?.SelectedDeckByLeagueDefId;
+      let deckId = '';
+      if (leagueDefId !== undefined && byLeague && typeof byLeague[leagueDefId] === 'string') {
+        deckId = byLeague[leagueDefId];
+      } else if (isLimitedEvent) {
+        const learned = leagueDefId === undefined ? undefined : gameState.getLearnedDeck(leagueDefId);
+        deckId = learned === undefined ? '' : learned.id;
+      } else if (typeof dataParsed?.SerializedSelectedDeckId === 'string') {
+        deckId = dataParsed.SerializedSelectedDeckId;
+      } else if (typeof dataParsed?.SelectedDeckId?.Value === 'string') {
+        deckId = dataParsed.SelectedDeckId.Value;
+      }
+      gameState.setSelectedDeck(deckId);
+      return deckId;
     } catch (e) {
       console.log('getWhatDeckIsselected', e);
       return '';
@@ -118,7 +136,10 @@ export class WindowLocator {
       //console.log(typeSplitted[0], JSON.stringify(change));
       switch (typeSplitted[0]) {
         case 'CubeGame.GameCreateChange':
-          const selectedDeckId = this.getWhatDeckIsSelected();
+          const selectedDeckId = this.getWhatDeckIsSelected(
+            change?.LeagueDefId,
+            change?.LimitedEventDefId !== undefined && change?.LimitedEventDefId !== ''
+          );
           //console.log(selectedDeckId);
 
           if (

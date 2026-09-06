@@ -53,6 +53,10 @@ export function createGlobalLogParser(dev?: boolean): LogParser {
     //}
   });
 
+  logParser.emitter.on('learned-deck', (msg) => {
+    gameState.addLearnedDeck(msg.leagueDefId, msg.deck);
+  });
+
   logParser.emitter.on('error', (msg) => {
     console.log(msg);
     sendMessageToHomeWindow('show-status', {message: msg, color: '#cc2d2d'});

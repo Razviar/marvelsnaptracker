@@ -1,6 +1,5 @@
 {
   "extends": [
-    "tslint-plugin-prettier"
   ],
   "rules": {
     "adjacent-overload-signatures": true,
@@ -213,7 +212,6 @@
     "prefer-switch": false,
     "prefer-template": true,
     "prefer-while": false,
-    "prettier": true,
     "promise-function-async": true,
     "radix": true,
     "restrict-plus-operands": true,

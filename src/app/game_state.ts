@@ -1,7 +1,6 @@
 import {exec, execFile} from 'child_process';
 import {BrowserWindow} from 'electron';
 import electronIsDev from 'electron-is-dev';
-import psList from 'ps-list';
 
 import {getBots} from 'root/api/bots';
 import {getCards} from 'root/api/cards';
@@ -11,6 +10,7 @@ import {withLogParser} from 'root/app/log_parser_manager';
 import {sendMessageToHomeWindow, sendMessageToOverlayWindow} from 'root/app/messages';
 import {createOverlayWindow, getOverlayWindow} from 'root/app/overlay_window';
 import {settingsStore} from 'root/app/settings-store/settings_store';
+import {findProcessByName} from 'root/lib/find_process';
 import {error} from 'root/lib/logger';
 import {hasOwnProperty} from 'root/lib/type_utils';
 import {sleep} from 'root/lib/utils';
@@ -33,6 +33,8 @@ class GameState {
   private overlayIsPositioned = false;
   public isFullscreen: boolean = false;
   private decks: UserDeck[] = [];
+  // Decks learned from end-of-game data, keyed by LeagueDefId (limited-event decks are not in the collection)
+  private readonly learnedDecks: Record<string, UserDeck> = {};
   private selectedDeck: string = '';
   private readonly deckStats: Record<string, {win: number; loss: number; cube_win: number; cube_loss: number}> = {};
   public isDoingBattle: Boolean = false;
@@ -102,14 +104,30 @@ class GameState {
     sendMessageToOverlayWindow('stats-update', this.deckStats);
   }
 
-  public getDecks() {
-    return this.decks;
+  public getDecks(): UserDeck[] {
+    const extra = Object.values(this.learnedDecks).filter(
+      (learned) => !this.decks.some((deck) => deck.id === learned.id)
+    );
+    return [...this.decks, ...extra];
   }
 
-  public setDecks(d: UserDeck[]) {
+  public setDecks(d: UserDeck[]): void {
     this.decks = d;
-    sendMessageToOverlayWindow('decks-message', d);
+    sendMessageToOverlayWindow('decks-message', this.getDecks());
     //console.log(this.decks);
+  }
+
+  public addLearnedDeck(leagueDefId: string, deck: UserDeck): void {
+    const known = this.learnedDecks[leagueDefId];
+    if (known !== undefined && known.id === deck.id && known.cards.length === deck.cards.length) {
+      return;
+    }
+    this.learnedDecks[leagueDefId] = deck;
+    sendMessageToOverlayWindow('decks-message', this.getDecks());
+  }
+
+  public getLearnedDeck(leagueDefId: string): UserDeck | undefined {
+    return this.learnedDecks[leagueDefId];
   }
 
   public getSelectedDeck() {
@@ -175,7 +193,7 @@ class GameState {
     const ovlSettings = account?.overlaySettings;
     sendMessageToOverlayWindow('set-ovlsettings', ovlSettings);
     sendMessageToOverlayWindow('deck-message', this.selectedDeck);
-    sendMessageToOverlayWindow('decks-message', this.decks);
+    sendMessageToOverlayWindow('decks-message', this.getDecks());
     getCards().then((cards) => {
       sendMessageToOverlayWindow('cards-message', cards);
     });
@@ -284,9 +302,9 @@ class GameState {
       if (electronIsDev) {
         console.log('pinging psList');
       }
-      psList()
+      findProcessByName(this.processName)
         .then((processes) => {
-          const res = processes.find((proc) => proc.name === this.processName);
+          const res = processes[0];
           if (res !== undefined) {
             console.log('found SNAP');
             if (!this.badErrorHappening) {
@@ -314,7 +332,7 @@ class GameState {
           }
         })
         .catch((e) => {
-          console.log('psList error', e);
+          console.log('findProcessByName error', e);
         });
     }
 

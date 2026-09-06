@@ -115,7 +115,8 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
       selectedDeckStrings.push(card);
     });
     currentMatch.myFullDeck = selectedDeckStrings;
-    currentMatch.humanname = selectedDeck ? selectedDeck.name : '';
+    currentMatch.deckUnknown = selectedDeck === undefined;
+    currentMatch.humanname = selectedDeck ? selectedDeck.name : 'Deck (cards seen so far)';
     // console.log(currentMatch);
     drawDeck();
     updateOppDeck([]);
@@ -186,6 +187,17 @@ export function SetMessages(setInteractiveHandler: (overlaySettings: OverlaySett
     currentMatch.cardEntityIDs[revealedCard.entityId].rarityDefId = revealedCard.rarityDefId;
     currentMatch.cardEntityIDs[revealedCard.entityId].artVariantDefId = revealedCard.artVariantDefId;
     if (currentMatch.cardEntityIDs[revealedCard.entityId].ownerEntityId === currentMatch.myEntityId) {
+      if (
+        currentMatch.deckUnknown &&
+        !currentMatch.myFullDeck.some((card) => card.CardDefId === revealedCard.cardDefId)
+      ) {
+        currentMatch.myFullDeck.push({
+          CardDefId: revealedCard.cardDefId,
+          RarityDefId: revealedCard.rarityDefId,
+          ArtVariantDefId: revealedCard.artVariantDefId,
+        });
+        drawDeck();
+      }
       if (!overlayConfig.ovlSettings?.hidemy) {
         updateDeck([revealedCard.cardDefId]);
       }

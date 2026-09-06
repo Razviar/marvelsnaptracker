@@ -21,6 +21,7 @@ interface LogParserEvents {
   };
   'deck-message': string;
   'decks-message': UserDeck[];
+  'learned-deck': {leagueDefId: string; deck: UserDeck};
   'turn-info': {decisionPlayer: number; turnNumber?: number};
   nologfile: undefined;
 }

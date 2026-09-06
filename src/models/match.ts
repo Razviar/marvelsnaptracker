@@ -27,6 +27,9 @@ export class Match {
   public cardEntityIDs: Record<number, CardPlayedNfo> = {};
   public myFullDeck: SnapCard[] = [];
   public humanname: string = '';
+  // True when the deck being played is not known up front (e.g. first game of a Marketplace draft run):
+  // the own-deck panel is then filled in progressively from revealed cards.
+  public deckUnknown: boolean = false;
   public myEntityId: number = 0;
   public TurnNumber: number = 0;
   public GameNumber: number = 0;
@@ -47,6 +50,7 @@ export class Match {
     this.cardEntityIDs = {};
     this.myFullDeck = [];
     this.humanname = '';
+    this.deckUnknown = false;
     this.myEntityId = 0;
     this.oppEntityId = 0;
     this.TurnNumber = 0;

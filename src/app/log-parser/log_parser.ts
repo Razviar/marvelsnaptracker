@@ -270,8 +270,8 @@ export class LogParser {
       //setTimeout(() => this.internalLoop(parsingMetadata), this.internalLoopTimeout);
     }
 
-    if (parsedResults['Id'] && parsedResults['SnapId'] && parsedResults['SnapTag']) {
-      const DisplayName = parsedResults['SnapId'] + '#' + parsedResults['SnapTag'];
+    const DisplayName = this.resolveDisplayName(parsedResults);
+    if (parsedResults['Id'] && DisplayName !== undefined) {
       const AccountID = parsedResults['Id'];
       //console.log(DisplayName, AccountID);
       if (!this.handleUserChangeEvent(AccountID, DisplayName)) {
@@ -333,6 +333,9 @@ export class LogParser {
         case 'Decks':
           this.handleDecksMessage(parsedResults[indicator]);
           break;
+        case 'MatchData':
+          this.handleLearnedDeck(parsedResults[indicator]);
+          break;
       }
     });
     //console.log(parsingMetadata.sendToServer);
@@ -382,6 +385,51 @@ export class LogParser {
     this.justStarted = false;
     const timeout = this.internalLoopTimeout;
     setTimeout(() => this.internalLoop(parsingMetadata), timeout);
+  }
+
+  // Since game patch 56.4 ProfileState.json (which carried Name and Tag separately) is no longer
+  // written. The metadata may now provide the display name already combined ("Name#Tag") under
+  // SnapId or SnapIdAlt (two candidate locations inside AnalyticState.json), so accept either form.
+  private resolveDisplayName(parsedResults: {[index: string]: any}): string | undefined {
+    const snapId = parsedResults['SnapId'];
+    const snapTag = parsedResults['SnapTag'];
+    if (typeof snapId === 'string' && snapId !== '' && typeof snapTag === 'string' && snapTag !== '') {
+      return `${snapId}#${snapTag}`;
+    }
+    const candidates = [snapId, parsedResults['SnapIdAlt']];
+    const found = candidates.find((candidate) => typeof candidate === 'string' && candidate !== '');
+    return found === undefined ? undefined : String(found);
+  }
+
+  // Limited-event (e.g. Marketplace draft) decks never appear in CollectionState.json, but the
+  // end-of-game result in GameState.json lists the deck that was played. Remember it so the overlay
+  // can render it for the following games of the same event run.
+  private handleLearnedDeck(matchData: any): void {
+    try {
+      const deckId = matchData?.PlayerDeckID;
+      const leagueDefId = matchData?.LeagueDefId;
+      const deckCards = matchData?.PlayerDeckCardDefs;
+      if (typeof deckId !== 'string' || typeof leagueDefId !== 'string' || !Array.isArray(deckCards)) {
+        return;
+      }
+      const cards: DeckCardArray = [];
+      deckCards.forEach((card: SnapCard) => {
+        if (card && typeof card.CardDefId === 'string') {
+          cards.push({
+            CardDefId: card.CardDefId,
+            RarityDefId: card.RarityDefId === undefined ? '' : card.RarityDefId,
+            ArtVariantDefId: card.ArtVariantDefId === undefined ? '' : card.ArtVariantDefId,
+          });
+        }
+      });
+      if (cards.length === 0) {
+        return;
+      }
+      const name = typeof matchData?.PlayerDeckName === 'string' ? matchData.PlayerDeckName : '';
+      this.emitter.emit('learned-deck', {leagueDefId, deck: {id: deckId, name, cards}});
+    } catch (e) {
+      console.log('handleLearnedDeck', e);
+    }
   }
 
   private handleDecksMessage(decks: any[]): void {
