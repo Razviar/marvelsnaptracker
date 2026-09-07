@@ -29,9 +29,9 @@ export const HoverEventListener = (theCard: Element) => {
       const side = cl.getAttribute('data-side') as string;
 
       if (side === 'opp') {
-        overlayElements.CardHint.innerHTML = `Hover over the card to see it's details`;
+        overlayElements.CardHint.innerHTML = `Hover over the card to see its details`;
       } else {
-        overlayElements.CardHintOpp.innerHTML = `Hover over the card to see it's details`;
+        overlayElements.CardHintOpp.innerHTML = `Hover over the card to see its details`;
       }
     });
 
